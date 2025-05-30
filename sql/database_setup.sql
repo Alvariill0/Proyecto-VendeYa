@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS valoraciones (
     UNIQUE KEY (producto_id, usuario_id) -- Un usuario solo puede valorar un producto una vez
 );
 
--- Insertar usuario administrador por defecto
+-- Insertar usuario administrador por defecto (contraseña hasheada)
 
 INSERT IGNORE INTO usuarios (nombre, email, password, rol) VALUES
-('Administrador', 'admin@vendeya.com', 'admin123', 'admin'); 
+('Administrador', 'admin@vendeya.com', '$2y$10$QhkqUTv0fhOoq46jD14ekO3m4Poup1D2gKrM7qnZT5o.qydJMemvS', 'admin'); 

@@ -1,49 +1,75 @@
 import React, { createContext, useState, useContext } from 'react'
+import { login as servicioLogin, registro as servicioRegistro } from '../services/servicioAutenticacion'
 
 // Crear el contexto
-const ContextoAutenticacion = createContext(null)
+const ContextoAutenticacion = createContext()
 
 // Proveedor del contexto
-export const ProveedorAutenticacion = ({ children }) => {
-    const [estaAutenticado, setEstaAutenticado] = useState(false)
-    const [usuario, setUsuario] = useState(null) // Aquí podrías guardar los datos del usuario
-    const [rol, setRol] = useState(null) // Aquí guardaríamos el rol (cliente, vendedor, admin)
+export function ProveedorAutenticacion({ children }) {
+    const [usuario, setUsuario] = useState(null)
+    const [cargando, setCargando] = useState(false)
+    const [error, setError] = useState(null)
 
-    // Funciones para manejar la autenticación
-    const iniciarSesion = (datosUsuario, userRol) => {
-        // Aquí iría la lógica real para iniciar sesión (llamar al backend, guardar token, etc.)
-        setEstaAutenticado(true)
-        setUsuario(datosUsuario)
-        setRol(userRol)
-        console.log('Usuario ha iniciado sesión')
+    const login = async (email, password) => {
+        try {
+            setCargando(true)
+            setError(null)
+            
+            const datos = await servicioLogin(email, password)
+
+            setUsuario(datos.usuario)
+            localStorage.setItem('token', datos.token)
+            return datos.usuario
+        } catch (error) {
+            setError(error.message)
+            throw error
+        } finally {
+            setCargando(false)
+        }
     }
 
-    const cerrarSesion = () => {
-        // Aquí iría la lógica real para cerrar sesión (eliminar token, limpiar estado, etc.)
-        setEstaAutenticado(false)
+    const registro = async (nombre, email, password) => {
+        try {
+            setCargando(true)
+            setError(null)
+
+            const datos = await servicioRegistro(nombre, email, password)
+
+            return datos
+        } catch (error) {
+            setError(error.message)
+            throw error
+        } finally {
+            setCargando(false)
+        }
+    }
+
+    const logout = () => {
         setUsuario(null)
-        setRol(null)
-        console.log('Usuario ha cerrado sesión')
+        localStorage.removeItem('token')
+    }
+
+    const valor = {
+        usuario,
+        cargando,
+        error,
+        login,
+        registro,
+        logout,
     }
 
     return (
-        <ContextoAutenticacion.Provider value={{
-        estaAutenticado,
-        usuario,
-        rol,
-        iniciarSesion,
-        cerrarSesion,
-        }}>
-        {children}
+        <ContextoAutenticacion.Provider value={valor}>
+            {children}
         </ContextoAutenticacion.Provider>
     )
-    }
+}
 
 // Hook personalizado para usar el contexto de autenticación
-export const useAutenticacion = () => {
-    const context = useContext(ContextoAutenticacion)
-    if (context === undefined) {
-        throw new Error('useAutenticacion debe usarse dentro de un ProveedorAutenticacion')
+export function useAutenticacion() {
+    const contexto = useContext(ContextoAutenticacion)
+    if (!contexto) {
+        throw new Error('useAutenticacion debe ser usado dentro de un ProveedorAutenticacion')
     }
-    return context
+    return contexto
 } 

@@ -4,12 +4,9 @@ import App from './App.jsx'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import { ProveedorAutenticacion } from './context/ContextoAutenticacion'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ProveedorAutenticacion>
-      <App />
-    </ProveedorAutenticacion>
+    <App />
   </React.StrictMode>,
 )

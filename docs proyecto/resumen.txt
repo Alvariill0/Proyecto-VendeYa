@@ -41,7 +41,7 @@ Los lenguajes y tecnologías que voy a utilizar en el proyecto son los siguiente
 
 -3: A tener en cuenta:
     o   Nombres de funciones, variables y archivos... en español y con nombres que pudiese escribir un alumno normal de DAW
-    o Estructura propuesta:
+    o Estructura inicial propuesta:
     src/
 ├── components/
 │   ├── common/           # Componentes reutilizables (botones, inputs, modales...)
