@@ -1,0 +1,82 @@
+-1.	Resumen funcionalidad
+El proyecto consiste de un marketplace online es decir, una plataforma web donde distintos usuarios van a poder registrarse como compradores o vendedores, publicar productos, gestionar pedidos realizar compras…
+Cada vendedor podrá añadir productos a su catálogo, ver estadísticas de ventas, editar o eliminar sus productos, y responder a mensajes de compradores. 
+Los usuarios compradores podrán navegar por el catálogo, añadir productos a su carrito, realizar pedidos y valorar productos tras la compra.
+
+Una lista provisional de funcionalidades sería:
+    • Registro y login de usuarios (con roles: usuario, admin). (el rol de admin estará hardcodeado, el rol de usuario se asigna por defecto)
+    • Gestión de productos (crear, editar, eliminar, listar) Los administradores pueden realizar estas mismas acciones sobre productos de 
+        usuarios desde el panel de administración.
+    • Gestión de pedidos y carrito de compras.
+    • Panel de usuario personalizado según el rol.
+    • Visualización de estadísticas para vendedores (opcional pero seguramente lo implemente con un plugin):
+        •	Ventas por semana/mes
+        •	Productos más vendidos
+        •	Media de valoraciones
+    • Buscador con filtros (categoría, precio, nombre…)
+    • Valoraciones y comentarios de productos.
+    • Panel de administración para gestionar usuarios y moderar contenido.
+-1.5. FLUJO DE LA APLICACION:
+    • Al entrar a la Web de VendeYa se mostrará un mensaje de bienvenida, quizás algunos componentes? o publicidad
+    junto con unos botones de inicio de sesión y registro (está página podría tener un header distinto para no repetir los botones de inicio y registro),
+    Desde aqui, una vez registrado/logeado la página inicial consistirá de: un header con el logo, buscador de productos y unos botones(buzón, icono perfil y un boton para vender) 
+    debajo del header un navbar o segundo header para explorar todas las categorías y algunas categorías principales al lado.
+    El contenido principal mostrara productos divididos por categorías (podriamos quizas elegir las más vendidas o las que mas productos tengan)
+    Se deben mostrar los productos, su nombre, vendedor y precio al clickear en ver detalles, se abrirá la página del producto, donde se podrá ver:
+    la descripción completa, las fotos del producto, detalles... y comprarlo.
+    Para vender un producto se puede realizar tanto desde el panel de usuario en la seccion de ventas como desde el botón del header.
+
+-2.	Lenguajes y tecnologías
+Los lenguajes y tecnologías que voy a utilizar en el proyecto son los siguientes:
+-	Frontend:
+    o	React (Librería de JS vista en las practicas)
+    o	Javascript, HTML, CSS (USANDO BOOTSTRAP)
+    o	(OPCIONAL) Plugin/libreria de gráficos para mostrar estadisticas
+-	Backend:
+    o	PHP 
+    o	MySQL
+-	Otros:
+    o	Git – Github para control de versiones
+    o	XAMPP (Para servidor local de desarrollo, aunque estoy buscando opciones de alojamiento en un dominio)
+
+-3: A tener en cuenta:
+    o   Nombres de funciones, variables y archivos... en español y con nombres que pudiese escribir un alumno normal de DAW
+    o Estructura propuesta:
+    src/
+├── components/
+│   ├── common/           # Componentes reutilizables (botones, inputs, modales...)
+│   ├── layout/           # Componentes de estructura (header, footer, sidebar...)
+│   └── features/         # Componentes específicos de funcionalidades
+│       ├── auth/         # Componentes de autenticación
+│       ├── products/     # Componentes de productos
+│       ├── cart/         # Componentes del carrito
+│       └── admin/        # Componentes del panel de administración
+├── pages/                # Páginas principales de la aplicación
+│   ├── Inicio/
+│   ├── IniciarSesion/
+│   ├── Registro/
+│   ├── ListaProductos/
+│   ├── DetalleProducto/
+│   ├── Carrito/
+│   └── Administracion/
+├── hooks/                # Custom hooks
+│   ├── useAutenticacion.jsx
+│   ├── useCarrito.jsx
+│   └── useProductos.jsx
+├── services/            # Servicios para comunicación con el backend
+│   ├── servicioAutenticacion.jsx
+│   ├── servicioProductos.jsx
+│   └── servicioCarrito.jsx
+├── utils/               # Funciones utilitarias
+│   ├── formateadores.jsx
+│   ├── validadores.jsx
+│   └── constantes.jsx
+├── context/            # Contextos de React
+│   ├── ContextoAutenticacion.jsx
+│   └── ContextoCarrito.jsx
+└── tests/              # Tests unitarios
+    ├── unit/
+    │   ├── components/
+    │   ├── hooks/
+    │   └── utils/
+    └── integration/
