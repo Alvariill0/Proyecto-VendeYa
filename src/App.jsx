@@ -6,6 +6,7 @@ import Registro from './components/features/auth/Registro'
 import Bienvenida from './pages/Bienvenida'
 import Principal from './pages/Principal'
 import Layout from './components/layout/Layout'
+import CrearProductoForm from './components/features/productos/CrearProductoForm'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -31,10 +32,19 @@ function App() {
 
                     {/* Rutas protegidas */}
                     <Route
-                        path="/principal"
+                        path="/principal/:categoriaId?"
                         element={
                             <RutaProtegida>
                                 <Principal />
+                            </RutaProtegida>
+                        }
+                    />
+                    {/* Ruta para crear producto (protegida) */}
+                    <Route
+                        path="/crear-producto"
+                        element={
+                            <RutaProtegida>
+                                <CrearProductoForm />
                             </RutaProtegida>
                         }
                     />

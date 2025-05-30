@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAutenticacion } from '../../context/ContextoAutenticacion';
 import logo from '../../assets/VendeYa_Logo.png';
@@ -37,7 +38,7 @@ export default function Header() {
                         <Link to="/perfil" className="btn btn-outline-primary">
                             <i className="bi bi-person"></i>
                         </Link>
-                        <Link to="/vender" className="btn btn-primary">
+                        <Link to="/crear-producto" className="btn btn-primary">
                             Vender
                         </Link>
                         <button onClick={handleLogout} className="btn btn-outline-danger">

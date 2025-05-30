@@ -19,6 +19,17 @@ CREATE TABLE IF NOT EXISTS usuarios (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla Categorías
+CREATE TABLE IF NOT EXISTS categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL UNIQUE,
+    descripcion TEXT,
+    -- Para subcategorías, referencia a la categoría padre
+    parent_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (parent_id) REFERENCES categorias(id) ON DELETE CASCADE -- Si se elimina una categoría padre, sus hijos también se eliminan
+);
+
 -- Tabla Productos
 CREATE TABLE IF NOT EXISTS productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -27,11 +38,14 @@ CREATE TABLE IF NOT EXISTS productos (
     precio DECIMAL(10, 2) NOT NULL,
     -- Clave foránea al usuario que vende el producto
     vendedor_id INT NOT NULL,
+    -- Clave foránea a la categoría del producto
+    categoria_id INT,
     imagen VARCHAR(255), -- Ruta a la imagen del producto
     stock INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (vendedor_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    FOREIGN KEY (vendedor_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
 -- Tabla Carrito
@@ -82,6 +96,26 @@ CREATE TABLE IF NOT EXISTS valoraciones (
 );
 
 -- Insertar usuario administrador por defecto (contraseña hasheada)
-
 INSERT IGNORE INTO usuarios (nombre, email, password, rol) VALUES
-('Administrador', 'admin@vendeya.com', '$2y$10$QhkqUTv0fhOoq46jD14ekO3m4Poup1D2gKrM7qnZT5o.qydJMemvS', 'admin'); 
+('Administrador', 'admin@vendeya.com', '$2y$10$QhkqUTv0fhOoq46jD14ekO3m4Poup1D2gKrM7qnZT5o.qydJMemvS', 'admin');
+
+-- Insertar categorías de ejemplo (incluyendo subcategorías)
+INSERT IGNORE INTO categorias (id, nombre, descripcion, parent_id) VALUES
+(1, 'Electrónica', 'Dispositivos electrónicos y accesorios', NULL),
+(2, 'Ropa y Moda', 'Vestimenta, calzado y accesorios', NULL),
+(3, 'Hogar y Jardín', 'Artículos para el hogar, decoración y exteriores', NULL),
+(4, 'Deportes y Aire Libre', 'Equipamiento deportivo y actividades al aire libre', NULL),
+(5, 'Libros, Música y Películas', 'Contenido multimedia físico y digital', NULL),
+(6, 'Smartphones', 'Teléfonos móviles y accesorios', 1),
+(7, 'Laptops y Computadoras', 'Ordenadores portátiles y de escritorio', 1),
+(8, 'Audio y Video', 'Equipos de sonido y video', 1),
+(9, 'Camisetas', 'Prendas superiores', 2),
+(10, 'Pantalones', 'Prendas inferiores', 2);
+
+-- Insertar productos de ejemplo
+-- Asegúrate de que los vendedor_id y categoria_id existan en las tablas usuarios y categorias
+INSERT INTO productos (nombre, descripcion, precio, vendedor_id, categoria_id, imagen) VALUES
+('Smartphone Avanzado', 'Potente smartphone con cámara de alta resolución.', 699.99, 1, 6, 'https://placehold.co/600x400?text=Smartphone'), /* vendedor_id 1 = admin, categoria_id 6 = Smartphones */
+('Laptop Ultrabook', 'Portátil ligero y rápido para productividad.', 950.00, 1, 7, 'https://placehold.co/600x400?text=Laptop'), /* vendedor_id 1 = admin, categoria_id 7 = Laptops y Computadoras */
+('Camiseta de Algodón', 'Camiseta básica de algodón orgánico.', 19.95, 1, 9, 'https://placehold.co/600x400?text=Camiseta'), /* vendedor_id 1 = admin, categoria_id 9 = Camisetas */
+('Pantalón Vaquero', 'Vaqueros ajustados de diseño moderno.', 45.50, 1, 10, 'https://placehold.co/600x400?text=Pantalon'); /* vendedor_id 1 = admin, categoria_id 10 = Pantalones */ 
