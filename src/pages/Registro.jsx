@@ -19,14 +19,7 @@ function Registro() {
               <label htmlFor="password" className="form-label">Contraseña</label>
               <input type="password" className="form-control" id="password" required />
             </div>
-            <div className="mb-3">
-              <label htmlFor="rol" className="form-label">Rol</label>
-              <select className="form-select" id="rol" required>
-                <option value="">Selecciona un rol</option>
-                <option value="cliente">Cliente</option>
-                <option value="vendedor">Vendedor</option>
-              </select>
-            </div>
+            
             <button type="submit" className="btn btn-success w-100">Registrarse</button>
           </form>
         </div>
