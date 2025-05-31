@@ -8,11 +8,8 @@ export default function Principal() {
 
     return (
         <div>
-            {/* Mostrar "Productos Destacados" solo si no hay filtro de categoría */}
-            {!categoriaId && <h2 className="mb-4 text-center">Productos Destacados</h2>}
-
-            {/* Renderizar el nuevo componente de lista de productos con filtros */}
+            {/* Renderizar el componente de lista de productos con filtros */}
             <ListaProductosConFiltros categoriaId={categoriaId} />
         </div>
     );
-} 
+}

@@ -1,0 +1,48 @@
+[2025-05-31 20:51:18] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:18] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:18] Usuario autenticado con ID: 2
+[2025-05-31 20:51:18] Input recibido: {"producto_id":12,"cantidad":1}
+[2025-05-31 20:51:18] Datos decodificados: {"producto_id":12,"cantidad":1}
+[2025-05-31 20:51:18] Producto actualizado en el carrito
+[2025-05-31 20:51:19] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:19] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:19] Usuario autenticado con ID: 2
+[2025-05-31 20:51:19] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:19] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:19] Usuario intentando comprar su propio producto
+[2025-05-31 20:51:20] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:20] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:20] Usuario autenticado con ID: 2
+[2025-05-31 20:51:20] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:20] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:20] Usuario intentando comprar su propio producto
+[2025-05-31 20:51:20] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:20] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:20] Usuario autenticado con ID: 2
+[2025-05-31 20:51:20] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:20] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:20] Usuario intentando comprar su propio producto
+[2025-05-31 20:51:21] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:21] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:21] Usuario autenticado con ID: 2
+[2025-05-31 20:51:21] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:21] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:21] Usuario intentando comprar su propio producto
+[2025-05-31 20:51:21] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:21] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:21] Usuario autenticado con ID: 2
+[2025-05-31 20:51:21] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:21] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:21] Usuario intentando comprar su propio producto
+[2025-05-31 20:51:26] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:26] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:26] Usuario autenticado con ID: 2
+[2025-05-31 20:51:26] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:26] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:26] Usuario intentando comprar su propio producto
+[2025-05-31 20:51:26] Session ID: etfeicbrig2qifv01ciiv1ivi8
+[2025-05-31 20:51:26] Session data: {"id_usuario":"1","usuario":"admin","rol":"usuario","nombre":"Administrador","mensaje":"Bienvenido\/a, Administrador","usuario_id":2}
+[2025-05-31 20:51:26] Usuario autenticado con ID: 2
+[2025-05-31 20:51:26] Input recibido: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:26] Datos decodificados: {"producto_id":11,"cantidad":1}
+[2025-05-31 20:51:26] Usuario intentando comprar su propio producto

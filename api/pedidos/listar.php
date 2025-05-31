@@ -33,9 +33,9 @@ $pedidos = [];
 while ($pedido = $resultado_pedidos->fetch_assoc()) {
     // Para cada pedido, obtener sus items con detalles del producto
     $sql_items = "SELECT pi.*, p.nombre, p.imagen 
-                 FROM pedido_items pi 
-                 JOIN productos p ON pi.producto_id = p.id 
-                 WHERE pi.pedido_id = ?";
+        FROM pedido_items pi 
+        JOIN productos p ON pi.producto_id = p.id 
+        WHERE pi.pedido_id = ?";
     
     $stmt_items = $conexion->prepare($sql_items);
     $stmt_items->bind_param('i', $pedido['id']);

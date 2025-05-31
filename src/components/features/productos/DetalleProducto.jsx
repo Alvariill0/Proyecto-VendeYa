@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { obtenerProducto } from '../../../services/servicioProductos';
 import { useCarrito } from '../../../context/ContextoCarrito';
+import { useAutenticacion } from '../../../context/ContextoAutenticacion';
+import ValoracionesProducto from '../../../components/productos/ValoracionesProducto';
 
 function DetalleProducto() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [mensajeExito, setMensajeExito] = useState('');
     const { agregar } = useCarrito();
+    const { usuario } = useAutenticacion();
+    
+    // Verificar si el usuario es el propietario del producto
+    const esProductoPropio = usuario && producto && usuario.id === producto.vendedor_id;
 
     useEffect(() => {
         const cargarProducto = async () => {
@@ -29,15 +36,28 @@ function DetalleProducto() {
         cargarProducto();
     }, [id]);
 
-    const handleAgregarAlCarrito = () => {
+    const handleAgregarAlCarrito = async () => {
         try {
-            agregar(producto.id);
+            // Si el producto es propio, no permitir añadirlo al carrito
+            if (esProductoPropio) {
+                setError('No puedes añadir tu propio producto al carrito');
+                setTimeout(() => setError(null), 3000);
+                return;
+            }
+            
+            await agregar(producto.id);
             setMensajeExito('Producto añadido al carrito');
             // Limpiar el mensaje después de 3 segundos
             setTimeout(() => setMensajeExito(''), 3000);
         } catch (error) {
             setError('Error al añadir al carrito: ' + error.message);
+            setTimeout(() => setError(null), 3000);
         }
+    };
+    
+    // Función para ir al panel de edición del producto
+    const handleEditarProducto = () => {
+        navigate(`/editar-producto/${producto.id}`);
     };
 
     if (cargando) {
@@ -111,13 +131,22 @@ function DetalleProducto() {
                     </div>
                     
                     <div className="d-grid gap-2">
-                        <button 
-                            className="btn btn-primary btn-lg" 
-                            onClick={handleAgregarAlCarrito}
-                            disabled={producto.stock <= 0}
-                        >
-                            {producto.stock > 0 ? 'Añadir al carrito' : 'Producto agotado'}
-                        </button>
+                        {esProductoPropio ? (
+                            <button 
+                                className="btn btn-warning btn-lg" 
+                                onClick={handleEditarProducto}
+                            >
+                                Editar mi producto
+                            </button>
+                        ) : (
+                            <button 
+                                className="btn btn-primary btn-lg" 
+                                onClick={handleAgregarAlCarrito}
+                                disabled={producto.stock <= 0}
+                            >
+                                {producto.stock > 0 ? 'Añadir al carrito' : 'Producto agotado'}
+                            </button>
+                        )}
                         <Link to="/principal" className="btn btn-outline-secondary">
                             Volver a la lista de productos
                         </Link>
@@ -136,7 +165,11 @@ function DetalleProducto() {
                 </div>
             </div>
             
-            {/* Aquí se podría añadir una sección para valoraciones y comentarios en el futuro */}
+            <div className="row mt-5">
+                <div className="col-12">
+                    <ValoracionesProducto productoId={producto.id} />
+                </div>
+            </div>
         </div>
     );
 }

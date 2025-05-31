@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { listarCategorias, listarProductosConCategoriasSugeridas } from '../../../services/servicioProductos';
+import { listarCategorias, listarCategoriasSugeridas } from '../../../services/servicioCategorias';
 
 function AdminCategoriasForm() {
     const [categorias, setCategorias] = useState([]);
@@ -43,7 +43,7 @@ function AdminCategoriasForm() {
         try {
             setCargando(true);
             // Buscar productos con categorías sugeridas en la descripción
-            const productos = await listarProductosConCategoriasSugeridas();
+            const productos = await listarCategoriasSugeridas();
             if (Array.isArray(productos)) {
                 // Extraer las categorías sugeridas de las descripciones
                 const sugeridas = productos
@@ -60,7 +60,7 @@ function AdminCategoriasForm() {
                     });
                 setCategoriasSugeridas(sugeridas);
             } else {
-                console.error('La respuesta de listarProductosConCategoriasSugeridas no es un array:', productos);
+                console.error('La respuesta de listarCategoriasSugeridas no es un array:', productos);
                 setError('Error al cargar categorías sugeridas: formato de respuesta incorrecto');
             }
         } catch (error) {

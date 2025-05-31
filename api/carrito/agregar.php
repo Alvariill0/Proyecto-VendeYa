@@ -48,8 +48,8 @@ if (!isset($datos['producto_id']) || !isset($datos['cantidad'])) {
 $producto_id = $datos['producto_id'];
 $cantidad = $datos['cantidad'];
 
-// Verificar que el producto existe
-$sql_verificar = "SELECT id, stock FROM productos WHERE id = ?";
+// Verificar que el producto existe y no es del usuario actual
+$sql_verificar = "SELECT id, stock, vendedor_id FROM productos WHERE id = ?";
 $stmt_verificar = $conexion->prepare($sql_verificar);
 $stmt_verificar->bind_param('i', $producto_id);
 $stmt_verificar->execute();
@@ -62,6 +62,13 @@ if ($resultado_verificar->num_rows === 0) {
 }
 
 $producto = $resultado_verificar->fetch_assoc();
+
+// Verificar que el usuario no esté intentando comprar su propio producto
+if ($producto['vendedor_id'] == $usuario_id) {
+    http_response_code(400);
+    echo json_encode(['error' => 'No puedes comprar tu propio producto']);
+    exit();
+}
 
 // Verificar si hay suficiente stock
 if ($producto['stock'] <= 0) {

@@ -1,82 +1,43 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+/**
+ * Servicio para gestionar productos
+ * @module servicioProductos
+ */
 
-export async function listarCategorias() {
-    try {
-        const respuesta = await fetch(`${BASE_URL}/categorias/listar.php`);
-        
-        // Verificar si la respuesta es exitosa
-        if (!respuesta.ok) {
-            const errorText = await respuesta.text();
-            let errorMessage = 'Error al obtener categorías';
-            
-            try {
-                const errorData = JSON.parse(errorText);
-                errorMessage = errorData.error || errorMessage;
-            } catch (parseError) {
-                console.error('Error al parsear respuesta de error:', errorText);
-                errorMessage = `${errorMessage}: ${errorText}`;
-            }
-            
-            throw new Error(errorMessage);
-        }
-        
-        // Clonar la respuesta antes de intentar leerla
-        const respuestaClone = respuesta.clone();
-        
-        // Intentar parsear la respuesta como JSON
-        try {
-            const datos = await respuesta.json();
-            return datos;
-        } catch (parseError) {
-            console.error('Error al parsear respuesta JSON:', parseError);
-            // Usar la respuesta clonada para obtener el texto
-            const responseText = await respuestaClone.text();
-            console.error('Contenido de la respuesta:', responseText);
-            throw new Error(`Error al parsear la respuesta: ${parseError.message}`);
-        }
-    } catch (error) {
-        console.error('Error en listarCategorias:', error);
-        throw error;
-    }
-}
+import { get, post, del } from './servicioBase';
 
+/**
+ * Obtiene la lista de productos, opcionalmente filtrados por categoría
+ * @param {number|null} categoriaId - ID de la categoría para filtrar (opcional)
+ * @returns {Promise<Array>} Lista de productos
+ */
 export async function listarProductos(categoriaId = null) {
-    let url = `${BASE_URL}/productos/listar.php`;
+    let endpoint = '/productos/listar.php';
     if (categoriaId !== null) {
-        url += `?categoria_id=${categoriaId}`;
+        endpoint += `?categoria_id=${categoriaId}`;
     }
-
-    const respuesta = await fetch(url);
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error al obtener productos');
-    }
-
-    return datos;
+    return get(endpoint);
 }
 
+/**
+ * Obtiene los detalles de un producto específico
+ * @param {number} productoId - ID del producto
+ * @returns {Promise<Object>} Detalles del producto
+ */
 export async function obtenerProducto(productoId) {
     if (!productoId) {
         throw new Error('Se requiere un ID de producto válido');
     }
-
-    const respuesta = await fetch(`${BASE_URL}/productos/obtener.php?id=${productoId}`);
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error al obtener el producto');
-    }
-
-    return datos;
+    return get(`/productos/obtener.php?id=${productoId}`);
 }
 
+/**
+ * Crea un nuevo producto
+ * @param {FormData} formData - Datos del producto en formato FormData
+ * @returns {Promise<Object>} Información del producto creado
+ */
 export async function crearProducto(formData) {
-    const url = `${BASE_URL}/productos/crear.php`;
+    const url = `${import.meta.env.VITE_API_URL}/productos/crear.php`;
     
-    // TODO: En una aplicación real, la identificación del usuario debería manejarse de forma segura (ej. sesiones, tokens).
-    // No se debería confiar en un user_id enviado directamente desde el frontend para operaciones sensibles.
-
     const respuesta = await fetch(url, {
         method: 'POST',
         body: formData // FormData maneja correctamente los datos del formulario y la imagen
@@ -85,14 +46,18 @@ export async function crearProducto(formData) {
     const datos = await respuesta.json();
 
     if (!respuesta.ok) {
-        // Si la respuesta no es OK (ej. 400, 500), lanzamos un error con el mensaje del backend si existe
         throw new Error(datos.error || 'Error en la respuesta del servidor al crear producto.');
     }
 
-    // Si la respuesta es OK (ej. 201 Created), devolvemos los datos (ej. mensaje de éxito, ID del producto)
     return datos;
 }
 
+/**
+ * Actualiza un producto existente
+ * @param {number} productoId - ID del producto a actualizar
+ * @param {FormData} formData - Datos actualizados del producto en formato FormData
+ * @returns {Promise<Object>} Resultado de la actualización
+ */
 export async function actualizarProducto(productoId, formData) {
     if (!productoId) {
         throw new Error('Se requiere un ID de producto válido');
@@ -101,7 +66,9 @@ export async function actualizarProducto(productoId, formData) {
     // Asegurarse de que el ID del producto esté en el formData
     formData.append('producto_id', productoId);
 
-    const respuesta = await fetch(`${BASE_URL}/productos/actualizar.php`, {
+    const url = `${import.meta.env.VITE_API_URL}/productos/actualizar.php`;
+    
+    const respuesta = await fetch(url, {
         method: 'POST', // Usamos POST para compatibilidad con FormData
         body: formData
     });
@@ -115,75 +82,35 @@ export async function actualizarProducto(productoId, formData) {
     return datos;
 }
 
+/**
+ * Elimina un producto
+ * @param {number} productoId - ID del producto a eliminar
+ * @returns {Promise<Object>} Resultado de la eliminación
+ */
 export async function eliminarProducto(productoId) {
     if (!productoId) {
         throw new Error('Se requiere un ID de producto válido');
     }
-
-    const respuesta = await fetch(`${BASE_URL}/productos/eliminar.php?id=${productoId}`, {
-        method: 'DELETE'
-    });
-
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error al eliminar el producto');
-    }
-
-    return datos;
+    return del(`/productos/eliminar.php?id=${productoId}`);
 }
 
+/**
+ * Obtiene la lista de productos de un vendedor específico
+ * @param {number} vendedorId - ID del vendedor
+ * @returns {Promise<Array>} Lista de productos del vendedor
+ */
 export async function listarProductosVendedor(vendedorId) {
     if (!vendedorId) {
         throw new Error('Se requiere un ID de vendedor válido');
     }
-
-    const respuesta = await fetch(`${BASE_URL}/productos/listar.php?vendedor_id=${vendedorId}`);
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error al obtener productos del vendedor');
-    }
-
-    return datos;
+    return get(`/productos/listar.php?vendedor_id=${vendedorId}`);
 }
 
-export async function listarProductosConCategoriasSugeridas() {
-    try {
-        const respuesta = await fetch(`${BASE_URL}/productos/listar.php?categorias_sugeridas=true`);
-        
-        // Verificar si la respuesta es exitosa
-        if (!respuesta.ok) {
-            const errorText = await respuesta.text();
-            let errorMessage = 'Error al obtener productos con categorías sugeridas';
-            
-            try {
-                const errorData = JSON.parse(errorText);
-                errorMessage = errorData.error || errorMessage;
-            } catch (parseError) {
-                console.error('Error al parsear respuesta de error:', errorText);
-                errorMessage = `${errorMessage}: ${errorText}`;
-            }
-            
-            throw new Error(errorMessage);
-        }
-        
-        // Clonar la respuesta antes de intentar leerla
-        const respuestaClone = respuesta.clone();
-        
-        // Intentar parsear la respuesta como JSON
-        try {
-            const datos = await respuesta.json();
-            return datos;
-        } catch (parseError) {
-            console.error('Error al parsear respuesta JSON:', parseError);
-            // Usar la respuesta clonada para obtener el texto
-            const responseText = await respuestaClone.text();
-            console.error('Contenido de la respuesta:', responseText);
-            throw new Error(`Error al parsear la respuesta: ${parseError.message}`);
-        }
-    } catch (error) {
-        console.error('Error en listarProductosConCategoriasSugeridas:', error);
-        throw error;
-    }
-}
+export default {
+    listarProductos,
+    obtenerProducto,
+    crearProducto,
+    actualizarProducto,
+    eliminarProducto,
+    listarProductosVendedor
+};

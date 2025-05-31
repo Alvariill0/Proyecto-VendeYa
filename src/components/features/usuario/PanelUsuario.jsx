@@ -4,6 +4,7 @@ import { listarProductosVendedor } from '../../../services/servicioProductos';
 import { Link, useNavigate } from 'react-router-dom';
 import TablaProductos from './TablaProductos';
 import PedidosRecientes from '../pedidos/PedidosRecientes';
+import PedidosVendedor from '../../../components/PedidosVendedor';
 
 function PanelUsuario() {
     const { usuario } = useAutenticacion();
@@ -94,6 +95,15 @@ function PanelUsuario() {
                         </div>
                     </div>
                 );
+            case 'ventas':
+                return (
+                    <div className="ventas-container">
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+                            <h3>Gestión de Mis Ventas</h3>
+                        </div>
+                        <PedidosVendedor />
+                    </div>
+                );
             case 'perfil':
                 return (
                     <div className="perfil-container">
@@ -134,6 +144,12 @@ function PanelUsuario() {
                             onClick={() => setSeccionActiva('pedidos')}
                         >
                             Mis Pedidos
+                        </button>
+                        <button
+                            className={`list-group-item list-group-item-action ${seccionActiva === 'ventas' ? 'active' : ''}`}
+                            onClick={() => setSeccionActiva('ventas')}
+                        >
+                            Mis Ventas
                         </button>
                         <button
                             className={`list-group-item list-group-item-action ${seccionActiva === 'perfil' ? 'active' : ''}`}

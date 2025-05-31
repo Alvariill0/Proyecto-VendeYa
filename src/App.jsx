@@ -14,6 +14,7 @@ import DetalleProductoPage from './pages/DetalleProductoPage'
 import PanelUsuarioPage from './pages/PanelUsuarioPage'
 import EditarProductoPage from './pages/EditarProductoPage'
 import AdminCategoriasPage from './pages/AdminCategoriasPage'
+import PedidosVendedorPage from './pages/PedidosVendedorPage'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -146,6 +147,15 @@ function App() {
                             element={
                                 <RutaProtegida rol="admin">
                                     <AdminCategoriasPage />
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta para gestionar pedidos como vendedor */}
+                        <Route
+                            path="/mis-ventas"
+                            element={
+                                <RutaProtegida>
+                                    <PedidosVendedorPage />
                                 </RutaProtegida>
                             }
                         />

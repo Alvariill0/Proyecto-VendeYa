@@ -100,7 +100,8 @@ try {
     $stmt_insertar_item = $conexion->prepare($sql_insertar_item);
     
     foreach ($items as $item) {
-        $stmt_insertar_item->bind_param('iiid', $pedido_id, $item['producto_id'], $item['cantidad'], $item['precio_unitario']);
+        $precio_unitario = floatval($item['precio_unitario']);
+        $stmt_insertar_item->bind_param('iiid', $pedido_id, $item['producto_id'], $item['cantidad'], $precio_unitario);
         $stmt_insertar_item->execute();
         
         // Actualizar el stock del producto

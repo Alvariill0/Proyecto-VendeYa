@@ -80,3 +80,85 @@ Los lenguajes y tecnologías que voy a utilizar en el proyecto son los siguiente
     │   ├── hooks/
     │   └── utils/
     └── integration/
+
+-4 ESTRUCTURA BASE DE DATOS:
+
+A continuación se detalla la estructura completa de la base de datos 'vendeya' con todas sus tablas y campos:
+
+1. Tabla: usuarios
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - nombre: VARCHAR(255), NOT NULL
+   - email: VARCHAR(255), NOT NULL, UNIQUE
+   - password: VARCHAR(255), NOT NULL
+   - rol: VARCHAR(50), NOT NULL, DEFAULT 'usuario'
+   - created_at: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
+
+2. Tabla: categorias
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - nombre: VARCHAR(255), NOT NULL, UNIQUE
+   - descripcion: TEXT
+   - parent_id: INT, NULL (referencia a categorias.id para subcategorías)
+   - created_at: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
+   - FOREIGN KEY (parent_id) REFERENCES categorias(id) ON DELETE CASCADE
+
+3. Tabla: productos
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - nombre: VARCHAR(255), NOT NULL
+   - descripcion: TEXT
+   - precio: DECIMAL(10, 2), NOT NULL
+   - vendedor_id: INT, NOT NULL
+   - categoria_id: INT
+   - imagen: VARCHAR(255)
+   - stock: INT, NOT NULL, DEFAULT 0
+   - created_at: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
+   - updated_at: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+   - FOREIGN KEY (vendedor_id) REFERENCES usuarios(id) ON DELETE CASCADE
+   - FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+
+4. Tabla: carrito_items
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - usuario_id: INT, NOT NULL
+   - producto_id: INT, NOT NULL
+   - cantidad: INT, NOT NULL, DEFAULT 1, CHECK (cantidad > 0)
+   - created_at: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
+   - FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+   - FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
+   - UNIQUE KEY (usuario_id, producto_id)
+
+5. Tabla: pedidos
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - usuario_id: INT, NOT NULL
+   - fecha_pedido: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
+   - estado: VARCHAR(50), NOT NULL, DEFAULT 'pendiente'
+   - total: DECIMAL(10, 2), NOT NULL
+   - FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+
+6. Tabla: pedido_items (¡IMPORTANTE! No confundir con 'pedidos_items')
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - pedido_id: INT, NOT NULL
+   - producto_id: INT, NOT NULL
+   - cantidad: INT, NOT NULL, CHECK (cantidad > 0)
+   - precio_unitario: DECIMAL(10, 2), NOT NULL
+   - FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
+   - FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
+
+7. Tabla: valoraciones
+   - id: INT, AUTO_INCREMENT, PRIMARY KEY
+   - producto_id: INT, NOT NULL
+   - usuario_id: INT, NOT NULL
+   - puntuacion: INT, NOT NULL, CHECK (puntuacion >= 1 AND puntuacion <= 5)
+   - comentario: TEXT
+   - fecha: TIMESTAMP, DEFAULT CURRENT_TIMESTAMP
+   - FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
+   - FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+   - UNIQUE KEY (producto_id, usuario_id)
+   - INDEX idx_valoraciones_producto (producto_id)
+   - INDEX idx_valoraciones_usuario (usuario_id)
+   - UNIQUE INDEX idx_valoraciones_usuario_producto (usuario_id, producto_id)
+
+Notas importantes:
+- La tabla de pedidos se relaciona con los productos a través de la tabla intermedia 'pedido_items' (en singular).
+- Todas las tablas utilizan claves foráneas con la opción ON DELETE CASCADE para mantener la integridad referencial.
+- Los nombres de las tablas están en singular, excepto 'usuarios', 'categorias', 'productos', 'pedidos' y 'valoraciones'.
+- La tabla 'carrito_items' tiene una restricción UNIQUE para evitar duplicados de productos en el carrito de un usuario.
+- La tabla 'valoraciones' tiene índices para optimizar las búsquedas por producto y usuario.

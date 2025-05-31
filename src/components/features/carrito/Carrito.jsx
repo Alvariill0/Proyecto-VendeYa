@@ -61,7 +61,7 @@ function Carrito() {
             
             // Esperar un momento y redirigir al historial de pedidos
             setTimeout(() => {
-                navigate('/mis-pedidos');
+                navigate('/historial-pedidos');
             }, 2000);
             
         } catch (error) {

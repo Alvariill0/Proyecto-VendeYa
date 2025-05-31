@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { listarCategorias, obtenerProducto, actualizarProducto } from '../../../services/servicioProductos';
+import { obtenerProducto, actualizarProducto } from '../../../services/servicioProductos';
+import { listarCategorias } from '../../../services/servicioCategorias';
 import { useAutenticacion } from '../../../context/ContextoAutenticacion';
 
 function EditarProductoForm() {

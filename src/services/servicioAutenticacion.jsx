@@ -1,37 +1,41 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+/**
+ * Servicio para gestionar la autenticación de usuarios
+ * @module servicioAutenticacion
+ */
 
+import { post } from './servicioBase';
+
+/**
+ * Inicia sesión con email y contraseña
+ * @param {string} email - Email del usuario
+ * @param {string} password - Contraseña del usuario
+ * @returns {Promise<Object>} Datos del usuario autenticado
+ */
 export async function login(email, password) {
-    const respuesta = await fetch(`${BASE_URL}/auth/login.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-    });
-
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error en el login');
-    }
-
-    return datos; // Devolvemos los datos completos, incluyendo token y usuario
+    return post('/auth/login.php', { email, password });
 }
 
+/**
+ * Registra un nuevo usuario
+ * @param {string} nombre - Nombre del usuario
+ * @param {string} email - Email del usuario
+ * @param {string} password - Contraseña del usuario
+ * @returns {Promise<Object>} Datos del usuario registrado
+ */
 export async function registro(nombre, email, password) {
-    const respuesta = await fetch(`${BASE_URL}/auth/registro.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nombre, email, password }),
-    });
-
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error en el registro');
-    }
-
-    return datos;
+    return post('/auth/registro.php', { nombre, email, password });
 }
+
+/**
+ * Cierra la sesión del usuario actual
+ * @returns {Promise<Object>} Resultado de la operación
+ */
+export async function logout() {
+    return post('/auth/logout.php');
+}
+
+export default {
+    login,
+    registro,
+    logout
+};

@@ -94,7 +94,29 @@ CREATE TABLE IF NOT EXISTS valoraciones (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     UNIQUE KEY (producto_id, usuario_id) -- Un usuario solo puede valorar un producto una vez
 );
+-- Tabla para almacenar las valoraciones de productos
+CREATE TABLE IF NOT EXISTS `valoraciones` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `producto_id` int(11) NOT NULL,
+    `usuario_id` int(11) NOT NULL,
+    `puntuacion` int(11) NOT NULL,
+    `comentario` text COLLATE utf8mb4_unicode_ci,
+    `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `producto_id` (`producto_id`),
+    KEY `usuario_id` (`usuario_id`),
+    CONSTRAINT `valoraciones_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `valoraciones_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Índice para optimizar la búsqueda de valoraciones por producto
+CREATE INDEX IF NOT EXISTS `idx_valoraciones_producto` ON `valoraciones` (`producto_id`);
+
+-- Índice para optimizar la búsqueda de valoraciones por usuario
+CREATE INDEX IF NOT EXISTS `idx_valoraciones_usuario` ON `valoraciones` (`usuario_id`);
+
+-- Índice único para evitar que un usuario valore el mismo producto más de una vez
+CREATE UNIQUE INDEX IF NOT EXISTS `idx_valoraciones_usuario_producto` ON `valoraciones` (`usuario_id`, `producto_id`);
 -- Insertar usuario administrador por defecto (contraseña hasheada)
 INSERT IGNORE INTO usuarios (nombre, email, password, rol) VALUES
 ('Administrador', 'admin@vendeya.com', '$2y$10$QhkqUTv0fhOoq46jD14ekO3m4Poup1D2gKrM7qnZT5o.qydJMemvS', 'admin');

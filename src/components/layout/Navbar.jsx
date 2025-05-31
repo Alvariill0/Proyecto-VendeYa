@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CategoriasOffcanvas from './CategoriasOffcanvas';
-import { listarCategorias } from '../../services/servicioProductos';
+import { listarCategorias } from '../../services/servicioCategorias';
 
 export default function Navbar() {
     const [mostrarOffcanvas, setMostrarOffcanvas] = useState(false);

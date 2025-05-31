@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { listarProductos, listarCategorias } from '../../../services/servicioProductos';
+import { listarProductos } from '../../../services/servicioProductos';
+import { listarCategorias } from '../../../services/servicioCategorias';
 import { useCarrito } from '../../../context/ContextoCarrito';
+import { useAutenticacion } from '../../../context/ContextoAutenticacion';
 import { Link } from 'react-router-dom';
 
 function ListaProductosConFiltros({ categoriaId }) {
@@ -9,7 +11,9 @@ function ListaProductosConFiltros({ categoriaId }) {
     const [error, setError] = useState(null);
     const [categorias, setCategorias] = useState([]);
     const [mensajeExito, setMensajeExito] = useState('');
-    const { agregar } = useCarrito();
+    const [mensajeError, setMensajeError] = useState('');
+    const { agregar, error: errorCarrito } = useCarrito();
+    const { usuario } = useAutenticacion();
 
     // Effect para cargar productos cuando cambia categoriaId
     useEffect(() => {
@@ -47,6 +51,16 @@ function ListaProductosConFiltros({ categoriaId }) {
 
         obtenerCategorias();
     }, []); // Array de dependencias vacío para que se ejecute solo una vez
+
+    // Effect para mostrar errores del carrito
+    useEffect(() => {
+        if (errorCarrito) {
+            setMensajeError(errorCarrito);
+            // Limpiar mensaje de éxito si hay un error
+            setMensajeExito('');
+            setTimeout(() => setMensajeError(''), 3000);
+        }
+    }, [errorCarrito]);
 
     // Función para encontrar una categoría por ID en la estructura anidada
     const encontrarCategoriaPorId = (id, categoriasLista) => {
@@ -86,6 +100,30 @@ function ListaProductosConFiltros({ categoriaId }) {
         return categoriaEncontrada ? categoriaEncontrada.nombre : 'Categoría Desconocida';
     };
 
+    // Función para manejar la adición al carrito
+    const handleAgregarAlCarrito = async (producto) => {
+        // Limpiar mensajes anteriores
+        setMensajeExito('');
+        setMensajeError('');
+        
+        // Verificar si el usuario es el propietario del producto
+        if (usuario && usuario.id === parseInt(producto.vendedor_id)) {
+            setMensajeError(`No puedes añadir tu propio producto "${producto.nombre}" al carrito`);
+            setTimeout(() => setMensajeError(''), 3000);
+            return;
+        }
+
+        try {
+            // Si no es el propietario, proceder con la adición al carrito
+            await agregar(producto.id, 1);
+            setMensajeExito(`${producto.nombre} añadido al carrito`);
+            setTimeout(() => setMensajeExito(''), 3000);
+        } catch (error) {
+            setMensajeError(`Error: ${error.message}`);
+            setTimeout(() => setMensajeError(''), 3000);
+        }
+    };
+
 
     if (cargando) {
         return (
@@ -106,7 +144,7 @@ function ListaProductosConFiltros({ categoriaId }) {
     }
 
     // Determinar el título a mostrar
-    const tituloPrincipal = categoriaId
+    const tituloPrincipal = categoriaId && categorias.length > 0
         ? `Productos en ${obtenerNombreCategoria(categoriaId)}`
         : 'Productos Destacados';
 
@@ -116,10 +154,18 @@ function ListaProductosConFiltros({ categoriaId }) {
     return (
         <div className="row">
             {/* Mensaje de éxito */}
-            {mensajeExito && (
+            {mensajeExito && !mensajeError && (
                 <div className="alert alert-success alert-dismissible fade show" role="alert">
                     {mensajeExito}
                     <button type="button" className="btn-close" onClick={() => setMensajeExito('')}></button>
+                </div>
+            )}
+
+            {/* Mensaje de error */}
+            {mensajeError && (
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    {mensajeError}
+                    <button type="button" className="btn-close" onClick={() => setMensajeError('')}></button>
                 </div>
             )}
             
@@ -161,18 +207,20 @@ function ListaProductosConFiltros({ categoriaId }) {
                                             <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1">
                                                 Ver Detalles
                                             </Link>
-                                            <button 
-                                                className="btn btn-outline-success" 
-                                                onClick={() => {
-                                                    agregar(producto.id, 1);
-                                                    setMensajeExito(`${producto.nombre} añadido al carrito`);
-                                                    setTimeout(() => setMensajeExito(''), 3000);
-                                                }}
-                                                disabled={producto.stock <= 0}
-                                                title={producto.stock <= 0 ? "Sin stock disponible" : "Añadir al carrito"}
-                                            >
-                                                <i className="bi bi-cart-plus"></i>
-                                            </button>
+                                            {usuario && usuario.id === parseInt(producto.vendedor_id) ? (
+                                                <Link to={`/editar-producto/${producto.id}`} className="btn btn-outline-warning">
+                                                    <i className="bi bi-pencil"></i>
+                                                </Link>
+                                            ) : (
+                                                <button 
+                                                    className="btn btn-outline-success" 
+                                                    onClick={() => handleAgregarAlCarrito(producto)}
+                                                    disabled={producto.stock <= 0}
+                                                    title={producto.stock <= 0 ? "Sin stock disponible" : "Añadir al carrito"}
+                                                >
+                                                    <i className="bi bi-cart-plus"></i>
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

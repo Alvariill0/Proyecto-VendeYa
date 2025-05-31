@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { listarCategorias, crearProducto } from '../../../services/servicioProductos';
+import { crearProducto } from '../../../services/servicioProductos';
+import { listarCategorias } from '../../../services/servicioCategorias';
 import { useAutenticacion } from '../../../context/ContextoAutenticacion';
 import { useNavigate } from 'react-router-dom';
 
