@@ -11,6 +11,8 @@ function CrearProductoForm() {
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [categoriaId, setCategoriaId] = useState('');
+    const [categoriaPersonalizada, setCategoriaPersonalizada] = useState('');
+    const [mostrarCategoriaPersonalizada, setMostrarCategoriaPersonalizada] = useState(false);
     const [imagen, setImagen] = useState(null); // Para manejar la subida de archivos
     const [stock, setStock] = useState('');
     const [categorias, setCategorias] = useState([]);
@@ -39,53 +41,82 @@ function CrearProductoForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación básica
-        if (!nombre || !descripcion || !precio || !categoriaId || !stock) {
-            setErrorCreacion('Por favor, complete todos los campos requeridos.');
-            return;
-        }
-        if (isNaN(parseFloat(precio)) || parseFloat(precio) <= 0) {
-             setErrorCreacion('El precio debe ser un número positivo.');
-            return;
-        }
-         if (isNaN(parseInt(stock)) || parseInt(stock) < 0) {
-             setErrorCreacion('El stock debe ser un número entero no negativo.');
+        // Validaciones básicas
+        if (!nombre.trim()) {
+            setErrorCreacion('El nombre del producto es obligatorio');
             return;
         }
 
-        // Creamos un FormData para enviar datos y archivo (imagen)
-        const formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('descripcion', descripcion);
-        formData.append('precio', precio);
-        formData.append('categoria_id', categoriaId);
-        formData.append('stock', stock);
-        if (imagen) {
-            formData.append('imagen', imagen); // Añadir el archivo de imagen si existe
+        if (!precio || isNaN(precio) || parseFloat(precio) <= 0) {
+            setErrorCreacion('El precio debe ser un número mayor que cero');
+            return;
         }
-        // Asumimos que el vendedor_id se obtiene del usuario autenticado en el backend por seguridad
-        // formData.append('vendedor_id', usuario.id); // Esto se pasará en el header o sesión en una implementación real
+
+        if (!categoriaId) {
+            setErrorCreacion('Debes seleccionar una categoría');
+            return;
+        }
+
+        // Validar categoría personalizada si se seleccionó "otro"
+        if (categoriaId === 'otro' && !categoriaPersonalizada.trim()) {
+            setErrorCreacion('Debes ingresar una categoría personalizada');
+            return;
+        }
+
+        if (!stock || isNaN(stock) || parseInt(stock) < 0 || !Number.isInteger(parseFloat(stock))) {
+            setErrorCreacion('El stock debe ser un número entero no negativo');
+            return;
+        }
 
         try {
             setCargandoCreacion(true);
             setErrorCreacion(null);
             setMensajeExito('');
+
+            // Crear un objeto FormData para enviar los datos, incluyendo la imagen
+            const formData = new FormData();
+            formData.append('nombre', nombre);
+            formData.append('descripcion', descripcion);
+            formData.append('precio', precio);
             
-            const resultado = await crearProducto(formData); // Usamos la nueva función de servicio
+            // Si se seleccionó "otro", enviar la categoría personalizada
+            if (categoriaId === 'otro') {
+                formData.append('categoria_id', 'otro');
+                formData.append('categoria_personalizada', categoriaPersonalizada);
+            } else {
+                formData.append('categoria_id', categoriaId);
+            }
+            
+            formData.append('stock', stock);
 
-            setMensajeExito(resultado.mensaje || 'Producto creado con éxito!');
-            // Opcional: limpiar formulario o redirigir
-             setNombre('');
-             setDescripcion('');
-             setPrecio('');
-             setCategoriaId('');
-             setImagen(null);
-             setStock('');
-             // O quizás redirigir a la página del producto o al panel del vendedor
-             // navigate('/perfil/mis-productos');
+            // Añadir la imagen si se seleccionó una
+            if (imagen) {
+                formData.append('imagen', imagen);
+            }
 
+            // Enviar los datos al servidor
+            const respuesta = await crearProducto(formData);
+
+            // Mostrar mensaje de éxito
+            setMensajeExito('Producto creado correctamente');
+
+            // Limpiar el formulario
+            setNombre('');
+            setDescripcion('');
+            setPrecio('');
+            setCategoriaId('');
+            setCategoriaPersonalizada('');
+            setMostrarCategoriaPersonalizada(false);
+            setStock('');
+            setImagen(null);
+
+            // Redirigir al panel de usuario después de un breve retraso
+            setTimeout(() => {
+                navigate('/panel-usuario');
+            }, 2000);
         } catch (error) {
-            setErrorCreacion(error.message || 'Error al crear el producto.');
+            console.error('Error al crear producto:', error);
+            setErrorCreacion('Error al crear el producto. Por favor, intenta de nuevo.');
         } finally {
             setCargandoCreacion(false);
         }
@@ -169,7 +200,10 @@ function CrearProductoForm() {
                                 className="form-select"
                                 id="categoriaProducto"
                                 value={categoriaId}
-                                onChange={(e) => setCategoriaId(e.target.value)}
+                                onChange={(e) => {
+                                    setCategoriaId(e.target.value);
+                                    setMostrarCategoriaPersonalizada(e.target.value === 'otro');
+                                }}
                                 required
                                 disabled={cargandoCategorias} // Deshabilitar si las categorías aún están cargando
                             >
@@ -183,8 +217,25 @@ function CrearProductoForm() {
                                         <option key={subCat.id} value={subCat.id}>-- {subCat.nombre}</option>
                                     )) : [])
                                 ])}
+                                <option value="otro">Otro (especificar)</option>
                             </select>
                         </div>
+                        
+                        {mostrarCategoriaPersonalizada && (
+                            <div className="mb-3">
+                                <label htmlFor="categoriaPersonalizada" className="form-label">Especifica la categoría</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="categoriaPersonalizada"
+                                    value={categoriaPersonalizada}
+                                    onChange={(e) => setCategoriaPersonalizada(e.target.value)}
+                                    placeholder="Escribe el nombre de la categoría"
+                                    required
+                                />
+                                <div className="form-text">Esta categoría será revisada por un administrador.</div>
+                            </div>
+                        )}
                         <div className="mb-3">
                             <label htmlFor="imagenProducto" className="form-label">Imagen del Producto</label>
                             <input
@@ -209,4 +260,4 @@ function CrearProductoForm() {
     );
 }
 
-export default CrearProductoForm; 
+export default CrearProductoForm;

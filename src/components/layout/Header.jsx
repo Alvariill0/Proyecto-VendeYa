@@ -37,7 +37,7 @@ export default function Header() {
                         <Link to="/mensajes" className="btn btn-outline-primary">
                             <i className="bi bi-envelope"></i> Mensajes
                         </Link>
-                        <Link to="/mi-panel" className="btn btn-outline-primary">
+                        <Link to="/panel-usuario" className="btn btn-outline-primary">
                             <i className="bi bi-person"></i> Mi Panel
                         </Link>
                         <Link to="/carrito" className="btn btn-outline-primary position-relative">

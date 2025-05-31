@@ -29,7 +29,7 @@
    - ✅ Añadir sección para ver historial de pedidos
 6. Panel de administración
    
-   - Crear componentes para el panel de administración
+   - Crear categorias
    - Implementar gestión de usuarios
    - Añadir moderación de productos
    - Desarrollar API para funciones administrativas

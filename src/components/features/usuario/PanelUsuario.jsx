@@ -141,6 +141,14 @@ function PanelUsuario() {
                         >
                             Mi Perfil
                         </button>
+                        {usuario.rol === 'admin' && (
+                            <Link 
+                                to="/admin-categorias" 
+                                className="list-group-item list-group-item-action"
+                            >
+                                Administrar Categorías
+                            </Link>
+                        )}
                     </div>
                 </div>
                 

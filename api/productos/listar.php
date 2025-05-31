@@ -11,8 +11,11 @@ if ($conexion->connect_error) {
     exit();
 }
 
-// Obtener el ID de categoría si se proporciona en la URL (GET)
+// Verificar si se solicita filtrar por categoría
 $categoria_id = isset($_GET['categoria_id']) ? $_GET['categoria_id'] : null;
+
+// Verificar si se solicita filtrar productos con categorías sugeridas
+$categorias_sugeridas = isset($_GET['categorias_sugeridas']) && $_GET['categorias_sugeridas'] === 'true';
 
 // Obtener el ID del vendedor si se proporciona en la URL (GET)
 $vendedor_id = isset($_GET['vendedor_id']) ? $_GET['vendedor_id'] : null;
@@ -23,6 +26,11 @@ $incluir_stock_cero = isset($_GET['incluir_stock_cero']) && $_GET['incluir_stock
 // Consulta base para obtener productos
 // Incluimos el nombre del vendedor (nombre de la tabla usuarios) y el stock
 $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id";
+
+// Filtrar productos con categorías sugeridas
+if ($categorias_sugeridas) {
+    $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id WHERE p.descripcion LIKE '%[Categoría sugerida:%'";
+}
 
 // Añadir filtro por categoría si se proporciona un categoria_id
 if ($categoria_id !== null) {

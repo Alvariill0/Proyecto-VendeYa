@@ -33,6 +33,7 @@ $nombre = $_POST['nombre'] ?? '';
 $descripcion = $_POST['descripcion'] ?? '';
 $precio = $_POST['precio'] ?? '';
 $categoria_id = $_POST['categoria_id'] ?? '';
+$categoria_personalizada = $_POST['categoria_personalizada'] ?? '';
 $stock = $_POST['stock'] ?? '';
 $imagen_path = null; // Ruta de la imagen en el servidor
 
@@ -61,10 +62,26 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
 }
 
 // Validar datos (validación básica, se puede mejorar)
-if (empty($nombre) || empty($descripcion) || empty($precio) || empty($categoria_id) || $stock === '') {
+if (empty($nombre) || empty($descripcion) || empty($precio) || $stock === '') {
     // Si la imagen es opcional, ajusta la validación
     http_response_code(400); // Solicitud incorrecta
     echo json_encode(['error' => 'Faltan campos requeridos.']);
+    $conexion->close();
+    exit();
+}
+
+// Validar categoría
+if (empty($categoria_id)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Debes seleccionar una categoría.']);
+    $conexion->close();
+    exit();
+}
+
+// Si la categoría es "otro", validar que se haya proporcionado una categoría personalizada
+if ($categoria_id === 'otro' && empty($categoria_personalizada)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Debes especificar una categoría personalizada.']);
     $conexion->close();
     exit();
 }
@@ -86,8 +103,46 @@ if (!is_numeric($stock) || $stock < 0 || floor($stock) != $stock) {
 
 
 // Preparar la consulta SQL para insertar el producto
+$sql = "";
+$stmt = null;
+
+// Si la categoría es "otro", usar una categoría temporal y guardar la categoría personalizada en el campo descripción
+if ($categoria_id === 'otro') {
+    // Buscar la categoría "Otros" o crearla si no existe
+    $sqlBuscarOtros = "SELECT id FROM categorias WHERE nombre = 'Otros' LIMIT 1";
+    $resultadoOtros = $conexion->query($sqlBuscarOtros);
+    
+    if ($resultadoOtros->num_rows > 0) {
+        // Usar la categoría "Otros" existente
+        $filaOtros = $resultadoOtros->fetch_assoc();
+        $categoria_id = $filaOtros['id'];
+    } else {
+        // Crear la categoría "Otros"
+        $sqlCrearOtros = "INSERT INTO categorias (nombre, descripcion) VALUES ('Otros', 'Categoría para productos pendientes de clasificación')";
+        if ($conexion->query($sqlCrearOtros) === TRUE) {
+            $categoria_id = $conexion->insert_id;
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error al crear la categoría Otros: ' . $conexion->error]);
+            $conexion->close();
+            exit();
+        }
+    }
+    
+    // Modificar la descripción para incluir la categoría personalizada
+    $descripcion = "[Categoría sugerida: " . htmlspecialchars($categoria_personalizada, ENT_QUOTES, 'UTF-8') . "] " . $descripcion;
+}
+
+// Preparar la consulta SQL para insertar el producto
 $sql = "INSERT INTO productos (nombre, descripcion, precio, vendedor_id, categoria_id, imagen, stock) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
+
+if (!$stmt) {
+    http_response_code(500); // Error del servidor
+    echo json_encode(['error' => 'Error al preparar la consulta: ' . $conexion->error]);
+    $conexion->close();
+    exit();
+}
 
 // Bind parámetros
 // s: string, d: double (para precio), i: integer (para vendedor_id, categoria_id, stock)

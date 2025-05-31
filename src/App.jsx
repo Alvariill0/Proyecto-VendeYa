@@ -13,14 +13,20 @@ import HistorialPedidosPage from './pages/HistorialPedidosPage'
 import DetalleProductoPage from './pages/DetalleProductoPage'
 import PanelUsuarioPage from './pages/PanelUsuarioPage'
 import EditarProductoPage from './pages/EditarProductoPage'
+import AdminCategoriasPage from './pages/AdminCategoriasPage'
 import './App.css'
 
 // Componente para rutas protegidas
-function RutaProtegida({ children }) {
+function RutaProtegida({ children, rol }) {
     const { usuario } = useAutenticacion()
     
     if (!usuario) {
         return <Navigate to="/" />
+    }
+
+    // Si se requiere un rol específico y el usuario no lo tiene, redirigir al panel de usuario
+    if (rol && usuario.rol !== rol) {
+        return <Navigate to="/panel-usuario" />
     }
 
     return <Layout>{children}</Layout>
@@ -71,14 +77,21 @@ function App() {
 
                         {/* Rutas protegidas */}
                         <Route
-                            path="/principal/:categoriaId?"
+                            path="/principal"
                             element={
                                 <RutaProtegida>
                                     <Principal />
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta para crear producto (protegida) */}
+                        <Route
+                            path="/principal/:categoriaId"
+                            element={
+                                <RutaProtegida>
+                                    <Principal />
+                                </RutaProtegida>
+                            }
+                        />
                         <Route
                             path="/crear-producto"
                             element={
@@ -87,7 +100,6 @@ function App() {
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta para el carrito (protegida) */}
                         <Route
                             path="/carrito"
                             element={
@@ -96,16 +108,14 @@ function App() {
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta para el historial de pedidos (protegida) */}
                         <Route
-                            path="/mis-pedidos"
+                            path="/historial-pedidos"
                             element={
                                 <RutaProtegida>
                                     <HistorialPedidosPage />
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta para el detalle de producto (protegida) */}
                         <Route
                             path="/producto/:id"
                             element={
@@ -114,16 +124,14 @@ function App() {
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta para el panel de usuario (protegida) */}
                         <Route
-                            path="/mi-panel"
+                            path="/panel-usuario"
                             element={
                                 <RutaProtegida>
                                     <PanelUsuarioPage />
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta para editar producto (protegida) */}
                         <Route
                             path="/editar-producto/:id"
                             element={
@@ -132,6 +140,31 @@ function App() {
                                 </RutaProtegida>
                             }
                         />
+                        {/* Ruta para administrar categorías (solo admin) */}
+                        <Route
+                            path="/admin-categorias"
+                            element={
+                                <RutaProtegida rol="admin">
+                                    <AdminCategoriasPage />
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta temporal para mensajes (funcionalidad en desarrollo) */}
+                        <Route
+                            path="/mensajes"
+                            element={
+                                <RutaProtegida>
+                                    <div className="container mt-5">
+                                        <div className="alert alert-info">
+                                            <h4 className="alert-heading">¡Funcionalidad en desarrollo!</h4>
+                                            <p>El sistema de mensajería estará disponible próximamente.</p>
+                                        </div>
+                                    </div>
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta para manejar rutas no encontradas */}
+                        <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </ProveedorCarrito>
             </ProveedorAutenticacion>

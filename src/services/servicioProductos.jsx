@@ -118,3 +118,14 @@ export async function listarProductosVendedor(vendedorId) {
 
     return datos;
 }
+
+export async function listarProductosConCategoriasSugeridas() {
+    const respuesta = await fetch(`${BASE_URL}/productos/listar.php?categorias_sugeridas=true`);
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(datos.error || 'Error al obtener productos con categorías sugeridas');
+    }
+
+    return datos;
+}
