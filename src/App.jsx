@@ -10,6 +10,7 @@ import Layout from './components/layout/Layout'
 import CrearProductoForm from './components/features/productos/CrearProductoForm'
 import CarritoPage from './pages/CarritoPage'
 import HistorialPedidosPage from './pages/HistorialPedidosPage'
+import DetalleProductoPage from './pages/DetalleProductoPage'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -99,6 +100,15 @@ function App() {
                             element={
                                 <RutaProtegida>
                                     <HistorialPedidosPage />
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta para el detalle de producto (protegida) */}
+                        <Route
+                            path="/producto/:id"
+                            element={
+                                <RutaProtegida>
+                                    <DetalleProductoPage />
                                 </RutaProtegida>
                             }
                         />

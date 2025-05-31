@@ -27,9 +27,21 @@ export async function listarProductos(categoriaId = null) {
     return datos;
 }
 
-// Función para crear un nuevo producto
-// formData debe incluir los datos del producto (nombre, descripcion, etc.) y la imagen.
-// Se asume que el vendedor_id se obtiene de forma segura en el backend.
+export async function obtenerProducto(productoId) {
+    if (!productoId) {
+        throw new Error('Se requiere un ID de producto válido');
+    }
+
+    const respuesta = await fetch(`${BASE_URL}/productos/obtener.php?id=${productoId}`);
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(datos.error || 'Error al obtener el producto');
+    }
+
+    return datos;
+}
+
 export async function crearProducto(formData) {
     const url = `${BASE_URL}/productos/crear.php`;
     
