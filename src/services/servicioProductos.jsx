@@ -20,13 +20,17 @@ export async function listarCategorias() {
             throw new Error(errorMessage);
         }
         
+        // Clonar la respuesta antes de intentar leerla
+        const respuestaClone = respuesta.clone();
+        
         // Intentar parsear la respuesta como JSON
         try {
             const datos = await respuesta.json();
             return datos;
         } catch (parseError) {
             console.error('Error al parsear respuesta JSON:', parseError);
-            const responseText = await respuesta.text();
+            // Usar la respuesta clonada para obtener el texto
+            const responseText = await respuestaClone.text();
             console.error('Contenido de la respuesta:', responseText);
             throw new Error(`Error al parsear la respuesta: ${parseError.message}`);
         }
@@ -164,13 +168,17 @@ export async function listarProductosConCategoriasSugeridas() {
             throw new Error(errorMessage);
         }
         
+        // Clonar la respuesta antes de intentar leerla
+        const respuestaClone = respuesta.clone();
+        
         // Intentar parsear la respuesta como JSON
         try {
             const datos = await respuesta.json();
             return datos;
         } catch (parseError) {
             console.error('Error al parsear respuesta JSON:', parseError);
-            const responseText = await respuesta.text();
+            // Usar la respuesta clonada para obtener el texto
+            const responseText = await respuestaClone.text();
             console.error('Contenido de la respuesta:', responseText);
             throw new Error(`Error al parsear la respuesta: ${parseError.message}`);
         }

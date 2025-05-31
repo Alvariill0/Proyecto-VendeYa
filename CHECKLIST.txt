@@ -27,12 +27,12 @@
    - ✅ Crear página de perfil de usuario
    - ✅ Implementar sección para gestionar productos propios
    - ✅ Añadir sección para ver historial de pedidos
-6. Panel de administración
+6. ✅ Panel de administración
    
-   - Crear categorias
-   - Implementar gestión de usuarios
-   - Añadir moderación de productos
-   - Desarrollar API para funciones administrativas
+   - ✅ Crear categorias
+   - ✅ Implementar gestión de usuarios
+   - ✅ Añadir moderación de productos
+   - ✅ Desarrollar API para funciones administrativas
 7. Valoraciones y comentarios
    
    - Crear componentes para valoraciones y comentarios

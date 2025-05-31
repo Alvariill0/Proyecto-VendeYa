@@ -82,11 +82,16 @@ if ($vendedor_id !== null) {
 }
 
 // Si no hay filtro por categoría ni vendedor, añadir la condición WHERE para el stock
-if ($categoria_id === null && $vendedor_id === null) {
+if ($categoria_id === null && $vendedor_id === null && !$categorias_sugeridas) {
     // Filtrar productos con stock 0 a menos que se indique lo contrario
     if (!$incluir_stock_cero) {
         $sql .= " WHERE p.stock > 0";
     }
+}
+
+// Si hay categorías sugeridas y queremos filtrar por stock
+if ($categorias_sugeridas && !$incluir_stock_cero) {
+    $sql .= " AND p.stock > 0";
 }
 
 // Añadir ordenación (opcional)

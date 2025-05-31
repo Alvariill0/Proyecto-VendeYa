@@ -12,6 +12,8 @@ function EditarProductoForm() {
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [categoriaId, setCategoriaId] = useState('');
+    const [categoriaPersonalizada, setCategoriaPersonalizada] = useState('');
+    const [mostrarCategoriaPersonalizada, setMostrarCategoriaPersonalizada] = useState(false);
     const [stock, setStock] = useState('');
     const [imagen, setImagen] = useState(null); // Para manejar la subida de archivos
     const [imagenPreview, setImagenPreview] = useState('');
@@ -94,7 +96,15 @@ function EditarProductoForm() {
             formData.append('nombre', nombre);
             formData.append('descripcion', descripcion);
             formData.append('precio', precio);
-            formData.append('categoria_id', categoriaId);
+            
+            // Si se seleccionó "otro", enviar la categoría personalizada
+            if (categoriaId === 'otro') {
+                formData.append('categoria_id', 'otro');
+                formData.append('categoria_personalizada', categoriaPersonalizada);
+            } else {
+                formData.append('categoria_id', categoriaId);
+            }
+            
             formData.append('stock', stock);
             formData.append('vendedor_id', usuario.id);
 
@@ -241,16 +251,40 @@ function EditarProductoForm() {
                         className="form-select"
                         id="categoria"
                         value={categoriaId}
-                        onChange={(e) => setCategoriaId(e.target.value)}
+                        onChange={(e) => {
+                            setCategoriaId(e.target.value);
+                            setMostrarCategoriaPersonalizada(e.target.value === 'otro');
+                        }}
                     >
                         <option value="">Selecciona una categoría</option>
-                        {categorias.map(categoria => (
-                            <option key={categoria.id} value={categoria.id}>
-                                {categoria.nombre}
-                            </option>
-                        ))}
+                        {/* Aplanar la estructura de categorías para el select */}
+                        {categorias.flatMap(cat => [
+                            // Opción para la categoría principal
+                            <option key={cat.id} value={cat.id}>{cat.nombre}</option>,
+                            // Opciones para subcategorías
+                            ...(cat.subcategorias ? cat.subcategorias.map(subCat => (
+                                <option key={subCat.id} value={subCat.id}>-- {subCat.nombre}</option>
+                            )) : [])
+                        ])}
+                        <option value="otro">Otro (especificar)</option>
                     </select>
                 </div>
+                
+                {mostrarCategoriaPersonalizada && (
+                    <div className="mb-3">
+                        <label htmlFor="categoriaPersonalizada" className="form-label">Especifica la categoría</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="categoriaPersonalizada"
+                            value={categoriaPersonalizada}
+                            onChange={(e) => setCategoriaPersonalizada(e.target.value)}
+                            placeholder="Escribe el nombre de la categoría"
+                            required
+                        />
+                        <div className="form-text">Esta categoría será revisada por un administrador.</div>
+                    </div>
+                )}
 
                 <div className="mb-3">
                     <label htmlFor="imagen" className="form-label">Imagen del Producto</label>

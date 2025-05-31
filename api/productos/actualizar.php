@@ -114,9 +114,63 @@ if (isset($datos['precio']) && is_numeric($datos['precio']) && $datos['precio'] 
 
 // Categoría
 if (isset($datos['categoria_id']) && !empty($datos['categoria_id'])) {
-    $campos[] = "categoria_id = ?";
-    $tipos .= 'i';
-    $valores[] = intval($datos['categoria_id']);
+    // Si la categoría es "otro", usar una categoría temporal y guardar la categoría personalizada en el campo descripción
+    if ($datos['categoria_id'] === 'otro') {
+        // Verificar que se proporcionó una categoría personalizada
+        if (!isset($datos['categoria_personalizada']) || empty($datos['categoria_personalizada'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Debes especificar una categoría personalizada.']);
+            $conexion->close();
+            exit();
+        }
+        
+        // Buscar la categoría "Otros" o crearla si no existe
+        $sqlBuscarOtros = "SELECT id FROM categorias WHERE nombre = 'Otros' LIMIT 1";
+        $resultadoOtros = $conexion->query($sqlBuscarOtros);
+        
+        if ($resultadoOtros->num_rows > 0) {
+            // Usar la categoría "Otros" existente
+            $filaOtros = $resultadoOtros->fetch_assoc();
+            $categoria_id_otros = $filaOtros['id'];
+        } else {
+            // Crear la categoría "Otros"
+            $sqlCrearOtros = "INSERT INTO categorias (nombre, descripcion) VALUES ('Otros', 'Categoría para productos pendientes de clasificación')";
+            if ($conexion->query($sqlCrearOtros) === TRUE) {
+                $categoria_id_otros = $conexion->insert_id;
+            } else {
+                http_response_code(500);
+                echo json_encode(['error' => 'Error al crear la categoría Otros: ' . $conexion->error]);
+                $conexion->close();
+                exit();
+            }
+        }
+        
+        // Modificar la descripción para incluir la categoría personalizada
+        $categoria_personalizada = htmlspecialchars($datos['categoria_personalizada'], ENT_QUOTES, 'UTF-8');
+        
+        // Verificar si ya hay una descripción en los campos a actualizar
+        $descripcion_index = array_search("descripcion = ?", $campos);
+        if ($descripcion_index !== false) {
+            // Ya hay una descripción en los campos a actualizar, modificarla
+            $valores[$descripcion_index] = "[Categoría sugerida: " . $categoria_personalizada . "] " . $valores[$descripcion_index];
+        } else {
+            // No hay descripción en los campos a actualizar, obtener la actual y modificarla
+            $descripcion_actual = $producto['descripcion'];
+            $campos[] = "descripcion = ?";
+            $tipos .= 's';
+            $valores[] = "[Categoría sugerida: " . $categoria_personalizada . "] " . $descripcion_actual;
+        }
+        
+        // Actualizar la categoría a "Otros"
+        $campos[] = "categoria_id = ?";
+        $tipos .= 'i';
+        $valores[] = $categoria_id_otros;
+    } else {
+        // Categoría normal
+        $campos[] = "categoria_id = ?";
+        $tipos .= 'i';
+        $valores[] = intval($datos['categoria_id']);
+    }
 }
 
 // Stock
