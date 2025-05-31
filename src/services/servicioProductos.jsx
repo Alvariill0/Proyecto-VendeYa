@@ -1,5 +1,7 @@
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export async function listarCategorias() {
-    const respuesta = await fetch('http://localhost/VendeYaCursor/api/categorias/listar.php');
+    const respuesta = await fetch(`${BASE_URL}/categorias/listar.php`);
     const datos = await respuesta.json();
 
     if (!respuesta.ok) {
@@ -10,7 +12,7 @@ export async function listarCategorias() {
 }
 
 export async function listarProductos(categoriaId = null) {
-    let url = 'http://localhost/VendeYaCursor/api/productos/listar.php';
+    let url = `${BASE_URL}/productos/listar.php`;
     if (categoriaId !== null) {
         url += `?categoria_id=${categoriaId}`;
     }
@@ -29,7 +31,7 @@ export async function listarProductos(categoriaId = null) {
 // formData debe incluir los datos del producto (nombre, descripcion, etc.) y la imagen.
 // Se asume que el vendedor_id se obtiene de forma segura en el backend.
 export async function crearProducto(formData) {
-    const url = 'http://localhost/VendeYaCursor/api/productos/crear.php';
+    const url = `${BASE_URL}/productos/crear.php`;
     
     // TODO: En una aplicación real, la identificación del usuario debería manejarse de forma segura (ej. sesiones, tokens).
     // No se debería confiar en un user_id enviado directamente desde el frontend para operaciones sensibles.
@@ -49,5 +51,3 @@ export async function crearProducto(formData) {
     // Si la respuesta es OK (ej. 201 Created), devolvemos los datos (ej. mensaje de éxito, ID del producto)
     return datos;
 }
-
-// Más adelante, añadiremos funciones para listar y filtrar productos aquí 

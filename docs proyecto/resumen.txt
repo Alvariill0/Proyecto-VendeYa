@@ -4,17 +4,17 @@ Cada vendedor podrá añadir productos a su catálogo, ver estadísticas de vent
 Los usuarios compradores podrán navegar por el catálogo, añadir productos a su carrito, realizar pedidos y valorar productos tras la compra.
 
 Una lista provisional de funcionalidades sería:
-    • Registro y login de usuarios (con roles: usuario, admin). (el rol de admin estará hardcodeado, el rol de usuario se asigna por defecto)
+    • Registro y login de usuarios (con roles: usuario, admin). (el rol de admin estará hardcodeado, el rol de 'usuario' se asigna por defecto)
     • Gestión de productos (crear, editar, eliminar, listar) Los administradores pueden realizar estas mismas acciones sobre productos de 
         usuarios desde el panel de administración.
     • Gestión de pedidos y carrito de compras.
-    • Panel de usuario personalizado según el rol.
-    • Visualización de estadísticas para vendedores (opcional pero seguramente lo implemente con un plugin):
+    • Panel de usuario personalizado según el rol (panel de usuario o panel administracion).
+    • Visualización de estadísticas para vendedores (seguramente lo implemente con un plugin):
         •	Ventas por semana/mes
         •	Productos más vendidos
         •	Media de valoraciones
     • Buscador con filtros (categoría, precio, nombre…)
-    • Valoraciones y comentarios de productos.
+    • Valoraciones y comentarios de productos así como mensajes entre usuarios.
     • Panel de administración para gestionar usuarios y moderar contenido.
 -1.5. FLUJO DE LA APLICACION:
     • Al entrar a la Web de VendeYa se mostrará un mensaje de bienvenida, quizás algunos componentes? o publicidad

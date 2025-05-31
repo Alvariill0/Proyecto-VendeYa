@@ -46,7 +46,7 @@ if ($categoria_id !== null) {
         $stmt_sub_sub->execute();
         $resultado_sub_sub = $stmt_sub_sub->get_result();
         while ($fila_sub_sub = $resultado_sub_sub->fetch_assoc()) {
-             $categoria_ids_a_incluir[] = $fila_sub_sub['id'];
+            $categoria_ids_a_incluir[] = $fila_sub_sub['id'];
         }
         $stmt_sub_sub->close();
 
@@ -80,9 +80,20 @@ $productos = [];
 
 if ($resultado->num_rows > 0) {
     // Recorrer resultados y añadirlos al array
-    while($fila = $resultado->fetch_assoc()) {
-        $productos[] = $fila;
+while($fila = $resultado->fetch_assoc()) {
+    // Asegurarse de que la ruta de la imagen sea accesible desde el frontend
+    if ($fila['imagen']) {
+        // Si es una URL externa (http o https), mantenerla igual
+        if (strpos($fila['imagen'], 'http://') === 0 || strpos($fila['imagen'], 'https://') === 0) {
+            // No modificar URLs externas
+        } 
+        // Si no tiene barra inicial, añadirla para que sea una ruta absoluta
+        else if (substr($fila['imagen'], 0, 1) !== '/') {
+            $fila['imagen'] = '/' . $fila['imagen'];
+        }
     }
+    $productos[] = $fila;
+}
 }
 
 // Devolver los productos en formato JSON
@@ -90,4 +101,4 @@ echo json_encode($productos);
 
 $stmt->close();
 $conexion->close();
-?> 
+?>

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAutenticacion } from '../../context/ContextoAutenticacion';
+import { useCarrito } from '../../context/ContextoCarrito';
 import logo from '../../assets/VendeYa_Logo.png';
 
 export default function Header() {
     const { logout } = useAutenticacion();
+    const { totalItems } = useCarrito();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -38,6 +40,14 @@ export default function Header() {
                         <Link to="/perfil" className="btn btn-outline-primary">
                             <i className="bi bi-person"></i>
                         </Link>
+                        <Link to="/carrito" className="btn btn-outline-primary position-relative">
+                            <i className="bi bi-cart"></i>
+                            {totalItems > 0 && (
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {totalItems}
+                                </span>
+                            )}
+                        </Link>
                         <Link to="/crear-producto" className="btn btn-primary">
                             Vender
                         </Link>
@@ -49,4 +59,4 @@ export default function Header() {
             </div>
         </header>
     );
-} 
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CategoriasOffcanvas from './CategoriasOffcanvas';
 import { listarCategorias } from '../../services/servicioProductos';
@@ -9,21 +9,29 @@ export default function Navbar() {
     const [cargandoCategorias, setCargandoCategorias] = useState(false);
     const [errorCategorias, setErrorCategorias] = useState(null);
 
-    const abrirOffcanvasCategorias = async () => {
-        setMostrarOffcanvas(true);
-        if (listaCategorias.length === 0) { // Solo cargar si no se han cargado antes
-            try {
-                setCargandoCategorias(true);
-                setErrorCategorias(null);
-                const categoriasObtenidas = await listarCategorias();
-                setListaCategorias(categoriasObtenidas);
-            } catch (error) {
-                setErrorCategorias(error.message);
-                console.error('Error al obtener categorías:', error);
-            } finally {
-                setCargandoCategorias(false);
+    // Cargar categorías al montar el componente
+    useEffect(() => {
+        const cargarCategorias = async () => {
+            if (listaCategorias.length === 0) { // Solo cargar si no se han cargado antes
+                try {
+                    setCargandoCategorias(true);
+                    setErrorCategorias(null);
+                    const categoriasObtenidas = await listarCategorias();
+                    setListaCategorias(categoriasObtenidas);
+                } catch (error) {
+                    setErrorCategorias(error.message);
+                    console.error('Error al obtener categorías:', error);
+                } finally {
+                    setCargandoCategorias(false);
+                }
             }
-        }
+        };
+        
+        cargarCategorias();
+    }, []);
+
+    const abrirOffcanvasCategorias = () => {
+        setMostrarOffcanvas(true);
     };
 
     const cerrarOffcanvasCategorias = () => {
@@ -46,18 +54,33 @@ export default function Navbar() {
                     
                     <span className="me-3">Categorías Populares:</span>
                     <div className="d-flex gap-3">
-                        <Link to="/categoria/electronica" className="text-decoration-none text-dark">
-                            Electrónica
-                        </Link>
-                        <Link to="/categoria/ropa" className="text-decoration-none text-dark">
-                            Ropa
-                        </Link>
-                        <Link to="/categoria/hogar" className="text-decoration-none text-dark">
-                            Hogar
-                        </Link>
-                        <Link to="/categoria/deportes" className="text-decoration-none text-dark">
-                            Deportes
-                        </Link>
+                        {/* Cargar categorías populares dinámicamente si están disponibles */}
+                        {listaCategorias.length > 0 ? (
+                            // Mostrar hasta 4 categorías principales como populares
+                            listaCategorias.slice(0, 4).map(categoria => (
+                                <Link 
+                                    key={categoria.id} 
+                                    to={`/principal/${categoria.id}`} 
+                                    className="text-decoration-none text-dark"
+                                >
+                                    {categoria.nombre}
+                                </Link>
+                            ))
+                        ) : (
+                            // Mostrar enlaces temporales mientras se cargan las categorías
+                            <>
+                                <Link 
+                                    to="#" 
+                                    className="text-decoration-none text-dark"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        abrirOffcanvasCategorias();
+                                    }}
+                                >
+                                    Cargando categorías...
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -77,4 +100,4 @@ export default function Navbar() {
             )}
         </nav>
     );
-} 
+}

@@ -50,13 +50,18 @@ if ($resultado->num_rows === 0) {
 $usuario = $resultado->fetch_assoc();
 
 // Verificar la contraseña hasheada
+session_start();
 if (!password_verify($datos['password'], $usuario['password'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Credenciales inválidas']);
     exit();
 }
 
-// Generar token (en producción deberías usar JWT)
+// Si llegamos aquí, las credenciales son correctas
+$_SESSION['usuario_id'] = $usuario['id'];
+$_SESSION['rol'] = $usuario['rol'];
+
+// Generar token 
 $token = bin2hex(random_bytes(32));
 
 // Devolver respuesta exitosa
@@ -72,4 +77,4 @@ echo json_encode([
 ]);
 
 $stmt->close();
-$conexion->close(); 
+$conexion->close();

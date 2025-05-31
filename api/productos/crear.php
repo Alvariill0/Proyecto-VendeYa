@@ -20,10 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-// TODO: Implementar autenticación/autorización aquí para verificar que el usuario logeado es un vendedor.
-// Por ahora, asumimos que el vendedor_id se pasa en la solicitud (lo cual NO es seguro para producción).
-// Una mejor práctica sería obtener el vendedor_id de la sesión del usuario autenticado en el backend.
-$vendedor_id = 1; // HARDCODED temporalmente para pruebas con el admin
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'No autorizado']);
+    exit();
+}
+$vendedor_id = $_SESSION['usuario_id'];
 
 // Recibir datos del formulario (FormData)
 $nombre = $_POST['nombre'] ?? '';
@@ -47,7 +50,8 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
 
     // Mover el archivo subido
     if (move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta_destino)) {
-        $imagen_path = 'imagenes/productos/' . $nombre_archivo; // Ruta relativa para guardar en BD (ajustar si es necesario)
+        // Usar una ruta accesible desde el frontend con barra inicial para asegurar que es absoluta
+        $imagen_path = '/imagenes/productos/' . $nombre_archivo; // Ruta absoluta desde la raíz del servidor web
     } else {
         http_response_code(500);
         echo json_encode(['error' => 'Error al subir la imagen.']);
@@ -67,17 +71,17 @@ if (empty($nombre) || empty($descripcion) || empty($precio) || empty($categoria_
 
 // Validar formato de precio y stock
 if (!is_numeric($precio) || $precio <= 0) {
-     http_response_code(400);
-     echo json_encode(['error' => 'Formato de precio inválido.']);
-     $conexion->close();
-     exit();
+    http_response_code(400);
+    echo json_encode(['error' => 'Formato de precio inválido.']);
+    $conexion->close();
+    exit();
 }
 
 if (!is_numeric($stock) || $stock < 0 || floor($stock) != $stock) {
-     http_response_code(400);
-     echo json_encode(['error' => 'Formato de stock inválido.']);
-     $conexion->close();
-     exit();
+    http_response_code(400);
+    echo json_encode(['error' => 'Formato de stock inválido.']);
+    $conexion->close();
+    exit();
 }
 
 
@@ -86,10 +90,7 @@ $sql = "INSERT INTO productos (nombre, descripcion, precio, vendedor_id, categor
 $stmt = $conexion->prepare($sql);
 
 // Bind parámetros
-$stmt->bind_param('ssdiii', $nombre, $descripcion, $precio, $vendedor_id, $categoria_id, $imagen_path, $stock);
-// s: string, d: double (para precio), i: integer (para vendedor_id, categoria_id, stock), b: blob (si guardáramos la imagen directamente en BD)
-// Nota: el tipo para imagen_path es 's' (string) ya que guardamos la ruta, no el contenido binario.
-// Ajuste: hay 7 parámetros, el último (stock) es 'i'. Debemos usar 'ssdiisi'.
+// s: string, d: double (para precio), i: integer (para vendedor_id, categoria_id, stock)
 $stmt->bind_param('ssdiisi', $nombre, $descripcion, $precio, $vendedor_id, $categoria_id, $imagen_path, $stock);
 
 
@@ -107,4 +108,4 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conexion->close();
-?> 
+?>

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { listarProductos, listarCategorias } from '../../../services/servicioProductos';
+import { useCarrito } from '../../../context/ContextoCarrito';
+import { Link } from 'react-router-dom';
 
 function ListaProductosConFiltros({ categoriaId }) {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [categorias, setCategorias] = useState([]);
+    const [mensajeExito, setMensajeExito] = useState('');
+    const { agregar } = useCarrito();
 
     // Effect para cargar productos cuando cambia categoriaId
     useEffect(() => {
@@ -110,6 +114,14 @@ function ListaProductosConFiltros({ categoriaId }) {
 
     return (
         <div className="row">
+            {/* Mensaje de éxito */}
+            {mensajeExito && (
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    {mensajeExito}
+                    <button type="button" className="btn-close" onClick={() => setMensajeExito('')}></button>
+                </div>
+            )}
+            
             {/* Columna para filtros (placeholder) */}
             <div className="col-md-3">
                 <h5>Filtros</h5>
@@ -141,9 +153,21 @@ function ListaProductosConFiltros({ categoriaId }) {
                                         <p className="card-text fw-bold">
                                             {parseFloat(producto.precio).toFixed(2)} €
                                         </p>
-                                        <button className="btn btn-primary w-100">
-                                            Ver Detalles
-                                        </button>
+                                        <div className="d-flex gap-2 mt-2">
+                                            <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1">
+                                                Ver Detalles
+                                            </Link>
+                                            <button 
+                                                className="btn btn-outline-success" 
+                                                onClick={() => {
+                                                    agregar(producto.id, 1);
+                                                    setMensajeExito(`${producto.nombre} añadido al carrito`);
+                                                    setTimeout(() => setMensajeExito(''), 3000);
+                                                }}
+                                            >
+                                                <i className="bi bi-cart-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -159,4 +183,4 @@ function ListaProductosConFiltros({ categoriaId }) {
     );
 }
 
-export default ListaProductosConFiltros; 
+export default ListaProductosConFiltros;

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react'
+import React, { createContext, useState, useContext, useEffect } from 'react'
 import { login as servicioLogin, registro as servicioRegistro } from '../services/servicioAutenticacion'
 
 // Crear el contexto
@@ -6,9 +6,20 @@ const ContextoAutenticacion = createContext()
 
 // Proveedor del contexto
 export function ProveedorAutenticacion({ children }) {
-    const [usuario, setUsuario] = useState(null)
+    const [usuario, setUsuario] = useState(() => {
+        const usuarioGuardado = localStorage.getItem('usuario')
+        return usuarioGuardado ? JSON.parse(usuarioGuardado) : null
+    })
     const [cargando, setCargando] = useState(false)
     const [error, setError] = useState(null)
+
+    useEffect(() => {
+        if (usuario) {
+            localStorage.setItem('usuario', JSON.stringify(usuario))
+        } else {
+            localStorage.removeItem('usuario')
+        }
+    }, [usuario])
 
     const login = async (email, password) => {
         try {
@@ -47,6 +58,7 @@ export function ProveedorAutenticacion({ children }) {
     const logout = () => {
         setUsuario(null)
         localStorage.removeItem('token')
+        localStorage.removeItem('usuario')
     }
 
     const valor = {
@@ -72,4 +84,4 @@ export function useAutenticacion() {
         throw new Error('useAutenticacion debe ser usado dentro de un ProveedorAutenticacion')
     }
     return contexto
-} 
+}
