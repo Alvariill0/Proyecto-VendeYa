@@ -8,10 +8,10 @@
    - ✅ Implementar contexto de carrito para gestionar el estado
 2. Gestión de pedidos
    
-   - Crear componentes para gestionar pedidos
-   - Implementar proceso de checkout
-   - Desarrollar API para crear y gestionar pedidos
-   - Crear página de historial de pedidos para usuarios
+   - ✅ Crear componentes para gestionar pedidos
+   - ✅ Implementar proceso de checkout
+   - ✅ Desarrollar API para crear y gestionar pedidos
+   - ✅ Crear página de historial de pedidos para usuarios
 3. Detalles de producto
    
    - Crear página de detalle de producto

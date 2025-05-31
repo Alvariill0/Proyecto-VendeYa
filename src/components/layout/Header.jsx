@@ -48,6 +48,9 @@ export default function Header() {
                                 </span>
                             )}
                         </Link>
+                        <Link to="/mis-pedidos" className="btn btn-outline-primary">
+                            <i className="bi bi-box"></i> Mis Pedidos
+                        </Link>
                         <Link to="/crear-producto" className="btn btn-primary">
                             Vender
                         </Link>

@@ -14,9 +14,12 @@ if ($conexion->connect_error) {
 // Obtener el ID de categoría si se proporciona en la URL (GET)
 $categoria_id = isset($_GET['categoria_id']) ? $_GET['categoria_id'] : null;
 
+// Verificar si se deben incluir productos con stock 0 (útil para historial de pedidos)
+$incluir_stock_cero = isset($_GET['incluir_stock_cero']) && $_GET['incluir_stock_cero'] === 'true';
+
 // Consulta base para obtener productos
-// Incluimos el nombre del vendedor (nombre de la tabla usuarios)
-$sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id";
+// Incluimos el nombre del vendedor (nombre de la tabla usuarios) y el stock
+$sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id";
 
 // Añadir filtro por categoría si se proporciona un categoria_id
 if ($categoria_id !== null) {
@@ -56,6 +59,19 @@ if ($categoria_id !== null) {
     // Construir la cláusula WHERE con todos los IDs relevantes
     $placeholders = implode(', ', array_fill(0, count($categoria_ids_a_incluir), '?'));
     $sql .= " WHERE p.categoria_id IN ($placeholders)";
+    
+    // Filtrar productos con stock 0 a menos que se indique lo contrario
+    if (!$incluir_stock_cero) {
+        $sql .= " AND p.stock > 0";
+    }
+}
+
+// Si no hay filtro por categoría, añadir la condición WHERE para el stock
+if ($categoria_id === null) {
+    // Filtrar productos con stock 0 a menos que se indique lo contrario
+    if (!$incluir_stock_cero) {
+        $sql .= " WHERE p.stock > 0";
+    }
 }
 
 // Añadir ordenación (opcional)

@@ -9,6 +9,7 @@ import Principal from './pages/Principal'
 import Layout from './components/layout/Layout'
 import CrearProductoForm from './components/features/productos/CrearProductoForm'
 import CarritoPage from './pages/CarritoPage'
+import HistorialPedidosPage from './pages/HistorialPedidosPage'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -89,6 +90,15 @@ function App() {
                             element={
                                 <RutaProtegida>
                                     <CarritoPage />
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta para el historial de pedidos (protegida) */}
+                        <Route
+                            path="/mis-pedidos"
+                            element={
+                                <RutaProtegida>
+                                    <HistorialPedidosPage />
                                 </RutaProtegida>
                             }
                         />

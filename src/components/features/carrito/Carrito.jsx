@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCarrito } from '../../../context/ContextoCarrito';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { crearPedido } from '../../../services/servicioPedidos';
 
 function Carrito() {
     const { 
@@ -14,6 +15,11 @@ function Carrito() {
         vaciar, 
         cargarCarrito 
     } = useCarrito();
+    
+    const [procesandoPedido, setProcesandoPedido] = useState(false);
+    const [mensajeExito, setMensajeExito] = useState('');
+    const [mensajeError, setMensajeError] = useState('');
+    const navigate = useNavigate();
 
     // Cargar el carrito al montar el componente
     useEffect(() => {
@@ -38,6 +44,31 @@ function Carrito() {
     const handleVaciar = () => {
         if (window.confirm('¿Estás seguro de que deseas vaciar el carrito?')) {
             vaciar();
+        }
+    };
+    
+    // Función para completar el pedido
+    const handleCompletarPedido = async () => {
+        try {
+            setProcesandoPedido(true);
+            setMensajeError('');
+            
+            // Llamar al servicio para crear el pedido
+            const resultado = await crearPedido();
+            
+            // Mostrar mensaje de éxito
+            setMensajeExito('¡Pedido realizado con éxito!');
+            
+            // Esperar un momento y redirigir al historial de pedidos
+            setTimeout(() => {
+                navigate('/mis-pedidos');
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Error al crear el pedido:', error);
+            setMensajeError(error.message || 'Ha ocurrido un error al procesar tu pedido. Por favor, inténtalo de nuevo.');
+        } finally {
+            setProcesandoPedido(false);
         }
     };
 
@@ -172,6 +203,18 @@ function Carrito() {
 
                 {/* Resumen del carrito */}
                 <div className="col-md-4">
+                    {mensajeExito && (
+                        <div className="alert alert-success mb-3" role="alert">
+                            {mensajeExito}
+                        </div>
+                    )}
+                    
+                    {mensajeError && (
+                        <div className="alert alert-danger mb-3" role="alert">
+                            {mensajeError}
+                        </div>
+                    )}
+                    
                     <div className="card">
                         <div className="card-header bg-primary text-white">
                             <h5 className="mb-0">Resumen del pedido</h5>
@@ -190,8 +233,17 @@ function Carrito() {
                                 <span>Total:</span>
                                 <span>{totalPrecio.toFixed(2)} €</span>
                             </div>
-                            <button className="btn btn-success w-100">
-                                Proceder al pago
+                            <button 
+                                className="btn btn-success w-100" 
+                                onClick={handleCompletarPedido}
+                                disabled={procesandoPedido}
+                            >
+                                {procesandoPedido ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Procesando...
+                                    </>
+                                ) : 'Completar pedido'}
                             </button>
                             <div className="mt-3">
                                 <Link to="/principal" className="btn btn-link w-100">

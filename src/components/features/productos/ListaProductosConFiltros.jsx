@@ -153,6 +153,9 @@ function ListaProductosConFiltros({ categoriaId }) {
                                         <p className="card-text fw-bold">
                                             {parseFloat(producto.precio).toFixed(2)} €
                                         </p>
+                                        <p className="card-text">
+                                            Stock: {producto.stock}
+                                        </p>
                                         <div className="d-flex gap-2 mt-2">
                                             <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1">
                                                 Ver Detalles
@@ -164,6 +167,8 @@ function ListaProductosConFiltros({ categoriaId }) {
                                                     setMensajeExito(`${producto.nombre} añadido al carrito`);
                                                     setTimeout(() => setMensajeExito(''), 3000);
                                                 }}
+                                                disabled={producto.stock <= 0}
+                                                title={producto.stock <= 0 ? "Sin stock disponible" : "Añadir al carrito"}
                                             >
                                                 <i className="bi bi-cart-plus"></i>
                                             </button>

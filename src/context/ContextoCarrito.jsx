@@ -47,9 +47,12 @@ export function ProveedorCarrito({ children }) {
             
             // Verificar si datosCarrito tiene la estructura esperada
             if (datosCarrito && datosCarrito.items) {
-                setItems(datosCarrito.items);
-                setTotalItems(datosCarrito.total_items);
-                setTotalPrecio(datosCarrito.total_precio);
+                // Asegurarse de que items sea un array
+                const itemsArray = Array.isArray(datosCarrito.items) ? datosCarrito.items : [];
+                console.log('Items cargados del carrito:', itemsArray);
+                setItems(itemsArray);
+                setTotalItems(datosCarrito.total_items || 0);
+                setTotalPrecio(datosCarrito.total_precio || 0);
             } else {
                 console.error('Formato de respuesta del carrito inesperado:', datosCarrito);
                 setItems([]);

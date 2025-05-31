@@ -64,7 +64,11 @@ if ($resultado_verificar->num_rows === 0) {
 $producto = $resultado_verificar->fetch_assoc();
 
 // Verificar si hay suficiente stock
-if ($producto['stock'] < $cantidad) {
+if ($producto['stock'] <= 0) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Producto sin stock disponible']);
+    exit();
+} else if ($producto['stock'] < $cantidad) {
     http_response_code(400);
     echo json_encode(['error' => 'No hay suficiente stock disponible']);
     exit();
