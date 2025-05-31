@@ -27,7 +27,24 @@ if ($conexion->connect_error) {
 }
 
 // Obtener datos del cuerpo de la solicitud
-$datos = json_decode(file_get_contents('php://input'), true);
+$datos = [];
+
+// Intentar leer datos JSON
+$input = file_get_contents('php://input');
+if (!empty($input)) {
+    $jsonData = json_decode($input, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        $datos = $jsonData;
+    } else {
+        // Si hay un error en el JSON, registrarlo para depuración
+        error_log('Error al decodificar JSON: ' . json_last_error_msg() . ' - Input: ' . $input);
+    }
+}
+
+// Si se envía un formulario, combinar con los datos JSON
+if (isset($_POST) && !empty($_POST)) {
+    $datos = array_merge($datos, $_POST);
+}
 
 // Verificar que se proporcionaron los datos necesarios
 if (!isset($datos['nombre']) || empty($datos['nombre'])) {

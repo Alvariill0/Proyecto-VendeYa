@@ -24,8 +24,15 @@ function AdminCategoriasForm() {
         try {
             setCargando(true);
             const respuesta = await listarCategorias();
-            setCategorias(respuesta);
+            // Asegurarse de que la respuesta es un array antes de actualizar el estado
+            if (Array.isArray(respuesta)) {
+                setCategorias(respuesta);
+            } else {
+                console.error('La respuesta de listarCategorias no es un array:', respuesta);
+                setError('Error al cargar las categorías: formato de respuesta incorrecto');
+            }
         } catch (error) {
+            console.error('Error en cargarCategorias:', error);
             setError('Error al cargar las categorías: ' + error.message);
         } finally {
             setCargando(false);
@@ -34,6 +41,7 @@ function AdminCategoriasForm() {
 
     const cargarCategoriasSugeridas = async () => {
         try {
+            setCargando(true);
             // Buscar productos con categorías sugeridas en la descripción
             const productos = await listarProductosConCategoriasSugeridas();
             if (Array.isArray(productos)) {
@@ -51,10 +59,15 @@ function AdminCategoriasForm() {
                         };
                     });
                 setCategoriasSugeridas(sugeridas);
+            } else {
+                console.error('La respuesta de listarProductosConCategoriasSugeridas no es un array:', productos);
+                setError('Error al cargar categorías sugeridas: formato de respuesta incorrecto');
             }
         } catch (error) {
             console.error('Error al cargar categorías sugeridas:', error);
             setError('Error al cargar categorías sugeridas: ' + error.message);
+        } finally {
+            setCargando(false);
         }
     };
 

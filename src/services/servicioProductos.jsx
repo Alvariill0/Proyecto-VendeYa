@@ -1,14 +1,39 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function listarCategorias() {
-    const respuesta = await fetch(`${BASE_URL}/categorias/listar.php`);
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error al obtener categorías');
+    try {
+        const respuesta = await fetch(`${BASE_URL}/categorias/listar.php`);
+        
+        // Verificar si la respuesta es exitosa
+        if (!respuesta.ok) {
+            const errorText = await respuesta.text();
+            let errorMessage = 'Error al obtener categorías';
+            
+            try {
+                const errorData = JSON.parse(errorText);
+                errorMessage = errorData.error || errorMessage;
+            } catch (parseError) {
+                console.error('Error al parsear respuesta de error:', errorText);
+                errorMessage = `${errorMessage}: ${errorText}`;
+            }
+            
+            throw new Error(errorMessage);
+        }
+        
+        // Intentar parsear la respuesta como JSON
+        try {
+            const datos = await respuesta.json();
+            return datos;
+        } catch (parseError) {
+            console.error('Error al parsear respuesta JSON:', parseError);
+            const responseText = await respuesta.text();
+            console.error('Contenido de la respuesta:', responseText);
+            throw new Error(`Error al parsear la respuesta: ${parseError.message}`);
+        }
+    } catch (error) {
+        console.error('Error en listarCategorias:', error);
+        throw error;
     }
-
-    return datos;
 }
 
 export async function listarProductos(categoriaId = null) {
@@ -120,12 +145,37 @@ export async function listarProductosVendedor(vendedorId) {
 }
 
 export async function listarProductosConCategoriasSugeridas() {
-    const respuesta = await fetch(`${BASE_URL}/productos/listar.php?categorias_sugeridas=true`);
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-        throw new Error(datos.error || 'Error al obtener productos con categorías sugeridas');
+    try {
+        const respuesta = await fetch(`${BASE_URL}/productos/listar.php?categorias_sugeridas=true`);
+        
+        // Verificar si la respuesta es exitosa
+        if (!respuesta.ok) {
+            const errorText = await respuesta.text();
+            let errorMessage = 'Error al obtener productos con categorías sugeridas';
+            
+            try {
+                const errorData = JSON.parse(errorText);
+                errorMessage = errorData.error || errorMessage;
+            } catch (parseError) {
+                console.error('Error al parsear respuesta de error:', errorText);
+                errorMessage = `${errorMessage}: ${errorText}`;
+            }
+            
+            throw new Error(errorMessage);
+        }
+        
+        // Intentar parsear la respuesta como JSON
+        try {
+            const datos = await respuesta.json();
+            return datos;
+        } catch (parseError) {
+            console.error('Error al parsear respuesta JSON:', parseError);
+            const responseText = await respuesta.text();
+            console.error('Contenido de la respuesta:', responseText);
+            throw new Error(`Error al parsear la respuesta: ${parseError.message}`);
+        }
+    } catch (error) {
+        console.error('Error en listarProductosConCategoriasSugeridas:', error);
+        throw error;
     }
-
-    return datos;
 }

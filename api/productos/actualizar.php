@@ -27,11 +27,20 @@ if ($conexion->connect_error) {
 }
 
 // Obtener los datos del producto a actualizar
-$datos = json_decode(file_get_contents('php://input'), true);
+$datos = [];
+
+// Primero intentamos leer datos JSON
+$input = file_get_contents('php://input');
+if (!empty($input)) {
+    $jsonData = json_decode($input, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        $datos = $jsonData;
+    }
+}
 
 // Si se envía un formulario multipart/form-data (para actualizar imagen)
-if (isset($_POST['producto_id'])) {
-    $datos = $_POST;
+if (isset($_POST) && !empty($_POST)) {
+    $datos = array_merge($datos, $_POST);
 }
 
 // Verificar que se proporcionó un ID de producto
