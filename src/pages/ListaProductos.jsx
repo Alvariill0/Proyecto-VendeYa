@@ -1,12 +1,18 @@
-import React from 'react'
+import React from 'react';
+import { useCarrito } from '../context/ContextoCarrito';
 
 function ListaProductos() {
-  // Aquí irá la lógica para cargar y mostrar productos
+  const { agregar } = useCarrito();
+
   const productos = [
     { id: 1, nombre: 'Producto 1', precio: 10, imagen: 'https://via.placeholder.com/150' },
     { id: 2, nombre: 'Producto 2', precio: 20, imagen: 'https://via.placeholder.com/150' },
     { id: 3, nombre: 'Producto 3', precio: 30, imagen: 'https://via.placeholder.com/150' },
   ];
+
+  const handleAgregarAlCarrito = (productoId) => {
+    agregar(productoId);
+  };
 
   return (
     <div className="container">
@@ -19,15 +25,14 @@ function ListaProductos() {
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title">{producto.nombre}</h5>
                 <p className="card-text">Precio: {producto.precio}€</p>
-                {/* Aquí se añadirán botones para ver detalles, añadir al carrito, etc. */}
-                <button className="btn btn-primary mt-auto">Ver Detalles</button>
+                <button className="btn btn-primary mt-auto" onClick={() => handleAgregarAlCarrito(producto.id)}>Añadir al Carrito</button>
               </div>
             </div>
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-export default ListaProductos 
+export default ListaProductos;

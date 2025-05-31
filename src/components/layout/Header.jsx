@@ -35,13 +35,13 @@ export default function Header() {
                     {/* Botones de navegación */}
                     <div className="d-flex align-items-center gap-3">
                         <Link to="/mensajes" className="btn btn-outline-primary">
-                            <i className="bi bi-envelope"></i>
+                            <i className="bi bi-envelope"></i> Mensajes
                         </Link>
                         <Link to="/perfil" className="btn btn-outline-primary">
-                            <i className="bi bi-person"></i>
+                            <i className="bi bi-person"></i> Perfil
                         </Link>
                         <Link to="/carrito" className="btn btn-outline-primary position-relative">
-                            <i className="bi bi-cart"></i>
+                            <i className="bi bi-cart"></i> Carrito
                             {totalItems > 0 && (
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {totalItems}
