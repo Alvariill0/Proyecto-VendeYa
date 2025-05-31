@@ -15,6 +15,7 @@ import PanelUsuarioPage from './pages/PanelUsuarioPage'
 import EditarProductoPage from './pages/EditarProductoPage'
 import AdminCategoriasPage from './pages/AdminCategoriasPage'
 import PedidosVendedorPage from './pages/PedidosVendedorPage'
+import MensajesPage from './pages/MensajesPage'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -159,17 +160,12 @@ function App() {
                                 </RutaProtegida>
                             }
                         />
-                        {/* Ruta temporal para mensajes (funcionalidad en desarrollo) */}
+                        {/* Ruta para el sistema de mensajería */}
                         <Route
                             path="/mensajes"
                             element={
                                 <RutaProtegida>
-                                    <div className="container mt-5">
-                                        <div className="alert alert-info">
-                                            <h4 className="alert-heading">¡Funcionalidad en desarrollo!</h4>
-                                            <p>El sistema de mensajería estará disponible próximamente.</p>
-                                        </div>
-                                    </div>
+                                    <MensajesPage />
                                 </RutaProtegida>
                             }
                         />

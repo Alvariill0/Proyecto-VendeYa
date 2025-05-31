@@ -133,22 +133,30 @@ function DetalleProducto() {
                     <div className="d-grid gap-2">
                         {esProductoPropio ? (
                             <button 
-                                className="btn btn-warning btn-lg" 
+                                className="btn btn-warning btn-lg d-flex align-items-center justify-content-center" 
                                 onClick={handleEditarProducto}
                             >
-                                Editar mi producto
+                                <i className="bi bi-pencil-square me-2 fs-5"></i> Editar mi producto
                             </button>
                         ) : (
                             <button 
-                                className="btn btn-primary btn-lg" 
+                                className="btn btn-primary btn-lg d-flex align-items-center justify-content-center" 
                                 onClick={handleAgregarAlCarrito}
                                 disabled={producto.stock <= 0}
                             >
-                                {producto.stock > 0 ? 'Añadir al carrito' : 'Producto agotado'}
+                                {producto.stock > 0 ? (
+                                    <>
+                                        <i className="bi bi-cart-plus-fill me-2 fs-5"></i> Añadir al carrito
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="bi bi-x-circle-fill me-2 fs-5"></i> Producto agotado
+                                    </>
+                                )}
                             </button>
                         )}
-                        <Link to="/principal" className="btn btn-outline-secondary">
-                            Volver a la lista de productos
+                        <Link to="/principal" className="btn btn-outline-secondary d-flex align-items-center justify-content-center">
+                            <i className="bi bi-arrow-left me-2 fs-5"></i> Volver a la lista de productos
                         </Link>
                     </div>
                 </div>

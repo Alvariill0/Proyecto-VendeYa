@@ -16,6 +16,7 @@ Una lista provisional de funcionalidades sería:
     • Buscador con filtros (categoría, precio, nombre…)
     • Valoraciones y comentarios de productos así como mensajes entre usuarios.
     • Panel de administración para gestionar usuarios y moderar contenido.
+    
 -1.5. FLUJO DE LA APLICACION:
     • Al entrar a la Web de VendeYa se mostrará un mensaje de bienvenida, quizás algunos componentes? o publicidad
     junto con unos botones de inicio de sesión y registro (está página podría tener un header distinto para no repetir los botones de inicio y registro),

@@ -204,21 +204,21 @@ function ListaProductosConFiltros({ categoriaId }) {
                                             Stock: {producto.stock}
                                         </p>
                                         <div className="d-flex gap-2 mt-2">
-                                            <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1">
-                                                Ver Detalles
+                                            <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
+                                                <i className="bi bi-eye-fill me-2"></i> Ver Detalles
                                             </Link>
                                             {usuario && usuario.id === parseInt(producto.vendedor_id) ? (
-                                                <Link to={`/editar-producto/${producto.id}`} className="btn btn-outline-warning">
-                                                    <i className="bi bi-pencil"></i>
+                                                <Link to={`/editar-producto/${producto.id}`} className="btn btn-outline-warning d-flex align-items-center">
+                                                    <i className="bi bi-pencil-fill fs-5"></i>
                                                 </Link>
                                             ) : (
                                                 <button 
-                                                    className="btn btn-outline-success" 
+                                                    className="btn btn-outline-success d-flex align-items-center" 
                                                     onClick={() => handleAgregarAlCarrito(producto)}
                                                     disabled={producto.stock <= 0}
                                                     title={producto.stock <= 0 ? "Sin stock disponible" : "Añadir al carrito"}
                                                 >
-                                                    <i className="bi bi-cart-plus"></i>
+                                                    <i className="bi bi-cart-plus-fill fs-5"></i>
                                                 </button>
                                             )}
                                         </div>

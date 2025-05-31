@@ -117,6 +117,38 @@ CREATE INDEX IF NOT EXISTS `idx_valoraciones_usuario` ON `valoraciones` (`usuari
 
 -- Índice único para evitar que un usuario valore el mismo producto más de una vez
 CREATE UNIQUE INDEX IF NOT EXISTS `idx_valoraciones_usuario_producto` ON `valoraciones` (`usuario_id`, `producto_id`);
+
+-- Tabla para almacenar las conversaciones de mensajes entre usuarios
+CREATE TABLE IF NOT EXISTS `conversaciones` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `usuario1_id` INT NOT NULL,
+    `usuario2_id` INT NOT NULL,
+    `fecha_actualizacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `fecha_creacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`usuario1_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`usuario2_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+    UNIQUE KEY (`usuario1_id`, `usuario2_id`)
+);
+
+-- Tabla para almacenar los mensajes individuales
+CREATE TABLE IF NOT EXISTS `mensajes` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `conversacion_id` INT NOT NULL,
+    `remitente_id` INT NOT NULL,
+    `receptor_id` INT NOT NULL,
+    `contenido` TEXT NOT NULL,
+    `leido` BOOLEAN DEFAULT FALSE,
+    `fecha_creacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`conversacion_id`) REFERENCES `conversaciones` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`remitente_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`receptor_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+);
+
+-- Índices para optimizar la búsqueda de mensajes
+CREATE INDEX IF NOT EXISTS `idx_mensajes_conversacion` ON `mensajes` (`conversacion_id`);
+CREATE INDEX IF NOT EXISTS `idx_mensajes_remitente` ON `mensajes` (`remitente_id`);
+CREATE INDEX IF NOT EXISTS `idx_mensajes_receptor` ON `mensajes` (`receptor_id`);
+CREATE INDEX IF NOT EXISTS `idx_mensajes_fecha_creacion` ON `mensajes` (`fecha_creacion`);
 -- Insertar usuario administrador por defecto (contraseña hasheada)
 INSERT IGNORE INTO usuarios (nombre, email, password, rol) VALUES
 ('Administrador', 'admin@vendeya.com', '$2y$10$QhkqUTv0fhOoq46jD14ekO3m4Poup1D2gKrM7qnZT5o.qydJMemvS', 'admin');
@@ -140,4 +172,4 @@ INSERT INTO productos (nombre, descripcion, precio, vendedor_id, categoria_id, i
 ('Smartphone Avanzado', 'Potente smartphone con cámara de alta resolución.', 699.99, 1, 6, 'https://placehold.co/600x400?text=Smartphone'), /* vendedor_id 1 = admin, categoria_id 6 = Smartphones */
 ('Laptop Ultrabook', 'Portátil ligero y rápido para productividad.', 950.00, 1, 7, 'https://placehold.co/600x400?text=Laptop'), /* vendedor_id 1 = admin, categoria_id 7 = Laptops y Computadoras */
 ('Camiseta de Algodón', 'Camiseta básica de algodón orgánico.', 19.95, 1, 9, 'https://placehold.co/600x400?text=Camiseta'), /* vendedor_id 1 = admin, categoria_id 9 = Camisetas */
-('Pantalón Vaquero', 'Vaqueros ajustados de diseño moderno.', 45.50, 1, 10, 'https://placehold.co/600x400?text=Pantalon'); /* vendedor_id 1 = admin, categoria_id 10 = Pantalones */ 
+('Pantalón Vaquero', 'Vaqueros ajustados de diseño moderno.', 45.50, 1, 10, 'https://placehold.co/600x400?text=Pantalon'); /* vendedor_id 1 = admin, categoria_id 10 = Pantalones */

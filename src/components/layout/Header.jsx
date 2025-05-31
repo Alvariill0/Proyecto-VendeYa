@@ -34,25 +34,25 @@ export default function Header() {
 
                     {/* Botones de navegación */}
                     <div className="d-flex align-items-center gap-3">
-                        <Link to="/mensajes" className="btn btn-outline-primary">
-                            <i className="bi bi-envelope"></i> Mensajes
+                        <Link to="/mensajes" className="btn btn-outline-primary d-flex align-items-center">
+                            <i className="bi bi-chat-dots-fill me-2 fs-5"></i> Mensajes
                         </Link>
-                        <Link to="/panel-usuario" className="btn btn-outline-primary">
-                            <i className="bi bi-person"></i> Mi Panel
+                        <Link to="/panel-usuario" className="btn btn-outline-primary d-flex align-items-center">
+                            <i className="bi bi-person-circle me-2 fs-5"></i> Mi Panel
                         </Link>
-                        <Link to="/carrito" className="btn btn-outline-primary position-relative">
-                            <i className="bi bi-cart"></i> Carrito
+                        <Link to="/carrito" className="btn btn-outline-primary position-relative d-flex align-items-center">
+                            <i className="bi bi-cart-fill me-2 fs-5"></i> Carrito
                             {totalItems > 0 && (
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {totalItems}
                                 </span>
                             )}
                         </Link>
-                        <Link to="/crear-producto" className="btn btn-primary">
-                            Vender
+                        <Link to="/crear-producto" className="btn btn-primary d-flex align-items-center">
+                            <i className="bi bi-bag-plus-fill me-2 fs-5"></i> Vender
                         </Link>
-                        <button onClick={handleLogout} className="btn btn-outline-danger">
-                            Cerrar Sesión
+                        <button onClick={handleLogout} className="btn btn-outline-danger d-flex align-items-center">
+                            <i className="bi bi-box-arrow-right me-2 fs-5"></i> Cerrar Sesión
                         </button>
                     </div>
                 </div>

@@ -6,43 +6,50 @@
    - ✅ Desarrollar API para gestionar el carrito (añadir, eliminar, actualizar items)
    - ✅ Crear página de carrito
    - ✅ Implementar contexto de carrito para gestionar el estado
+   
 2. Gestión de pedidos
    
    - ✅ Crear componentes para gestionar pedidos
    - ✅ Implementar proceso de checkout
    - ✅ Desarrollar API para crear y gestionar pedidos
    - ✅ Crear página de historial de pedidos para usuarios
+
 3. Detalles de producto
    
    - ✅ Crear página de detalle de producto
    - ✅ Implementar API para obtener detalles de un producto específico
    - ✅ Añadir funcionalidad para ver detalles completos del producto
+
 4. ✅ Edición y eliminación de productos
    
    - ✅ Crear componente para editar productos
    - ✅ Implementar API para actualizar y eliminar productos
    - ✅ Añadir botones y funcionalidad para editar/eliminar productos
+
 5. ✅ Panel de usuario
    
    - ✅ Crear página de perfil de usuario
    - ✅ Implementar sección para gestionar productos propios
    - ✅ Añadir sección para ver historial de pedidos
+
 6. ✅ Panel de administración
    
    - ✅ Crear categorias
    - ✅ Implementar gestión de usuarios
    - ✅ Añadir moderación de productos
    - ✅ Desarrollar API para funciones administrativas
-7. Valoraciones y comentarios
+
+7. ✅ Valoraciones y comentarios
    
-   - Crear componentes para valoraciones y comentarios
-   - Implementar API para gestionar valoraciones
-   - Añadir sección de valoraciones en la página de detalle de producto
-8. Sistema de mensajería
+   - ✅ Crear componentes para valoraciones y comentarios
+   - ✅ Implementar API para gestionar valoraciones
+   - ✅ Añadir sección de valoraciones en la página de detalle de producto
+
+8. ✅ Sistema de mensajería
    
-   - Crear componentes para mensajes entre usuarios
-   - Implementar API para gestionar mensajes
-   - Añadir buzón de mensajes en el panel de usuario
+   - ✅ Crear componentes para mensajes entre usuarios
+   - ✅ Implementar API para gestionar mensajes
+   - ✅ Añadir buzón de mensajes en el panel de usuario
 9. Buscador con filtros avanzados
    
    - Mejorar el buscador actual
