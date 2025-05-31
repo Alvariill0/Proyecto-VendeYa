@@ -37,8 +37,8 @@ export default function Header() {
                         <Link to="/mensajes" className="btn btn-outline-primary">
                             <i className="bi bi-envelope"></i> Mensajes
                         </Link>
-                        <Link to="/perfil" className="btn btn-outline-primary">
-                            <i className="bi bi-person"></i> Perfil
+                        <Link to="/mi-panel" className="btn btn-outline-primary">
+                            <i className="bi bi-person"></i> Mi Panel
                         </Link>
                         <Link to="/carrito" className="btn btn-outline-primary position-relative">
                             <i className="bi bi-cart"></i> Carrito
@@ -47,9 +47,6 @@ export default function Header() {
                                     {totalItems}
                                 </span>
                             )}
-                        </Link>
-                        <Link to="/mis-pedidos" className="btn btn-outline-primary">
-                            <i className="bi bi-box"></i> Mis Pedidos
                         </Link>
                         <Link to="/crear-producto" className="btn btn-primary">
                             Vender

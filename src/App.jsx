@@ -11,6 +11,8 @@ import CrearProductoForm from './components/features/productos/CrearProductoForm
 import CarritoPage from './pages/CarritoPage'
 import HistorialPedidosPage from './pages/HistorialPedidosPage'
 import DetalleProductoPage from './pages/DetalleProductoPage'
+import PanelUsuarioPage from './pages/PanelUsuarioPage'
+import EditarProductoPage from './pages/EditarProductoPage'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -109,6 +111,24 @@ function App() {
                             element={
                                 <RutaProtegida>
                                     <DetalleProductoPage />
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta para el panel de usuario (protegida) */}
+                        <Route
+                            path="/mi-panel"
+                            element={
+                                <RutaProtegida>
+                                    <PanelUsuarioPage />
+                                </RutaProtegida>
+                            }
+                        />
+                        {/* Ruta para editar producto (protegida) */}
+                        <Route
+                            path="/editar-producto/:id"
+                            element={
+                                <RutaProtegida>
+                                    <EditarProductoPage />
                                 </RutaProtegida>
                             }
                         />

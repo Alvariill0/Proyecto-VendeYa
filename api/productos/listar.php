@@ -14,6 +14,9 @@ if ($conexion->connect_error) {
 // Obtener el ID de categoría si se proporciona en la URL (GET)
 $categoria_id = isset($_GET['categoria_id']) ? $_GET['categoria_id'] : null;
 
+// Obtener el ID del vendedor si se proporciona en la URL (GET)
+$vendedor_id = isset($_GET['vendedor_id']) ? $_GET['vendedor_id'] : null;
+
 // Verificar si se deben incluir productos con stock 0 (útil para historial de pedidos)
 $incluir_stock_cero = isset($_GET['incluir_stock_cero']) && $_GET['incluir_stock_cero'] === 'true';
 
@@ -24,9 +27,6 @@ $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nom
 // Añadir filtro por categoría si se proporciona un categoria_id
 if ($categoria_id !== null) {
     // Para incluir subcategorías, necesitamos obtener todos los IDs de subcategoría de la categoría principal.
-    // Esto se puede hacer con una consulta recursiva o una serie de consultas.
-    // Por ahora, implementaremos una versión simple que obtiene todas las subcategorías directas e indirectas.
-
     $categoria_ids_a_incluir = [$categoria_id]; // Incluir la categoría principal
 
     // Consulta para obtener IDs de subcategorías (directas e indirectas)
@@ -40,9 +40,6 @@ if ($categoria_id !== null) {
     while ($fila_sub = $resultado_sub->fetch_assoc()) {
         $categoria_ids_a_incluir[] = $fila_sub['id'];
 
-        // Opcional: buscar sub-subcategorías si es necesario. 
-        // Para una jerarquía profunda, una función recursiva en PHP o una consulta CTE en SQL sería mejor.
-        // Por simplicidad, aquí solo obtenemos un nivel. Para obtener todos los niveles, necesitaríamos más lógica.
         $sql_sub_subcategorias = "SELECT id FROM categorias WHERE parent_id = ?";
         $stmt_sub_sub = $conexion->prepare($sql_sub_subcategorias);
         $stmt_sub_sub->bind_param('i', $fila_sub['id']);
@@ -66,8 +63,18 @@ if ($categoria_id !== null) {
     }
 }
 
-// Si no hay filtro por categoría, añadir la condición WHERE para el stock
-if ($categoria_id === null) {
+// Si hay filtro por vendedor_id
+if ($vendedor_id !== null) {
+    // Si ya tenemos una cláusula WHERE (por categoría)
+    if (strpos($sql, 'WHERE') !== false) {
+        $sql .= " AND p.vendedor_id = ?";
+    } else {
+        $sql .= " WHERE p.vendedor_id = ?";
+    }
+}
+
+// Si no hay filtro por categoría ni vendedor, añadir la condición WHERE para el stock
+if ($categoria_id === null && $vendedor_id === null) {
     // Filtrar productos con stock 0 a menos que se indique lo contrario
     if (!$incluir_stock_cero) {
         $sql .= " WHERE p.stock > 0";
@@ -80,12 +87,36 @@ $sql .= " ORDER BY p.created_at DESC";
 // Preparar la consulta principal
 $stmt = $conexion->prepare($sql);
 
-// Si hay filtro, bind los parámetros (todos son enteros)
+// Preparar los parámetros para bind_param
+$params = [];
+$types = '';
+
+// Si hay filtro por categoría
 if ($categoria_id !== null) {
-    // Necesitamos bind_param dinámicamente para un número variable de IDs
-    // Esto requiere construir la cadena de tipos dinámicamente
-    $types = str_repeat('i', count($categoria_ids_a_incluir));
-    $stmt->bind_param($types, ...$categoria_ids_a_incluir);
+    // Añadir los IDs de categoría a los parámetros
+    $types .= str_repeat('i', count($categoria_ids_a_incluir));
+    $params = array_merge($params, $categoria_ids_a_incluir);
+}
+
+// Si hay filtro por vendedor
+if ($vendedor_id !== null) {
+    $types .= 'i';
+    $params[] = $vendedor_id;
+}
+
+// Si hay parámetros, hacer bind_param
+if (!empty($params)) {
+    // Crear un array de referencias para bind_param
+    $bindParams = array();
+    $bindParams[] = &$types;
+    
+    // Añadir referencias a cada parámetro
+    foreach ($params as $key => $value) {
+        $bindParams[] = &$params[$key];
+    }
+    
+    // Usar call_user_func_array para pasar los parámetros dinámicamente
+    call_user_func_array([$stmt, 'bind_param'], $bindParams);
 }
 
 // Ejecutar la consulta

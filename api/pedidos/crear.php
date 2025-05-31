@@ -59,9 +59,9 @@ $conexion->begin_transaction();
 try {
     // Obtener los items del carrito con sus precios
     $sql_items = "SELECT ci.producto_id, ci.cantidad, p.precio, p.stock 
-                 FROM carrito_items ci 
-                 JOIN productos p ON ci.producto_id = p.id 
-                 WHERE ci.usuario_id = ?";
+        FROM carrito_items ci 
+        JOIN productos p ON ci.producto_id = p.id 
+        WHERE ci.usuario_id = ?";
     $stmt_items = $conexion->prepare($sql_items);
     $stmt_items->bind_param('i', $usuario_id);
     $stmt_items->execute();

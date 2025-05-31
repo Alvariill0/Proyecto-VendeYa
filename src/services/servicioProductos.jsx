@@ -63,3 +63,58 @@ export async function crearProducto(formData) {
     // Si la respuesta es OK (ej. 201 Created), devolvemos los datos (ej. mensaje de éxito, ID del producto)
     return datos;
 }
+
+export async function actualizarProducto(productoId, formData) {
+    if (!productoId) {
+        throw new Error('Se requiere un ID de producto válido');
+    }
+
+    // Asegurarse de que el ID del producto esté en el formData
+    formData.append('producto_id', productoId);
+
+    const respuesta = await fetch(`${BASE_URL}/productos/actualizar.php`, {
+        method: 'POST', // Usamos POST para compatibilidad con FormData
+        body: formData
+    });
+
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(datos.error || 'Error al actualizar el producto');
+    }
+
+    return datos;
+}
+
+export async function eliminarProducto(productoId) {
+    if (!productoId) {
+        throw new Error('Se requiere un ID de producto válido');
+    }
+
+    const respuesta = await fetch(`${BASE_URL}/productos/eliminar.php?id=${productoId}`, {
+        method: 'DELETE'
+    });
+
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(datos.error || 'Error al eliminar el producto');
+    }
+
+    return datos;
+}
+
+export async function listarProductosVendedor(vendedorId) {
+    if (!vendedorId) {
+        throw new Error('Se requiere un ID de vendedor válido');
+    }
+
+    const respuesta = await fetch(`${BASE_URL}/productos/listar.php?vendedor_id=${vendedorId}`);
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(datos.error || 'Error al obtener productos del vendedor');
+    }
+
+    return datos;
+}

@@ -22,9 +22,9 @@ if (!$producto_id) {
 
 // Consulta para obtener los detalles completos del producto
 $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, 
-               p.created_at, p.updated_at, p.categoria_id,
-               u.id as vendedor_id, u.nombre as vendedor_nombre,
-               c.nombre as categoria_nombre
+        p.created_at, p.updated_at, p.categoria_id,
+        u.id as vendedor_id, u.nombre as vendedor_nombre,
+        c.nombre as categoria_nombre
         FROM productos p 
         JOIN usuarios u ON p.vendedor_id = u.id
         LEFT JOIN categorias c ON p.categoria_id = c.id

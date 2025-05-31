@@ -74,8 +74,8 @@ function HistorialPedidos() {
                         </div>
                         <div>
                             <span className={`badge ${pedido.estado === 'completado' ? 'bg-success' : 
-                                              pedido.estado === 'pendiente' ? 'bg-warning' : 
-                                              pedido.estado === 'cancelado' ? 'bg-danger' : 'bg-secondary'}`}>
+                                pedido.estado === 'pendiente' ? 'bg-warning' : 
+                                pedido.estado === 'cancelado' ? 'bg-danger' : 'bg-secondary'}`}>
                                 {pedido.estado.toUpperCase()}
                             </span>
                         </div>

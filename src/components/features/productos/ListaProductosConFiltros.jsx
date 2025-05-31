@@ -71,14 +71,15 @@ function ListaProductosConFiltros({ categoriaId }) {
         console.log('obtenerNombreCategoria: buscando id', id, 'en categorías:', categorias);
         // Usar la función recursiva para encontrar la categoría en cualquier nivel
         const categoriaEncontrada = encontrarCategoriaPorId(id, categorias);
+        // Mensaje de depuración
         console.log('Categoría encontrada (paso 1 - recursiva):', categoriaEncontrada);
 
         // Si se encontró la categoría y tiene un parent_id, buscamos su padre para el breadcrumb
         if (categoriaEncontrada && categoriaEncontrada.parent_id !== null) {
-             console.log('Es subcategoría. parent_id:', categoriaEncontrada.parent_id);
+            console.log('Es subcategoría. parent_id:', categoriaEncontrada.parent_id);
             // Usar la función recursiva nuevamente para encontrar al padre
             const padre = encontrarCategoriaPorId(categoriaEncontrada.parent_id, categorias);
-             console.log('Categoría padre encontrada:', padre);
+            console.log('Categoría padre encontrada:', padre);
             return padre ? `${padre.nombre} > ${categoriaEncontrada.nombre}` : categoriaEncontrada.nombre;
         }
         // Si no se encontró la categoría principal o no es subcategoría
