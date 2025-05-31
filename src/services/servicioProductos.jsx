@@ -6,15 +6,28 @@
 import { get, post, del } from './servicioBase';
 
 /**
- * Obtiene la lista de productos, opcionalmente filtrados por categoría
+ * Obtiene la lista de productos, opcionalmente filtrados por categoría y/o término de búsqueda
  * @param {number|null} categoriaId - ID de la categoría para filtrar (opcional)
+ * @param {string|null} busqueda - Término de búsqueda para filtrar productos (opcional)
  * @returns {Promise<Array>} Lista de productos
  */
-export async function listarProductos(categoriaId = null) {
+export async function listarProductos(categoriaId = null, busqueda = null) {
     let endpoint = '/productos/listar.php';
+    const params = new URLSearchParams();
+    
     if (categoriaId !== null) {
-        endpoint += `?categoria_id=${categoriaId}`;
+        params.append('categoria_id', categoriaId);
     }
+    
+    if (busqueda !== null && busqueda.trim() !== '') {
+        params.append('busqueda', busqueda.trim());
+    }
+    
+    const queryString = params.toString();
+    if (queryString) {
+        endpoint += `?${queryString}`;
+    }
+    
     return get(endpoint);
 }
 
@@ -106,11 +119,24 @@ export async function listarProductosVendedor(vendedorId) {
     return get(`/productos/listar.php?vendedor_id=${vendedorId}`);
 }
 
+/**
+ * Busca productos por término de búsqueda
+ * @param {string} termino - Término de búsqueda
+ * @returns {Promise<Array>} Lista de productos que coinciden con la búsqueda
+ */
+export async function buscarProductos(termino) {
+    if (!termino || termino.trim() === '') {
+        return [];
+    }
+    return listarProductos(null, termino);
+}
+
 export default {
     listarProductos,
     obtenerProducto,
     crearProducto,
     actualizarProducto,
     eliminarProducto,
-    listarProductosVendedor
+    listarProductosVendedor,
+    buscarProductos
 };

@@ -23,6 +23,9 @@ $vendedor_id = isset($_GET['vendedor_id']) ? $_GET['vendedor_id'] : null;
 // Verificar si se deben incluir productos con stock 0 (útil para historial de pedidos)
 $incluir_stock_cero = isset($_GET['incluir_stock_cero']) && $_GET['incluir_stock_cero'] === 'true';
 
+// Obtener el término de búsqueda si se proporciona
+$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : null;
+
 // Consulta base para obtener productos
 // Incluimos el nombre del vendedor (nombre de la tabla usuarios) y el stock
 $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id";
@@ -81,8 +84,18 @@ if ($vendedor_id !== null) {
     }
 }
 
-// Si no hay filtro por categoría ni vendedor, añadir la condición WHERE para el stock
-if ($categoria_id === null && $vendedor_id === null && !$categorias_sugeridas) {
+// Si hay un término de búsqueda
+if ($busqueda !== null) {
+    // Si ya tenemos una cláusula WHERE
+    if (strpos($sql, 'WHERE') !== false) {
+        $sql .= " AND (p.nombre LIKE ? OR p.descripcion LIKE ?)";
+    } else {
+        $sql .= " WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?)";
+    }
+}
+
+// Si no hay filtro por categoría, vendedor, búsqueda ni categorías sugeridas, añadir la condición WHERE para el stock
+if ($categoria_id === null && $vendedor_id === null && $busqueda === null && !$categorias_sugeridas) {
     // Filtrar productos con stock 0 a menos que se indique lo contrario
     if (!$incluir_stock_cero) {
         $sql .= " WHERE p.stock > 0";
@@ -115,6 +128,14 @@ if ($categoria_id !== null) {
 if ($vendedor_id !== null) {
     $types .= 'i';
     $params[] = $vendedor_id;
+}
+
+// Si hay término de búsqueda
+if ($busqueda !== null) {
+    $types .= 'ss'; // Dos parámetros string para nombre y descripción
+    $busquedaParam = "%$busqueda%";
+    $params[] = $busquedaParam;
+    $params[] = $busquedaParam;
 }
 
 // Si hay parámetros, hacer bind_param

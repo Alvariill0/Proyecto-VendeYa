@@ -3,12 +3,14 @@ import { usePedidos } from '../../../hooks/usePedidos';
 import EstadoPedido from '../../common/EstadoPedido';
 import ItemPedido from '../../common/ItemPedido';
 import EstadoCarga from '../../common/EstadoCarga';
+import { useTheme } from '../../../context/ContextoTema';
 
 /**
  * Componente que muestra el historial completo de pedidos del usuario
  * @returns {JSX.Element} Componente de historial de pedidos
  */
 function HistorialPedidos() {
+    const { isDarkMode } = useTheme();
     const { 
         pedidos, 
         cargando, 
@@ -32,10 +34,10 @@ function HistorialPedidos() {
             >
                 {pedidos.map((pedido) => (
                     <div key={pedido.id} className="card mb-4 shadow-sm">
-                        <div className="card-header bg-light d-flex justify-content-between align-items-center">
+                        <div className={`card-header d-flex justify-content-between align-items-center ${isDarkMode ? 'bg-dark text-light' : 'bg-light'}`}>
                             <div>
                                 <h5 className="mb-0">Pedido #{pedido.id}</h5>
-                                <small className="text-muted">{formatearFecha(pedido.fecha_pedido)}</small>
+                                <small className={isDarkMode ? 'text-light-50' : 'text-muted'}>{formatearFecha(pedido.fecha_pedido)}</small>
                             </div>
                             <EstadoPedido estado={pedido.estado} />
                         </div>

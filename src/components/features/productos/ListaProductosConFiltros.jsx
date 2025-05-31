@@ -5,7 +5,7 @@ import { useCarrito } from '../../../context/ContextoCarrito';
 import { useAutenticacion } from '../../../context/ContextoAutenticacion';
 import { Link } from 'react-router-dom';
 
-function ListaProductosConFiltros({ categoriaId }) {
+function ListaProductosConFiltros({ categoriaId, terminoBusqueda }) {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
@@ -14,15 +14,22 @@ function ListaProductosConFiltros({ categoriaId }) {
     const [mensajeError, setMensajeError] = useState('');
     const { agregar, error: errorCarrito } = useCarrito();
     const { usuario } = useAutenticacion();
+    
+    // Estados para filtros adicionales
+    const [precioMin, setPrecioMin] = useState('');
+    const [precioMax, setPrecioMax] = useState('');
+    const [soloConStock, setSoloConStock] = useState(true);
+    const [filtroLocal, setFiltroLocal] = useState('');
+    const [ordenamiento, setOrdenamiento] = useState('default'); // Nuevo estado para ordenamiento
 
-    // Effect para cargar productos cuando cambia categoriaId
+    // Effect para cargar productos cuando cambia categoriaId o terminoBusqueda
     useEffect(() => {
-        console.log('useEffect productos: categoriaId', categoriaId);
+        console.log('useEffect productos: categoriaId', categoriaId, 'terminoBusqueda', terminoBusqueda);
         const obtenerProductos = async () => {
             try {
                 setCargando(true);
                 setError(null);
-                const productosObtenidos = await listarProductos(categoriaId);
+                const productosObtenidos = await listarProductos(categoriaId, terminoBusqueda);
                 setProductos(productosObtenidos);
             } catch (error) {
                 setError(error.message);
@@ -33,7 +40,7 @@ function ListaProductosConFiltros({ categoriaId }) {
         };
 
         obtenerProductos();
-    }, [categoriaId]); // Volver a cargar productos cuando categoriaId cambie
+    }, [categoriaId, terminoBusqueda]); // Volver a cargar productos cuando categoriaId o terminoBusqueda cambien
 
     // Effect para cargar categorías (solo una vez al montar el componente)
     useEffect(() => {
@@ -143,10 +150,70 @@ function ListaProductosConFiltros({ categoriaId }) {
         );
     }
 
+    // Función para aplicar filtros locales a los productos
+    const productosFiltrados = () => {
+        // Primero filtramos los productos
+        const filtrados = productos.filter(producto => {
+            // Filtro por precio mínimo
+            if (precioMin && parseFloat(producto.precio) < parseFloat(precioMin)) {
+                return false;
+            }
+            
+            // Filtro por precio máximo
+            if (precioMax && parseFloat(producto.precio) > parseFloat(precioMax)) {
+                return false;
+            }
+            
+            // Filtro por stock
+            if (soloConStock && parseInt(producto.stock) <= 0) {
+                return false;
+            }
+            
+            // Filtro local por nombre o descripción
+            if (filtroLocal && !producto.nombre.toLowerCase().includes(filtroLocal.toLowerCase()) && 
+                !producto.descripcion.toLowerCase().includes(filtroLocal.toLowerCase())) {
+                return false;
+            }
+            
+            return true;
+        });
+
+        // Luego ordenamos según el criterio seleccionado
+        return ordenarProductos(filtrados);
+    };
+
+    // Función para ordenar los productos según el criterio seleccionado
+    const ordenarProductos = (productosAOrdenar) => {
+        const productosOrdenados = [...productosAOrdenar]; // Crear copia para no mutar el original
+        
+        switch (ordenamiento) {
+            case 'nombre_asc':
+                return productosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            case 'nombre_desc':
+                return productosOrdenados.sort((a, b) => b.nombre.localeCompare(a.nombre));
+            case 'precio_asc':
+                return productosOrdenados.sort((a, b) => parseFloat(a.precio) - parseFloat(b.precio));
+            case 'precio_desc':
+                return productosOrdenados.sort((a, b) => parseFloat(b.precio) - parseFloat(a.precio));
+            case 'stock_asc':
+                return productosOrdenados.sort((a, b) => parseInt(a.stock) - parseInt(b.stock));
+            case 'stock_desc':
+                return productosOrdenados.sort((a, b) => parseInt(b.stock) - parseInt(a.stock));
+            default:
+                return productosOrdenados; // Sin ordenamiento específico
+        }
+    };
+    
     // Determinar el título a mostrar
-    const tituloPrincipal = categoriaId && categorias.length > 0
-        ? `Productos en ${obtenerNombreCategoria(categoriaId)}`
-        : 'Productos Destacados';
+    let tituloPrincipal = 'Productos Destacados';
+    
+    if (categoriaId && categorias.length > 0) {
+        tituloPrincipal = `Productos en ${obtenerNombreCategoria(categoriaId)}`;
+    }
+    
+    if (terminoBusqueda) {
+        tituloPrincipal = `Resultados para "${terminoBusqueda}"`;
+    }
 
     console.log('Render: categoriaId', categoriaId, 'tituloPrincipal', tituloPrincipal);
 
@@ -169,11 +236,97 @@ function ListaProductosConFiltros({ categoriaId }) {
                 </div>
             )}
             
-            {/* Columna para filtros (placeholder) */}
+            {/* Columna para filtros */}
             <div className="col-md-3">
-                <h5>Filtros</h5>
-                {/* Aquí irán los filtros más adelante */}
-                <p>Espacio para filtros...</p>
+                <div className="card">
+                    <div className="card-header bg-primary text-white">
+                        <h5 className="mb-0"><i className="bi bi-funnel-fill me-2"></i> Filtros</h5>
+                    </div>
+                    <div className="card-body">
+                        {/* Filtro por nombre o descripción */}
+                        <div className="mb-3">
+                            <label htmlFor="filtroLocal" className="form-label">Buscar en resultados:</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                id="filtroLocal" 
+                                placeholder="Nombre o descripción..." 
+                                value={filtroLocal}
+                                onChange={(e) => setFiltroLocal(e.target.value)}
+                            />
+                        </div>
+                        
+                        {/* Filtro por rango de precios */}
+                        <div className="mb-3">
+                            <label className="form-label">Rango de precios:</label>
+                            <div className="d-flex gap-2">
+                                <input 
+                                    type="number" 
+                                    className="form-control" 
+                                    placeholder="Min €" 
+                                    value={precioMin}
+                                    onChange={(e) => setPrecioMin(e.target.value)}
+                                    min="0"
+                                />
+                                <input 
+                                    type="number" 
+                                    className="form-control" 
+                                    placeholder="Max €" 
+                                    value={precioMax}
+                                    onChange={(e) => setPrecioMax(e.target.value)}
+                                    min="0"
+                                />
+                            </div>
+                        </div>
+                        
+                        {/* Filtro por disponibilidad */}
+                        <div className="form-check form-switch mb-3">
+                            <input 
+                                className="form-check-input" 
+                                type="checkbox" 
+                                id="soloConStock" 
+                                checked={soloConStock}
+                                onChange={(e) => setSoloConStock(e.target.checked)}
+                            />
+                            <label className="form-check-label" htmlFor="soloConStock">
+                                Solo productos con stock
+                            </label>
+                        </div>
+                        
+                        {/* Selector de ordenamiento */}
+                        <div className="mb-3">
+                            <label htmlFor="ordenamiento" className="form-label">Ordenar por:</label>
+                            <select 
+                                className="form-select" 
+                                id="ordenamiento"
+                                value={ordenamiento}
+                                onChange={(e) => setOrdenamiento(e.target.value)}
+                            >
+                                <option value="default">Predeterminado</option>
+                                <option value="nombre_asc">Nombre (A-Z)</option>
+                                <option value="nombre_desc">Nombre (Z-A)</option>
+                                <option value="precio_asc">Precio (menor a mayor)</option>
+                                <option value="precio_desc">Precio (mayor a menor)</option>
+                                <option value="stock_asc">Stock (menor a mayor)</option>
+                                <option value="stock_desc">Stock (mayor a menor)</option>
+                            </select>
+                        </div>
+
+                        {/* Botón para limpiar filtros */}
+                        <button 
+                            className="btn btn-outline-secondary w-100"
+                            onClick={() => {
+                                setPrecioMin('');
+                                setPrecioMax('');
+                                setSoloConStock(true);
+                                setFiltroLocal('');
+                                setOrdenamiento('default');
+                            }}
+                        >
+                            <i className="bi bi-x-circle me-2"></i> Limpiar filtros
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {/* Columna para la lista de productos */}
@@ -181,9 +334,9 @@ function ListaProductosConFiltros({ categoriaId }) {
                 {/* Título dinámico */}
                 <h2 className="mb-4 text-center">{tituloPrincipal}</h2>
 
-                {productos.length > 0 ? (
+                {productosFiltrados().length > 0 ? (
                     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                        {productos.map((producto) => (
+                        {productosFiltrados().map((producto) => (
                             <div key={producto.id} className="col">
                                 <div className="card h-100">
                                     <img

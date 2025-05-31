@@ -3,6 +3,7 @@ import { Row, Col, Card, Button, Modal, Form, InputGroup } from 'react-bootstrap
 import { FaSearch, FaPaperPlane, FaPlus } from 'react-icons/fa';
 import { useMensajes } from '../../../hooks/useMensajes';
 import { useAutenticacion } from '../../../context/ContextoAutenticacion';
+import { useTheme } from '../../../context/ContextoTema';
 import EstadoCarga from '../../common/EstadoCarga';
 import ListaConversaciones from './ListaConversaciones';
 import AreaChat from './AreaChat';
@@ -13,6 +14,7 @@ import AreaChat from './AreaChat';
  */
 function SistemaMensajes() {
     const { usuario } = useAutenticacion();
+    const { isDarkMode } = useTheme();
     const {
         conversaciones,
         mensajesActuales,
@@ -149,6 +151,7 @@ function SistemaMensajes() {
                                                 value={mensajeActual}
                                                 onChange={(e) => setMensajeActual(e.target.value)}
                                                 disabled={cargandoMensajes}
+                                                className={isDarkMode ? "bg-dark text-light border-secondary" : ""}
                                             />
                                             <Button 
                                                 type="submit" 
@@ -164,7 +167,7 @@ function SistemaMensajes() {
                         ) : (
                             <Card.Body className="d-flex flex-column justify-content-center align-items-center text-center p-5">
                                 <h4>Selecciona una conversación</h4>
-                                <p className="text-muted">O inicia una nueva conversación con el botón + en la lista de conversaciones.</p>
+                                <p className={isDarkMode ? "text-light-50" : "text-muted"}>O inicia una nueva conversación con el botón + en la lista de conversaciones.</p>
                             </Card.Body>
                         )}
                     </Card>
@@ -173,10 +176,10 @@ function SistemaMensajes() {
 
             {/* Modal para nueva conversación */}
             <Modal show={mostrarModalNuevo} onHide={() => setMostrarModalNuevo(false)}>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton className={isDarkMode ? "bg-dark text-light border-secondary" : ""}>
                     <Modal.Title>Nueva conversación</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className={isDarkMode ? "bg-dark text-light" : ""}>
                     <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>Buscar usuario</Form.Label>
@@ -186,8 +189,9 @@ function SistemaMensajes() {
                                     placeholder="Nombre o email del usuario"
                                     value={terminoBusqueda}
                                     onChange={handleBuscarUsuarios}
+                                    className={isDarkMode ? "bg-dark text-light border-secondary" : ""}
                                 />
-                                <Button variant="outline-secondary">
+                                <Button variant={isDarkMode ? "outline-light" : "outline-secondary"}>
                                     <FaSearch />
                                 </Button>
                             </InputGroup>
@@ -205,7 +209,7 @@ function SistemaMensajes() {
                                     <button
                                         key={usuario.id}
                                         type="button"
-                                        className={`list-group-item list-group-item-action ${usuarioSeleccionado?.id === usuario.id ? 'active' : ''}`}
+                                        className={`list-group-item list-group-item-action ${isDarkMode ? "bg-dark text-light border-secondary" : ""} ${usuarioSeleccionado?.id === usuario.id ? 'active' : ''}`}
                                         onClick={() => handleSeleccionarUsuario(usuario)}
                                     >
                                         {usuario.nombre} ({usuario.email})
@@ -213,7 +217,7 @@ function SistemaMensajes() {
                                 ))}
                             </div>
                         ) : terminoBusqueda ? (
-                            <p className="text-muted">No se encontraron usuarios con ese criterio.</p>
+                            <p className={isDarkMode ? "text-light-50" : "text-muted"}>No se encontraron usuarios con ese criterio.</p>
                         ) : null}
 
                         {usuarioSeleccionado && (
@@ -225,12 +229,13 @@ function SistemaMensajes() {
                                     placeholder="Escribe tu primer mensaje..."
                                     value={nuevoMensaje}
                                     onChange={(e) => setNuevoMensaje(e.target.value)}
+                                    className={isDarkMode ? "bg-dark text-light border-secondary" : ""}
                                 />
                             </Form.Group>
                         )}
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className={isDarkMode ? "bg-dark text-light border-secondary" : ""}>
                     <Button variant="secondary" onClick={() => setMostrarModalNuevo(false)}>
                         Cancelar
                     </Button>

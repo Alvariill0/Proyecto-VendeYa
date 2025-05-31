@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ProveedorAutenticacion } from './context/ContextoAutenticacion'
 import { useAutenticacion } from './context/ContextoAutenticacion'
 import { ProveedorCarrito } from './context/ContextoCarrito'
+import { ProveedorTema } from './context/ContextoTema'
 import Login from './components/features/auth/Login'
 import Registro from './components/features/auth/Registro'
 import Bienvenida from './pages/Bienvenida'
@@ -16,6 +17,7 @@ import EditarProductoPage from './pages/EditarProductoPage'
 import AdminCategoriasPage from './pages/AdminCategoriasPage'
 import PedidosVendedorPage from './pages/PedidosVendedorPage'
 import MensajesPage from './pages/MensajesPage'
+import EstadisticasVentasPage from './pages/EstadisticasVentasPage'
 import './App.css'
 
 // Componente para rutas protegidas
@@ -47,10 +49,11 @@ function RutaPublica({ children }) {
 
 function App() {
     return (
-        <Router>
-            <ProveedorAutenticacion>
-                <ProveedorCarrito>
-                    <Routes>
+        <ProveedorTema>
+            <Router>
+                <ProveedorAutenticacion>
+                    <ProveedorCarrito>
+                        <Routes>
                         {/* Rutas públicas */}
                         <Route
                             path="/"
@@ -169,12 +172,22 @@ function App() {
                                 </RutaProtegida>
                             }
                         />
+                        {/* Ruta para estadísticas de ventas */}
+                        <Route
+                            path="/estadisticas-ventas"
+                            element={
+                                <RutaProtegida>
+                                    <EstadisticasVentasPage />
+                                </RutaProtegida>
+                            }
+                        />
                         {/* Ruta para manejar rutas no encontradas */}
                         <Route path="*" element={<Navigate to="/" />} />
-                    </Routes>
-                </ProveedorCarrito>
-            </ProveedorAutenticacion>
-        </Router>
+                        </Routes>
+                    </ProveedorCarrito>
+                </ProveedorAutenticacion>
+            </Router>
+        </ProveedorTema>
     )
 }
 

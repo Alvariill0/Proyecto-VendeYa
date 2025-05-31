@@ -3,12 +3,14 @@ import { usePedidosVendedor } from '../hooks/usePedidosVendedor';
 import { Card, Button, Alert, Spinner, Badge, Row, Col, Modal } from 'react-bootstrap';
 import { FaBox, FaShippingFast, FaCheck, FaTimes, FaInfoCircle } from 'react-icons/fa';
 import EstadoPedido from './common/EstadoPedido';
+import { useTheme } from '../context/ContextoTema';
 
 /**
  * Componente que muestra los pedidos que contienen productos vendidos por el usuario actual
  * y permite actualizar su estado
  */
 const PedidosVendedor = () => {
+    const { isDarkMode } = useTheme();
     const { 
         pedidos, 
         cargando, 
@@ -108,10 +110,10 @@ const PedidosVendedor = () => {
 
             {pedidos.map((pedido) => (
                 <Card key={pedido.id} className="mb-4 shadow-sm">
-                    <Card.Header className="d-flex justify-content-between align-items-center bg-light">
+                    <Card.Header className={`d-flex justify-content-between align-items-center ${isDarkMode ? 'bg-dark text-light' : 'bg-light'}`}>
                         <div>
                             <span className="fw-bold">Pedido #{pedido.id}</span>
-                            <span className="ms-3 text-muted">
+                            <span className={`ms-3 ${isDarkMode ? 'text-light-50' : 'text-muted'}`}>
                                 {formatearFecha(pedido.fecha_pedido, true)}
                             </span>
                         </div>
@@ -131,15 +133,15 @@ const PedidosVendedor = () => {
                                             style={{ maxWidth: '50px', maxHeight: '50px' }}
                                         />
                                     ) : (
-                                        <div className="bg-light rounded d-flex justify-content-center align-items-center" 
+                                        <div className={`${isDarkMode ? 'bg-dark' : 'bg-light'} rounded d-flex justify-content-center align-items-center`} 
                                             style={{ width: '50px', height: '50px' }}>
-                                            <FaBox />
+                                            <FaBox className={isDarkMode ? 'text-light' : ''} />
                                         </div>
                                     )}
                                 </Col>
                                 <Col>
                                     <div className="fw-bold">{item.nombre}</div>
-                                    <div className="text-muted small">
+                                    <div className={`${isDarkMode ? 'text-light-50' : 'text-muted'} small`}>
                                         Cantidad: {item.cantidad} x ${parseFloat(item.precio_unitario).toFixed(2)}
                                     </div>
                                 </Col>

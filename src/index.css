@@ -3,14 +3,35 @@
   line-height: 1.5;
   font-weight: 400;
 
+  /* Variables para el tema claro */
+  --background-color: #ffffff;
+  --text-color: #212529;
+  --border-color: #dee2e6;
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --accent-color: #20c997;
+
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-color);
+  background-color: var(--background-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Transición suave entre temas */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Variables para el tema oscuro */
+[data-bs-theme="dark"] {
+  --background-color: #212529;
+  --text-color: #f8f9fa;
+  --border-color: #495057;
+  --primary-color: #0d6efd;
+  --secondary-color: #adb5bd;
+  --accent-color: #20c997;
 }
 
 a {

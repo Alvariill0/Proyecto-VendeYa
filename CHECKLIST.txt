@@ -50,11 +50,11 @@
    - ✅ Crear componentes para mensajes entre usuarios
    - ✅ Implementar API para gestionar mensajes
    - ✅ Añadir buzón de mensajes en el panel de usuario
-9. Buscador con filtros avanzados
+9. ✅ Buscador con filtros avanzados
    
-   - Mejorar el buscador actual
-   - Implementar filtros por precio, nombre, etc.
-   - Crear componente de búsqueda avanzada
+   - ✅ Mejorar el buscador actual
+   - ✅ Implementar filtros por precio, nombre, etc.
+   - ✅ Crear componente de búsqueda avanzada
 10. Estadísticas para vendedores
     
     - Implementar visualización de estadísticas de ventas

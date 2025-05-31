@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../context/ContextoTema';
 
 /**
  * Componente para mostrar un ítem de pedido
@@ -9,8 +10,9 @@ import React from 'react';
  * @returns {JSX.Element} Elemento de lista con los datos del ítem
  */
 function ItemPedido({ item, mostrarImagen = true, mostrarPrecioTotal = true }) {
+    const { isDarkMode } = useTheme();
     return (
-        <div className="list-group-item list-group-item-action">
+        <div className={`list-group-item list-group-item-action ${isDarkMode ? 'bg-dark text-light border-secondary' : ''}`}>
             <div className="d-flex w-100 justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
                     {mostrarImagen && item.imagen && (
@@ -23,7 +25,7 @@ function ItemPedido({ item, mostrarImagen = true, mostrarPrecioTotal = true }) {
                     )}
                     <div>
                         <h6 className="mb-1">{item.nombre}</h6>
-                        <small className="text-muted">
+                        <small className={isDarkMode ? 'text-light-50' : 'text-muted'}>
                             Cantidad: {item.cantidad} x {parseFloat(item.precio_unitario).toFixed(2)}€
                         </small>
                     </div>

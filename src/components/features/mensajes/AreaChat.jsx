@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from '../../../context/ContextoTema';
 
 /**
  * Componente que muestra el área de chat con los mensajes de la conversación
@@ -10,6 +11,7 @@ import React, { useEffect, useRef } from 'react';
  */
 function AreaChat({ mensajes, usuarioActual, formatearFecha }) {
     const chatContainerRef = useRef(null);
+    const { isDarkMode } = useTheme();
 
     // Desplazar al final cuando se cargan nuevos mensajes
     useEffect(() => {
@@ -38,7 +40,7 @@ function AreaChat({ mensajes, usuarioActual, formatearFecha }) {
                         className={`d-flex mb-3 ${esPropio ? 'justify-content-end' : 'justify-content-start'}`}
                     >
                         <div 
-                            className={`mensaje p-3 rounded ${esPropio ? 'bg-primary text-white' : 'bg-light'}`}
+                            className={`mensaje p-3 rounded ${esPropio ? 'bg-primary text-white' : isDarkMode ? 'bg-secondary text-light' : 'bg-light'}`}
                             style={{ 
                                 maxWidth: '75%',
                                 position: 'relative'
@@ -46,7 +48,7 @@ function AreaChat({ mensajes, usuarioActual, formatearFecha }) {
                         >
                             <div>{mensaje.contenido}</div>
                             <div 
-                                className={`mensaje-tiempo ${esPropio ? 'text-white-50' : 'text-muted'}`}
+                                className={`mensaje-tiempo ${esPropio ? 'text-white-50' : isDarkMode ? 'text-light-50' : 'text-muted'}`}
                                 style={{ 
                                     fontSize: '0.75rem',
                                     textAlign: 'right',
