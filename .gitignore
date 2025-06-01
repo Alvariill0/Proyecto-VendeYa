@@ -1,5 +1,6 @@
 # Dependencias
 /node_modules
+/vendor
 /.pnp
 .pnp.js
 
@@ -30,3 +31,6 @@ yarn-error.log*
 
 # XAMPP
 /xampp/
+
+# Documentación del proyecto
+estructura_proyecto.txt
