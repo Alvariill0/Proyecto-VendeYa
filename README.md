@@ -1,12 +1,138 @@
-# React + Vite
+# VendeYa - Plataforma de Marketplace Online
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <img src="./src/assets/VendeYa_Logo.png" alt="VendeYa Logo" width="200">
+</p>
 
-Currently, two official plugins are available:
+## 📋 Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+VendeYa es una plataforma de marketplace online desarrollada con React y PHP que permite a los usuarios registrarse como compradores o vendedores, publicar productos, gestionar pedidos y realizar compras. La aplicación ofrece una experiencia completa de e-commerce con funcionalidades como carrito de compras, sistema de mensajería, valoraciones de productos y panel de administración.
 
-## Expanding the ESLint configuration
+## ✨ Características Principales
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Sistema de Autenticación**: Registro y login de usuarios con roles diferenciados (usuario, administrador).
+- **Gestión de Productos**: Crear, editar, eliminar y listar productos con categorías.
+- **Carrito de Compras**: Añadir productos, actualizar cantidades y realizar pedidos.
+- **Panel de Usuario**: Personalizado según el rol del usuario.
+- **Sistema de Mensajería**: Comunicación entre compradores y vendedores.
+- **Valoraciones y Comentarios**: Posibilidad de valorar productos tras la compra.
+- **Estadísticas para Vendedores**: Visualización de ventas, productos más vendidos y valoraciones.
+- **Buscador con Filtros**: Búsqueda por categoría, precio, nombre, etc.
+- **Tema Claro/Oscuro**: Interfaz adaptable con soporte para modo oscuro.
+
+## 🛠️ Tecnologías Utilizadas
+
+### Frontend
+- React 19
+- React Router 7
+- Bootstrap 5
+- React Bootstrap
+- React Icons
+- React Toastify
+- ApexCharts (para gráficos estadísticos)
+
+### Backend
+- PHP
+- MySQL
+
+### Herramientas de Desarrollo
+- Vite
+- ESLint
+- Git/GitHub
+
+## 📋 Requisitos Previos
+
+- Node.js (v18 o superior)
+- PHP 8.0 o superior
+- MySQL 8.0 o superior
+- XAMPP (para entorno de desarrollo local)
+
+## 🚀 Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/vendeya.git
+   cd vendeya
+   ```
+
+2. Instala las dependencias del frontend:
+   ```bash
+   npm install
+   ```
+
+3. Configura la base de datos:
+   - Inicia XAMPP y asegúrate de que los servicios Apache y MySQL estén funcionando.
+   - Crea una base de datos llamada `vendeya` en phpMyAdmin.
+   - Importa el archivo `sql/database_setup.sql` para crear las tablas necesarias.
+
+4. Configura las variables de entorno:
+   - Crea un archivo `.env` en la raíz del proyecto basándote en el archivo `.env.example` (si existe).
+   - Configura las credenciales de la base de datos y otras variables necesarias.
+
+## 🖥️ Uso
+
+1. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+2. Abre tu navegador y visita `http://localhost:5173` (o el puerto que indique la consola).
+
+3. Para construir la versión de producción:
+   ```bash
+   npm run build
+   ```
+
+## 📁 Estructura del Proyecto
+
+```
+├── api/                           # Backend en PHP
+│   ├── auth/                      # Endpoints de autenticación
+│   ├── carrito/                   # Endpoints del carrito
+│   ├── categorias/                # Endpoints de categorías
+│   ├── config/                    # Configuración de la BD
+│   ├── mensajes/                  # Sistema de mensajería
+│   ├── pedidos/                   # Gestión de pedidos
+│   ├── productos/                 # Gestión de productos
+│   └── valoraciones/              # Sistema de valoraciones
+├── src/                           # Código fuente (React)
+│   ├── assets/                    # Recursos estáticos
+│   ├── components/                # Componentes React
+│   │   ├── common/                # Componentes genéricos
+│   │   ├── features/              # Componentes específicos
+│   │   └── layout/                # Componentes de estructura
+│   ├── context/                   # Contextos de React
+│   ├── hooks/                     # Hooks personalizados
+│   ├── pages/                     # Páginas principales
+│   └── services/                  # Servicios para API
+└── public/                        # Archivos públicos
+```
+
+## 🧪 Testing
+
+Ejecuta las pruebas con el siguiente comando:
+
+```bash
+npm run test
+```
+
+## 🤝 Contribución
+
+1. Haz un fork del proyecto
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`)
+3. Haz commit de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
+4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - mira el archivo [LICENSE](LICENSE) para más detalles.
+
+## 👥 Autores
+
+- **Tu Nombre** - *Desarrollo inicial* - [Tu Usuario de GitHub](https://github.com/tu-usuario)
+
+## 🙏 Agradecimientos
+
+- Agradecimientos a todos los que han contribuido al proyecto
+- Inspirado en otras plataformas de marketplace como Wallapop y Milanuncios

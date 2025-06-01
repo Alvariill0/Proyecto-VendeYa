@@ -163,3 +163,105 @@ Notas importantes:
 - Los nombres de las tablas están en singular, excepto 'usuarios', 'categorias', 'productos', 'pedidos' y 'valoraciones'.
 - La tabla 'carrito_items' tiene una restricción UNIQUE para evitar duplicados de productos en el carrito de un usuario.
 - La tabla 'valoraciones' tiene índices para optimizar las búsquedas por producto y usuario.
+
+
+-5. ESTRUCTURA COMPLETA DEL PROYECTO:
+
+A continuación se detalla la estructura completa del proyecto VendeYa con una breve descripción de cada carpeta y archivo principal:
+
+├── .env                           # Archivo de variables de entorno para configuración
+├── .gitignore                     # Archivo para excluir archivos/carpetas del control de versiones
+├── CHECKLIST.txt                  # Lista de tareas pendientes y completadas del proyecto
+├── README.md                      # Documentación principal del proyecto
+├── api/                           # Backend en PHP que gestiona las peticiones al servidor
+│   ├── auth/                      # Endpoints de autenticación (login y registro)
+│   ├── carrito/                   # Endpoints para gestionar el carrito de compras
+│   ├── categorias/                # Endpoints para gestionar categorías de productos
+│   ├── config/                    # Configuración de la base de datos
+│   ├── mensajes/                  # Endpoints para el sistema de mensajería
+│   ├── pedidos/                   # Endpoints para gestionar pedidos
+│   ├── productos/                 # Endpoints para gestionar productos
+│   ├── utils/                     # Utilidades compartidas para el backend
+│   └── valoraciones/              # Endpoints para gestionar valoraciones de productos
+├── docs proyecto/                 # Documentación del proyecto
+│   └── resumen.txt                # Resumen de funcionalidades y estructura
+├── package.json                   # Dependencias y scripts del proyecto
+├── public/                        # Archivos públicos accesibles directamente
+│   └── imagenes/                  # Imágenes estáticas, incluidas las de productos
+├── sql/                           # Scripts SQL para la base de datos
+│   └── database_setup.sql         # Script de creación de la base de datos
+└── src/                           # Código fuente del frontend (React)
+    ├── App.jsx                    # Componente principal de la aplicación
+    ├── assets/                    # Recursos estáticos (logos, imágenes)
+    ├── components/                # Componentes reutilizables de React
+    │   ├── common/                # Componentes genéricos (modales, estados de carga)
+    │   ├── features/              # Componentes específicos por funcionalidad
+    │   │   ├── auth/              # Componentes de autenticación (login, registro)
+    │   │   ├── carrito/           # Componentes del carrito de compras
+    │   │   ├── categorias/        # Componentes para gestión de categorías
+    │   │   ├── mensajes/          # Componentes del sistema de mensajería
+    │   │   ├── pedidos/           # Componentes para visualizar y gestionar pedidos
+    │   │   ├── productos/         # Componentes para crear, editar y mostrar productos
+    │   │   ├── usuario/           # Componentes del panel de usuario
+    │   │   └── ventas/            # Componentes para estadísticas de ventas
+    │   └── layout/                # Componentes de estructura (header, footer, navbar)
+    ├── context/                   # Contextos de React para estado global
+    │   ├── ContextoAutenticacion.jsx  # Gestión del estado de autenticación
+    │   ├── ContextoCarrito.jsx    # Gestión del estado del carrito
+    │   └── ContextoTema.jsx       # Gestión del tema claro/oscuro
+    ├── hooks/                     # Hooks personalizados
+    │   ├── useApiCall.js          # Hook para llamadas a la API
+    │   ├── useForm.js             # Hook para gestión de formularios
+    │   └── useMensajes.js         # Hook para gestión de mensajes
+    ├── main.jsx                   # Punto de entrada de la aplicación
+    ├── pages/                     # Páginas principales de la aplicación
+    │   ├── Bienvenida.jsx         # Página de bienvenida inicial
+    │   ├── CarritoPage.jsx        # Página del carrito de compras
+    │   ├── DetalleProductoPage.jsx # Página de detalle de producto
+    │   ├── ListaProductos.jsx     # Página de listado de productos
+    │   ├── MensajesPage.jsx       # Página del sistema de mensajería
+    │   └── PanelUsuarioPage.jsx   # Página del panel de usuario
+    └── services/                  # Servicios para comunicación con el backend
+        ├── servicioBase.js        # Funciones base para peticiones HTTP
+        ├── servicioCarrito.jsx    # Funciones para gestionar el carrito
+        ├── servicioCategorias.jsx # Funciones para gestionar categorías
+        ├── servicioMensajes.jsx   # Funciones para el sistema de mensajería
+        ├── servicioPedidos.jsx    # Funciones para gestionar pedidos
+        ├── servicioProductos.jsx  # Funciones para gestionar productos
+        └── servicioValoraciones.jsx # Funciones para gestionar valoraciones
+
+-6. ESTRUCTURA DOCUMENTACIÓN:
+
+1.Definición del Proyecto
+1.1. Descripción General del Proyecto
+1.2. Tipos de Empresas. Sectores Productivos
+
+2.Diseño y Fases del Proyecto
+2.1. Objetivos. Especificación de Requisitos
+2.2. Identificación de las Fases del Proyecto
+2.3. Herramientas de Diseño
+2.4. Evaluación Económica y Financiación del Proyecto
+2.4.1. Estudio de Viabilidad
+2.4.2. Conclusión de Viabilidad
+2.4.3. Ayudas Económicas y Subvenciones
+
+3.Planificación del Proyecto
+3.1. Diagrama de Secuenciación del Proyecto
+3.2. Secuenciación de Actividades
+3.3. Asignación de Recursos y Tiempos
+3.4. Procedimientos en las Actividades
+3.5. Prevención de Riesgos
+
+4.Pruebas y Validación del Proyecto
+4.1. Evaluación y Seguimiento
+4.2. Indicadores de Calidad
+4.3. Informe de Evaluación de Incidencias
+
+5.Implantación del Proyecto
+5.1. Plan de Implantación
+5.2. Manual de Instalación
+5.3. Manual de Usuario
+
+6.Conclusión
+
+7.Bibliografía/Webgrafía
