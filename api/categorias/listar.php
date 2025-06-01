@@ -13,7 +13,7 @@ if ($conexion->connect_error) {
 
 // Consulta para obtener todas las categorías
 // Seleccionamos parent_id también
-$sql = "SELECT id, nombre, descripcion, parent_id FROM categorias ORDER BY parent_id ASC, nombre ASC";
+$sql = "SELECT c.id, c.nombre, c.descripcion, c.parent_id, COUNT(p.id) as productosCount FROM categorias c LEFT JOIN productos p ON c.id = p.categoria_id GROUP BY c.id ORDER BY c.parent_id ASC, c.nombre ASC";
 $resultado = $conexion->query($sql);
 
 $categorias = [];
@@ -23,6 +23,7 @@ if ($resultado->num_rows > 0) {
     // Organizar categorías en un array asociativo por ID
     while($fila = $resultado->fetch_assoc()) {
         $fila['subcategorias'] = []; // Inicializar array de subcategorías
+        $fila['productosCount'] = (int)$fila['productosCount'];
         $categorias_por_id[$fila['id']] = $fila;
     }
 
@@ -47,4 +48,4 @@ if ($resultado->num_rows > 0) {
 echo json_encode($categorias);
 
 $conexion->close();
-?> 
+?>

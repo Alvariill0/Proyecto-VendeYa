@@ -32,6 +32,9 @@ export default function Navbar() {
         cargarCategorias();
     }, []);
 
+    // Ordenar y seleccionar las 4 categorías con más productos
+    const categoriasConMasProductos = listaCategorias.sort((a, b) => b.productosCount - a.productosCount).slice(0, 4);
+
     const abrirOffcanvasCategorias = () => {
         setMostrarOffcanvas(true);
     };
@@ -58,19 +61,18 @@ export default function Navbar() {
                     <div className="d-flex gap-3">
                         {/* Cargar categorías populares dinámicamente si están disponibles */}
                         {listaCategorias.length > 0 ? (
-                            // Mostrar hasta 4 categorías principales como populares
-                            listaCategorias.slice(0, 4).map(categoria => (
-                                <Link 
-                                    key={categoria.id} 
-                                    to={`/principal/${categoria.id}`} 
-                                    className={`text-decoration-none ${isDarkMode ? 'text-light' : 'text-dark'}`}
-                                >
-                                    {categoria.nombre}
-                                </Link>
-                            ))
-                        ) : (
-                            // Mostrar enlaces temporales mientras se cargan las categorías
-                            <>
+                            categoriasConMasProductos.length > 0 ? (
+                                categoriasConMasProductos.map(categoria => (
+                                    <Link 
+                                        key={categoria.id} 
+                                        to={`/principal/${categoria.id}`} 
+                                        className={`text-decoration-none ${isDarkMode ? 'text-light' : 'text-dark'}`}
+                                    >
+                                        {categoria.nombre}
+                                    </Link>
+                                ))
+                            ) : (
+                                // Mostrar enlaces temporales mientras se cargan las categorías
                                 <Link 
                                     to="#" 
                                     className={`text-decoration-none ${isDarkMode ? 'text-light' : 'text-dark'}`}
@@ -81,25 +83,27 @@ export default function Navbar() {
                                 >
                                     Cargando categorías...
                                 </Link>
-                            </>
+                            )
+                        ) : (
+                            <span>Cargando categorías...</span>
                         )}
                     </div>
                 </div>
+
+                {/* Offcanvas de Categorías */}
+                <CategoriasOffcanvas 
+                    mostrar={mostrarOffcanvas}
+                    alCerrar={cerrarOffcanvasCategorias}
+                    categorias={listaCategorias}
+                />
+
+                {/* Mostrar error si falla la carga de categorías */}
+                {errorCategorias && (
+                    <div className="alert alert-danger m-3" role="alert">
+                        Error al cargar categorías: {errorCategorias}
+                    </div>
+                )}
             </div>
-
-            {/* Offcanvas de Categorías */}
-            <CategoriasOffcanvas 
-                mostrar={mostrarOffcanvas}
-                alCerrar={cerrarOffcanvasCategorias}
-                categorias={listaCategorias}
-            />
-
-            {/* Mostrar error si falla la carga de categorías */}
-            {errorCategorias && (
-                <div className="alert alert-danger m-3" role="alert">
-                    Error al cargar categorías: {errorCategorias}
-                </div>
-            )}
         </nav>
     );
 }
