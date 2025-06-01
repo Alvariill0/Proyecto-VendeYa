@@ -60,12 +60,18 @@ VendeYa es una plataforma de marketplace online desarrollada con React y PHP que
    npm install
    ```
 
-3. Configura la base de datos:
+3. Instala las dependencias de PHP (necesarias para las pruebas del backend):
+   ```bash
+   composer install
+   ```
+   > Nota: El directorio `vendor` generado solo es necesario para ejecutar las pruebas del backend.
+
+4. Configura la base de datos:
    - Inicia XAMPP y asegúrate de que los servicios Apache y MySQL estén funcionando.
    - Crea una base de datos llamada `vendeya` en phpMyAdmin.
    - Importa el archivo `sql/database_setup.sql` para crear las tablas necesarias.
 
-4. Configura las variables de entorno:
+5. Configura las variables de entorno:
    - Crea un archivo `.env` en la raíz del proyecto basándote en el archivo `.env.example` (si existe).
    - Configura las credenciales de la base de datos y otras variables necesarias.
 
@@ -82,6 +88,26 @@ VendeYa es una plataforma de marketplace online desarrollada con React y PHP que
    ```bash
    npm run build
    ```
+
+## 🚀 Despliegue
+
+Para desplegar la aplicación en un servidor de producción:
+
+1. Construye la versión de producción del frontend:
+   ```bash
+   npm run build
+   ```
+
+2. Copia todos los archivos generados en la carpeta `dist` al directorio raíz de tu servidor web.
+
+3. Copia la carpeta `api` completa al directorio raíz de tu servidor web.
+
+4. Configura la base de datos en el servidor:
+   - Crea una base de datos para la aplicación.
+   - Importa el archivo `sql/database_setup.sql`.
+   - Actualiza el archivo `api/config/database.php` con las credenciales correctas.
+
+5. Asegúrate de que el servidor web tenga los permisos adecuados para acceder a los archivos y directorios.
 
 ## 📁 Estructura del Proyecto
 
@@ -110,11 +136,23 @@ VendeYa es una plataforma de marketplace online desarrollada con React y PHP que
 
 ## 🧪 Testing
 
-Ejecuta las pruebas con el siguiente comando:
+### Pruebas Frontend
+
+Ejecuta las pruebas del frontend con el siguiente comando:
 
 ```bash
 npm run test
 ```
+
+### Pruebas Backend
+
+Para ejecutar las pruebas del backend, asegúrate de tener instalado PHPUnit a través de Composer y ejecuta:
+
+```bash
+./vendor/bin/phpunit tests/backend
+```
+
+> Nota: Asegúrate de que XAMPP esté en funcionamiento con Apache y MySQL activos para las pruebas del backend.
 
 ## 🤝 Contribución
 
