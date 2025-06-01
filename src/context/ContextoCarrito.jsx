@@ -82,8 +82,9 @@ export function ProveedorCarrito({ children }) {
     // Función para agregar un producto al carrito
     const agregar = async (productoId, cantidad = 1) => {
         if (!usuario) {
-            setError('Debe iniciar sesión para agregar productos al carrito');
-            return;
+            const error = new Error('Debe iniciar sesión para agregar productos al carrito');
+            setError(error.message);
+            throw error;
         }
 
         try {
@@ -94,6 +95,8 @@ export function ProveedorCarrito({ children }) {
         } catch (error) {
             console.error('Error al agregar al carrito:', error);
             setError(error.message);
+            // Propagar el error para que el componente que llama pueda manejarlo
+            throw error;
         } finally {
             setCargando(false);
         }

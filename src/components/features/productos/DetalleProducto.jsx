@@ -46,11 +46,14 @@ function DetalleProducto() {
             }
             
             await agregar(producto.id);
+            // Solo mostrar mensaje de éxito si no hubo errores
             setMensajeExito('Producto añadido al carrito');
             // Limpiar el mensaje después de 3 segundos
             setTimeout(() => setMensajeExito(''), 3000);
         } catch (error) {
+            // Mostrar mensaje de error y no mostrar mensaje de éxito
             setError('Error al añadir al carrito: ' + error.message);
+            setMensajeExito(''); // Limpiar cualquier mensaje de éxito previo
             setTimeout(() => setError(null), 3000);
         }
     };
