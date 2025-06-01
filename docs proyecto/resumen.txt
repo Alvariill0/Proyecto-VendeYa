@@ -18,6 +18,18 @@ Una lista provisional de funcionalidades sería:
     • Panel de administración para gestionar usuarios y moderar contenido.
     
 -1.5. FLUJO DE LA APLICACION:
+
+-1.6. Funcionalidades del Proyecto:
+    • Registro y login de usuarios con roles diferenciados (usuario, administrador).
+    • Gestión de productos: crear, editar, eliminar y listar productos con categorías.
+    • Carrito de compras: añadir productos, actualizar cantidades y realizar pedidos.
+    • Panel de usuario personalizado según el rol del usuario.
+    • Sistema de mensajería entre compradores y vendedores.
+    • Valoraciones y comentarios de productos tras la compra.
+    • Estadísticas para vendedores: visualización de ventas, productos más vendidos y valoraciones.
+    • Buscador con filtros: búsqueda por categoría, precio, nombre, etc.
+    • Tema claro/oscuro: interfaz adaptable con soporte para modo oscuro.
+    Flujo de la aplicación:
     • Al entrar a la Web de VendeYa se mostrará un mensaje de bienvenida, quizás algunos componentes? o publicidad
     junto con unos botones de inicio de sesión y registro (está página podría tener un header distinto para no repetir los botones de inicio y registro),
     Desde aqui, una vez registrado/logeado la página inicial consistirá de: un header con el logo, buscador de productos y unos botones(buzón, icono perfil y un boton para vender) 
@@ -42,45 +54,6 @@ Los lenguajes y tecnologías que voy a utilizar en el proyecto son los siguiente
 
 -3: A tener en cuenta:
     o   Nombres de funciones, variables y archivos... en español y con nombres que pudiese escribir un alumno normal de DAW
-    o Estructura inicial propuesta:
-    src/
-├── components/
-│   ├── common/           # Componentes reutilizables (botones, inputs, modales...)
-│   ├── layout/           # Componentes de estructura (header, footer, sidebar...)
-│   └── features/         # Componentes específicos de funcionalidades
-│       ├── auth/         # Componentes de autenticación
-│       ├── products/     # Componentes de productos
-│       ├── cart/         # Componentes del carrito
-│       └── admin/        # Componentes del panel de administración
-├── pages/                # Páginas principales de la aplicación
-│   ├── Inicio/
-│   ├── IniciarSesion/
-│   ├── Registro/
-│   ├── ListaProductos/
-│   ├── DetalleProducto/
-│   ├── Carrito/
-│   └── Administracion/
-├── hooks/                # Custom hooks
-│   ├── useAutenticacion.jsx
-│   ├── useCarrito.jsx
-│   └── useProductos.jsx
-├── services/            # Servicios para comunicación con el backend
-│   ├── servicioAutenticacion.jsx
-│   ├── servicioProductos.jsx
-│   └── servicioCarrito.jsx
-├── utils/               # Funciones utilitarias
-│   ├── formateadores.jsx
-│   ├── validadores.jsx
-│   └── constantes.jsx
-├── context/            # Contextos de React
-│   ├── ContextoAutenticacion.jsx
-│   └── ContextoCarrito.jsx
-└── tests/              # Tests unitarios
-    ├── unit/
-    │   ├── components/
-    │   ├── hooks/
-    │   └── utils/
-    └── integration/
 
 -4 ESTRUCTURA BASE DE DATOS:
 
@@ -230,38 +203,3 @@ A continuación se detalla la estructura completa del proyecto VendeYa con una b
         ├── servicioProductos.jsx  # Funciones para gestionar productos
         └── servicioValoraciones.jsx # Funciones para gestionar valoraciones
 
--6. ESTRUCTURA DOCUMENTACIÓN:
-
-1.Definición del Proyecto
-1.1. Descripción General del Proyecto
-1.2. Tipos de Empresas. Sectores Productivos
-
-2.Diseño y Fases del Proyecto
-2.1. Objetivos. Especificación de Requisitos
-2.2. Identificación de las Fases del Proyecto
-2.3. Herramientas de Diseño
-2.4. Evaluación Económica y Financiación del Proyecto
-2.4.1. Estudio de Viabilidad
-2.4.2. Conclusión de Viabilidad
-2.4.3. Ayudas Económicas y Subvenciones
-
-3.Planificación del Proyecto
-3.1. Diagrama de Secuenciación del Proyecto
-3.2. Secuenciación de Actividades
-3.3. Asignación de Recursos y Tiempos
-3.4. Procedimientos en las Actividades
-3.5. Prevención de Riesgos
-
-4.Pruebas y Validación del Proyecto
-4.1. Evaluación y Seguimiento
-4.2. Indicadores de Calidad
-4.3. Informe de Evaluación de Incidencias
-
-5.Implantación del Proyecto
-5.1. Plan de Implantación
-5.2. Manual de Instalación
-5.3. Manual de Usuario
-
-6.Conclusión
-
-7.Bibliografía/Webgrafía

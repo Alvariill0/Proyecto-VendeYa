@@ -1,4 +1,14 @@
 ## 📋 Tareas pendientes:
+0. Funcionalidades Implementadas
+
+   - Registro y login de usuarios
+   - Gestión de productos
+   - Panel de usuario
+   - Visualización de estadísticas
+   - Buscador con filtros
+   - Valoraciones y comentarios
+   - Panel de administración
+
 1. ✅ Carrito de compras
    
    - ✅ Crear servicio de carrito (servicioCarrito.jsx)
