@@ -164,12 +164,31 @@ INSERT IGNORE INTO categorias (id, nombre, descripcion, parent_id) VALUES
 (7, 'Laptops y Computadoras', 'Ordenadores portátiles y de escritorio', 1),
 (8, 'Audio y Video', 'Equipos de sonido y video', 1),
 (9, 'Camisetas', 'Prendas superiores', 2),
-(10, 'Pantalones', 'Prendas inferiores', 2);
+(10, 'Pantalones', 'Prendas inferiores', 2),
+(11, 'Juguetes', 'Juguetes y juegos para todas las edades', NULL),
+(12, 'Salud y Belleza', 'Productos de salud y belleza', NULL),
+(13, 'Automotriz', 'Accesorios y repuestos para vehículos', NULL),
+(14, 'Electrodomésticos', 'Aparatos eléctricos para el hogar', NULL),
+(15, 'Oficina', 'Suministros y muebles de oficina', NULL),
+(16, 'Mascotas', 'Productos para mascotas', NULL),
+(17, 'Bebés', 'Productos para bebés y niños pequeños', NULL),
+(18, 'Joyería', 'Joyas y accesorios', NULL),
+(19, 'Herramientas', 'Herramientas y equipos de construcción', NULL),
+(20, 'Juegos de Mesa', 'Juegos de mesa y rompecabezas', 11);
 
 -- Insertar productos de ejemplo
--- Asegúrate de que los vendedor_id y categoria_id existan en las tablas usuarios y categorias
-INSERT INTO productos (nombre, descripcion, precio, vendedor_id, categoria_id, imagen) VALUES
-('Smartphone Avanzado', 'Potente smartphone con cámara de alta resolución.', 699.99, 1, 6, 'https://placehold.co/600x400?text=Smartphone'), /* vendedor_id 1 = admin, categoria_id 6 = Smartphones */
-('Laptop Ultrabook', 'Portátil ligero y rápido para productividad.', 950.00, 1, 7, 'https://placehold.co/600x400?text=Laptop'), /* vendedor_id 1 = admin, categoria_id 7 = Laptops y Computadoras */
-('Camiseta de Algodón', 'Camiseta básica de algodón orgánico.', 19.95, 1, 9, 'https://placehold.co/600x400?text=Camiseta'), /* vendedor_id 1 = admin, categoria_id 9 = Camisetas */
-('Pantalón Vaquero', 'Vaqueros ajustados de diseño moderno.', 45.50, 1, 10, 'https://placehold.co/600x400?text=Pantalon'); /* vendedor_id 1 = admin, categoria_id 10 = Pantalones */
+INSERT INTO productos (nombre, descripcion,stock, precio, vendedor_id, categoria_id, imagen) VALUES
+('Smartphone Avanzado', 'Potente smartphone con cámara de alta resolución.', 33, 699.99, 1, 6, 'https://placehold.co/600x400?text=Smartphone'),
+('Laptop Ultrabook', 'Portátil ligero y rápido para productividad.',  33,950.00, 1, 7, 'https://placehold.co/600x400?text=Laptop'),
+('Camiseta de Algodón', 'Camiseta básica de algodón orgánico.', 33, 19.95, 1, 9, 'https://placehold.co/600x400?text=Camiseta'),
+('Pantalón Vaquero', 'Vaqueros ajustados de diseño moderno.', 33, 45.50, 1, 10, 'https://placehold.co/600x400?text=Pantalon'),
+('Coche de Juguete', 'Coche de juguete a control remoto.', 33, 29.99, 1, 11, 'https://placehold.co/600x400?text=Coche+de+Juguete'),
+('Crema Facial', 'Crema hidratante para el rostro.', 33, 15.50, 1, 12, 'https://placehold.co/600x400?text=Crema+Facial'),
+('Aceite de Motor', 'Aceite sintético para motor de coche.', 33, 40.00, 1, 13, 'https://placehold.co/600x400?text=Aceite+de+Motor'),
+('Aspiradora', 'Aspiradora potente y silenciosa.', 33, 120.00, 1, 14, 'https://placehold.co/600x400?text=Aspiradora'),
+('Silla de Oficina', 'Silla ergonómica para oficina.', 33, 85.00, 1, 15, 'https://placehold.co/600x400?text=Silla+de+Oficina'),
+('Comida para Perros', 'Alimento balanceado para perros adultos.', 33, 25.00, 1, 16, 'https://placehold.co/600x400?text=Comida+para+Perros'),
+('Cuna para Bebé', 'Cuna segura y cómoda para bebés.', 33, 150.00, 1, 17, 'https://placehold.co/600x400?text=Cuna+para+Bebé'),
+('Collar de Perlas', 'Elegante collar de perlas.', 33, 200.00, 1, 18, 'https://placehold.co/600x400?text=Collar+de+Perlas'),
+('Taladro Eléctrico', 'Taladro eléctrico con múltiples velocidades.', 33, 60.00, 1, 19, 'https://placehold.co/600x400?text=Taladro+Eléctrico'),
+('Ajedrez', 'Juego de ajedrez clásico.', 33, 35.00, 1, 20, 'https://placehold.co/600x400?text=Ajedrez');
