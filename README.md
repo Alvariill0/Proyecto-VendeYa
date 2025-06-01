@@ -1,7 +1,7 @@
 # VendeYa - Plataforma de Marketplace Online
 
 <p align="center">
-  <img src="./src/assets/VendeYa_Logo.png" alt="VendeYa Logo" width="200">
+  <img src="./src/assets/VendeYa_Logo-nobg.png" alt="VendeYa Logo" width="200">
 </p>
 
 ## 📋 Descripción

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAutenticacion } from '../../context/ContextoAutenticacion';
 import { useCarrito } from '../../context/ContextoCarrito';
 import { useTheme } from '../../context/ContextoTema';
-import logo from '../../assets/VendeYa_Logo.png';
+import logo from '../../assets/VendeYa_Logo-nobg.png';
 
 export default function Header() {
     const { logout } = useAutenticacion();

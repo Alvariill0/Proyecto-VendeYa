@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:js": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -28,10 +29,12 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react-swc": "^3.9.0",
+    "clean-jsdoc-theme": "^4.3.0",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "jsdoc": "^4.0.4",
     "vite": "^6.3.5"
   }
 }

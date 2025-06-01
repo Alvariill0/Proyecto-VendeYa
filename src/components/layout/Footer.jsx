@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ContextoTema';
-import logo from '../../assets/VendeYa_Logo.png';
+import logo from '../../assets/VendeYa_Logo-nobg.png';
 
 export default function Footer() {
     const { toggleTheme, isDarkMode } = useTheme();

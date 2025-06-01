@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/VendeYa_Logo.png';import { useTheme } from '../context/ContextoTema';
+import logo from '../assets/VendeYa_Logo-nobg.png';
+import { useTheme } from '../context/ContextoTema';
 import { FaGoogle, FaFacebook, FaEnvelope, FaMoon, FaSun } from 'react-icons/fa';
 
 export default function Bienvenida() {

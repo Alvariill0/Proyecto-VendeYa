@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAutenticacion } from '../../../context/ContextoAutenticacion';
 import { useNavigate, Link } from 'react-router-dom';
-import logo from '../../../assets/VendeYa_Logo.png';
+import logo from '../../../assets/VendeYa_Logo-nobg.png';
 import { useTheme } from '../../../context/ContextoTema';
 import { FaMoon, FaSun } from 'react-icons/fa';
 

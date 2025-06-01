@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Manual del Proyecto VendeYa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2, h3 { color: #333; }
+        nav { margin-bottom: 20px; }
+        nav a { margin-right: 10px; text-decoration: none; color: #007BFF; }
+        section { margin-bottom: 40px; }
+        code { background-color: #f4f4f4; padding: 5px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Documentación Manual del Proyecto VendeYa</h1>
+    <nav>
+        <a href="#introduccion">Introducción</a>
+        <a href="#funcionalidades">Funcionalidades</a>
+        <a href="#ejemplos">Ejemplos de Código</a>
+        <a href="#mejores-practicas">Mejores Prácticas</a>
+    </nav>
+
+    <section id="introduccion">
+        <h2>Introducción</h2>
+        <p>Bienvenido a la documentación manual del proyecto VendeYa. Aquí encontrará información detallada sobre las funcionalidades del proyecto, ejemplos de código y mejores prácticas para el desarrollo.</p>
+    </section>
+
+    <section id="funcionalidades">
+        <h2>Funcionalidades</h2>
+        <h3>Autenticación</h3>
+        <p>El sistema de autenticación permite a los usuarios registrarse e iniciar sesión de manera segura.</p>
+        <h3>Gestión de Productos</h3>
+        <p>Los usuarios pueden crear, actualizar y eliminar productos, así como listar productos disponibles.</p>
+        <h3>Carrito de Compras</h3>
+        <p>Funcionalidad para agregar productos al carrito, actualizar cantidades y realizar compras.</p>
+        <h3>Mensajería</h3>
+        <p>Los usuarios pueden enviar y recibir mensajes, iniciar conversaciones y marcar mensajes como leídos.</p>
+    </section>
+
+    <section id="ejemplos">
+        <h2>Ejemplos de Código</h2>
+        <h3>Ejemplo de Autenticación</h3>
+        <code>
+            // Ejemplo de código para iniciar sesión
+            const iniciarSesion = async (email, password) => {
+                try {
+                    const response = await servicioAutenticacion.login(email, password);
+                    // Manejo de respuesta
+                } catch (error) {
+                    console.error('Error al iniciar sesión:', error);
+                }
+            };
+        </code>
+        <h3>Ejemplo de Mensajería</h3>
+        <code>
+            // Ejemplo de código para enviar un mensaje
+            const enviarMensaje = async (mensaje, destinatario) => {
+                try {
+                    const response = await servicioMensajes.enviar(mensaje, destinatario);
+                    // Manejo de respuesta
+                } catch (error) {
+                    console.error('Error al enviar mensaje:', error);
+                }
+            };
+        </code>
+    </section>
+
+    <section id="mejores-practicas">
+        <h2>Mejores Prácticas</h2>
+        <ul>
+            <li>Documenta el código mientras lo escribes para mantener la coherencia.</li>
+            <li>Utiliza funciones asíncronas para operaciones que requieren comunicación con el servidor.</li>
+            <li>Mantén la seguridad de los datos mediante la validación y sanitización de entradas.</li>
+            <li>Implementa manejo de errores robusto para mejorar la experiencia del usuario.</li>
+        </ul>
+    </section>
+</body>
+</html>

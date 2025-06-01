@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAutenticacion } from '../../context/ContextoAutenticacion'
 import { useTheme } from '../../context/ContextoTema'
-import logo from '../../assets/VendeYa_Logo.png';
+import logo from '../../assets/VendeYa_Logo-nobg.png';
 import Header from './Header';
 import Navbar from './Navbar';
 import Footer from './Footer';
