@@ -44,12 +44,12 @@ export default function Navbar() {
     };
 
     return (
-        <nav className={`navbar border-bottom ${isDarkMode ? 'bg-dark border-secondary' : 'bg-light'}`}>
+        <nav className={`navbar border-bottom ${isDarkMode ? 'bg-dark border-secondary' : 'navbar-green'}`}>
             <div className="container-fluid">
                 <div className="d-flex align-items-center py-2">
                     {/* Botón para ver todas las categorías */}
                     <button 
-                        className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-secondary'} me-3`}
+                        className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-light'} me-3`}
                         type="button"
                         onClick={abrirOffcanvasCategorias}
                         disabled={cargandoCategorias}
@@ -57,7 +57,7 @@ export default function Navbar() {
                         {cargandoCategorias ? 'Cargando...' : 'Ver todas las categorías'}
                     </button>
                     
-                    <span className={`me-3 ${isDarkMode ? 'text-light' : 'text-dark'}`}>Categorías Populares:</span>
+                    <span className={`me-3 ${isDarkMode ? 'text-light' : 'text-white'}`}>Categorías Populares:</span>
                     <div className="d-flex gap-3">
                         {/* Cargar categorías populares dinámicamente si están disponibles */}
                         {listaCategorias.length > 0 ? (
@@ -66,7 +66,7 @@ export default function Navbar() {
                                     <Link 
                                         key={categoria.id} 
                                         to={`/principal/${categoria.id}`} 
-                                        className={`text-decoration-none ${isDarkMode ? 'text-light' : 'text-dark'}`}
+                                        className={`categoria-link ${isDarkMode ? 'text-light' : 'text-white'}`}
                                     >
                                         {categoria.nombre}
                                     </Link>
@@ -75,7 +75,7 @@ export default function Navbar() {
                                 // Mostrar enlaces temporales mientras se cargan las categorías
                                 <Link 
                                     to="#" 
-                                    className={`text-decoration-none ${isDarkMode ? 'text-light' : 'text-dark'}`}
+                                    className={`categoria-link ${isDarkMode ? 'text-light' : 'text-white'}`}
                                     onClick={(e) => {
                                         e.preventDefault();
                                         abrirOffcanvasCategorias();

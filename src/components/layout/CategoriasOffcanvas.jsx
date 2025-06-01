@@ -30,7 +30,7 @@ function CategoriasOffcanvas({ mostrar, alCerrar, categorias }) {
                         {categorias.map(categoria => (
                             <li key={categoria.id}>
                                 <button 
-                                    className="btn btn-link p-0 border-0 text-decoration-none"
+                                    className="btn btn-link p-0 border-0 text-decoration-none categoria-menu-item"
                                     style={{ color: isDarkMode ? 'var(--bs-light)' : 'var(--bs-dark)' }}
                                     onClick={() => manejarClickCategoria(categoria.id)}
                                 >
@@ -41,7 +41,7 @@ function CategoriasOffcanvas({ mostrar, alCerrar, categorias }) {
                                         {categoria.subcategorias.map(subcategoria => (
                                             <li key={subcategoria.id}>
                                                 <button 
-                                                    className="btn btn-link p-0 border-0 text-decoration-none"
+                                                    className="btn btn-link p-0 border-0 text-decoration-none subcategoria-menu-item"
                                                     style={{ color: isDarkMode ? 'var(--bs-light)' : 'var(--bs-dark)' }}
                                                     onClick={() => manejarClickCategoria(subcategoria.id)}
                                                 >

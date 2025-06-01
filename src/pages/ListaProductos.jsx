@@ -87,8 +87,8 @@ function ListaProductos() {
   // Renderizar tarjeta de producto (componente reutilizable)
   const renderProductoCard = (producto) => (
     <div key={producto.id} className="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div className="card h-100 shadow-sm border-0 producto-card">
-        <div className="position-relative">
+      <div className="card h-100 shadow border-0 producto-card">
+        <div className="position-relative overflow-hidden">
           <img 
             src={producto.imagen} 
             className="card-img-top" 
@@ -96,8 +96,8 @@ function ListaProductos() {
             style={{ height: '200px', objectFit: 'cover' }}
           />
           {producto.stock <= 0 && (
-            <div className="position-absolute top-0 end-0 bg-danger text-white m-2 px-2 py-1 rounded-pill">
-              <small>Agotado</small>
+            <div className="position-absolute top-0 end-0 bg-danger text-white m-2 px-2 py-1 rounded-pill shadow-sm">
+              <small><i className="bi bi-x-circle me-1"></i>Agotado</small>
             </div>
           )}
         </div>
@@ -106,25 +106,25 @@ function ListaProductos() {
           <p className="card-text text-muted small mb-1">
             <i className="bi bi-person-circle me-1"></i> {producto.vendedor_nombre}
           </p>
-          <p className="card-text fw-bold fs-5 text-primary mb-1">
+          <p className="card-text fw-bold fs-4 text-primary mb-1">
             {parseFloat(producto.precio).toFixed(2)} €
           </p>
           <p className="card-text small mb-3">
-            <span className={`badge ${producto.stock > 0 ? 'bg-success' : 'bg-secondary'}`}>
-              Stock: {producto.stock}
+            <span className={`badge ${producto.stock > 0 ? 'bg-success' : 'bg-secondary'} shadow-sm`}>
+              <i className="bi bi-box-seam me-1"></i> Stock: {producto.stock}
             </span>
           </p>
           <div className="d-flex gap-2 mt-auto">
-            <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
+            <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center shadow-sm">
               <i className="bi bi-eye-fill me-2"></i> Ver Detalles
             </Link>
             {usuario && usuario.id === parseInt(producto.vendedor_id) ? (
-              <Link to={`/editar-producto/${producto.id}`} className="btn btn-outline-warning d-flex align-items-center">
+              <Link to={`/editar-producto/${producto.id}`} className="btn btn-warning d-flex align-items-center shadow-sm">
                 <i className="bi bi-pencil-fill fs-5"></i>
               </Link>
             ) : (
               <button 
-                className="btn btn-outline-success d-flex align-items-center" 
+                className="btn btn-success d-flex align-items-center shadow-sm" 
                 onClick={() => handleAgregarAlCarrito(producto)}
                 disabled={producto.stock <= 0}
                 title={producto.stock <= 0 ? "Sin stock disponible" : "Añadir al carrito"}
