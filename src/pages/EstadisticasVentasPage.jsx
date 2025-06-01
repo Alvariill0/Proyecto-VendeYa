@@ -65,6 +65,11 @@ const EstadisticasVentasPage = () => {
         // Colores adaptados al tema
         const textColor = isDarkMode ? '#f8f9fa' : '#212529';
         const gridColor = isDarkMode ? '#495057' : '#e9e9e9';
+        const tooltipBackgroundColor = isDarkMode ? '#343a40' : '#ffffff';
+        const tooltipTextColor = isDarkMode ? '#f8f9fa' : '#212529';
+        const tooltipBorderColor = isDarkMode ? '#495057' : '#e9e9e9';
+        const lineColor = isDarkMode ? '#20c997' : '#0d6efd';
+        const barColor = isDarkMode ? '#0dcaf0' : '#0d6efd';
 
         return {
             series: [
@@ -76,7 +81,8 @@ const EstadisticasVentasPage = () => {
                 {
                     name: 'Ingresos (€)',
                     type: 'line',
-                    data: ingresosPorMes.map(valor => parseFloat(valor.toFixed(2)))
+                    data: ingresosPorMes.map(valor => parseFloat(valor.toFixed(2))),
+                    color: lineColor
                 }
             ],
             options: {
@@ -86,7 +92,8 @@ const EstadisticasVentasPage = () => {
                     toolbar: {
                         show: false
                     },
-                    foreColor: textColor
+                    foreColor: '#00cc44',
+                    background: 'transparent'
                 },
                 stroke: {
                     width: [0, 4]
@@ -94,14 +101,36 @@ const EstadisticasVentasPage = () => {
                 title: {
                     text: 'Ventas e Ingresos Mensuales',
                     style: {
-                        color: textColor
+                        color: '#00cc44',
+                        fontWeight: 600
                     }
                 },
                 dataLabels: {
                     enabled: true,
                     enabledOnSeries: [1],
                     style: {
-                        colors: [textColor]
+                        colors: ['#00cc44'],
+                        fontWeight: 600,
+                        fontSize: '12px',
+                        textOutline: 'none'
+                    },
+                    background: {
+                        enabled: true,
+                        foreColor: '#00cc44',
+                        backgroundColor: isDarkMode ? '#343a40' : '#ffffff',
+                        borderRadius: 4,
+                        padding: 4,
+                        opacity: 0.9,
+                        borderWidth: 1,
+                        borderColor: tooltipBorderColor,
+                        dropShadow: {
+                            enabled: true,
+                            top: 1,
+                            left: 1,
+                            blur: 3,
+                            color: isDarkMode ? '#000000' : '#cccccc',
+                            opacity: 0.5
+                        }
                     }
                 },
                 labels: meses,
@@ -109,7 +138,7 @@ const EstadisticasVentasPage = () => {
                     type: 'category',
                     labels: {
                         style: {
-                            colors: Array(12).fill(textColor)
+                            colors: Array(12).fill('#00cc44')
                         }
                     },
                     axisBorder: {
@@ -124,12 +153,12 @@ const EstadisticasVentasPage = () => {
                         title: {
                             text: 'Ventas',
                             style: {
-                                color: textColor
+                                color: '#00cc44'
                             }
                         },
                         labels: {
                             style: {
-                                colors: [textColor]
+                                colors: ['#00cc44']
                             }
                         }
                     },
@@ -138,24 +167,51 @@ const EstadisticasVentasPage = () => {
                         title: {
                             text: 'Ingresos (€)',
                             style: {
-                                color: textColor
+                                color: '#00cc44'
                             }
                         },
                         labels: {
                             style: {
-                                colors: [textColor]
+                                colors: ['#00cc44']
+                            },
+                            formatter: function(val) {
+                                return val.toFixed(2) + ' €';
                             }
                         }
                     }
                 ],
+                tooltip: {
+                    theme: isDarkMode ? 'dark' : 'light',
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function(value, { seriesIndex }) {
+                            if (seriesIndex === 1) {
+                                return value.toFixed(2) + ' €';
+                            }
+                            return value;
+                        }
+                    },
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif'
+                    },
+                    marker: {
+                        show: true
+                    }
+                },
                 grid: {
-                    borderColor: gridColor
+                    borderColor: gridColor,
+                    strokeDashArray: 4
                 },
                 legend: {
                     labels: {
                         colors: textColor
-                    }
-                }
+                    },
+                    position: 'top',
+                    horizontalAlign: 'right'
+                },
+                colors: [barColor, lineColor]
             }
         };
     };
@@ -189,7 +245,10 @@ const EstadisticasVentasPage = () => {
         // Colores adaptados al tema
         const textColor = isDarkMode ? '#f8f9fa' : '#212529';
         const gridColor = isDarkMode ? '#495057' : '#e9e9e9';
-        const barColor = isDarkMode ? '#0d6efd' : '#33b2df';
+        const barColor = isDarkMode ? '#0dcaf0' : '#0d6efd';
+        const tooltipBackgroundColor = isDarkMode ? '#343a40' : '#ffffff';
+        const tooltipTextColor = isDarkMode ? '#f8f9fa' : '#212529';
+        const tooltipBorderColor = isDarkMode ? '#495057' : '#e9e9e9';
         
         return {
             series: [{
@@ -202,7 +261,8 @@ const EstadisticasVentasPage = () => {
                     toolbar: {
                         show: false
                     },
-                    foreColor: textColor
+                    foreColor: '#00cc44',
+                    background: 'transparent'
                 },
                 plotOptions: {
                     bar: {
@@ -222,7 +282,31 @@ const EstadisticasVentasPage = () => {
                 dataLabels: {
                     enabled: true,
                     style: {
-                        colors: [textColor]
+                        colors: ['#00cc44'],
+                        fontWeight: 600,
+                        fontSize: '12px',
+                        textOutline: 'none'
+                    },
+                    formatter: function(val) {
+                        return val.toString();
+                    },
+                    background: {
+                        enabled: true,
+                        foreColor: '#00cc44',
+                        backgroundColor: isDarkMode ? '#343a40' : '#ffffff',
+                        borderRadius: 4,
+                        padding: 4,
+                        opacity: 0.9,
+                        borderWidth: 1,
+                        borderColor: tooltipBorderColor,
+                        dropShadow: {
+                            enabled: true,
+                            top: 1,
+                            left: 1,
+                            blur: 3,
+                            color: isDarkMode ? '#000000' : '#cccccc',
+                            opacity: 0.5
+                        }
                     }
                 },
                 xaxis: {
@@ -230,12 +314,12 @@ const EstadisticasVentasPage = () => {
                     title: {
                         text: 'Unidades vendidas',
                         style: {
-                            color: textColor
+                            color: '#00cc44'
                         }
                     },
                     labels: {
                         style: {
-                            colors: Array(top5.length).fill(textColor)
+                            colors: Array(top5.length).fill('#00cc44')
                         }
                     },
                     axisBorder: {
@@ -248,15 +332,27 @@ const EstadisticasVentasPage = () => {
                 title: {
                     text: 'Productos Más Vendidos',
                     style: {
-                        color: textColor
+                        color: '#00cc44',
+                        fontWeight: 600
+                    }
+                },
+                tooltip: {
+                    theme: isDarkMode ? 'dark' : 'light',
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif'
+                    },
+                    marker: {
+                        show: true
                     }
                 },
                 grid: {
-                    borderColor: gridColor
+                    borderColor: gridColor,
+                    strokeDashArray: 4
                 },
                 legend: {
                     labels: {
-                        colors: textColor
+                        colors: '#00cc44'
                     }
                 }
             }

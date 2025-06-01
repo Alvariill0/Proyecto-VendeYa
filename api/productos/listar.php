@@ -27,12 +27,12 @@ $incluir_stock_cero = isset($_GET['incluir_stock_cero']) && $_GET['incluir_stock
 $busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : null;
 
 // Consulta base para obtener productos
-// Incluimos el nombre del vendedor (nombre de la tabla usuarios) y el stock
-$sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id";
+// Incluimos el nombre del vendedor (nombre de la tabla usuarios), el stock y el nombre de la categoría
+$sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, p.categoria_id, u.nombre as vendedor_nombre, c.nombre as categoria_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id LEFT JOIN categorias c ON p.categoria_id = c.id";
 
 // Filtrar productos con categorías sugeridas
 if ($categorias_sugeridas) {
-    $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, u.nombre as vendedor_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id WHERE p.descripcion LIKE '%[Categoría sugerida:%'";
+    $sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, p.stock, p.categoria_id, u.nombre as vendedor_nombre, c.nombre as categoria_nombre FROM productos p JOIN usuarios u ON p.vendedor_id = u.id LEFT JOIN categorias c ON p.categoria_id = c.id WHERE p.descripcion LIKE '%[Categoría sugerida:%'";
 }
 
 // Añadir filtro por categoría si se proporciona un categoria_id
