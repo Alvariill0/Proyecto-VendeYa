@@ -338,25 +338,34 @@ function ListaProductosConFiltros({ categoriaId, terminoBusqueda }) {
                     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                         {productosFiltrados().map((producto) => (
                             <div key={producto.id} className="col">
-                                <div className="card h-100">
-                                    <img
-                                        src={producto.imagen}
-                                        className="card-img-top"
-                                        alt={producto.nombre}
-                                        style={{ height: '200px', objectFit: 'cover' }}
-                                    />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{producto.nombre}</h5>
-                                        <p className="card-text text-muted">
-                                            Vendedor: {producto.vendedor_nombre}
+                                <div className="card h-100 shadow-sm border-0 producto-card">
+                                    <div className="position-relative">
+                                        <img
+                                            src={producto.imagen}
+                                            className="card-img-top"
+                                            alt={producto.nombre}
+                                            style={{ height: '200px', objectFit: 'cover' }}
+                                        />
+                                        {producto.stock <= 0 && (
+                                            <div className="position-absolute top-0 end-0 bg-danger text-white m-2 px-2 py-1 rounded-pill">
+                                                <small>Agotado</small>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="card-body d-flex flex-column">
+                                        <h5 className="card-title text-truncate">{producto.nombre}</h5>
+                                        <p className="card-text text-muted small mb-1">
+                                            <i className="bi bi-person-circle me-1"></i> {producto.vendedor_nombre}
                                         </p>
-                                        <p className="card-text fw-bold">
+                                        <p className="card-text fw-bold fs-5 text-primary mb-1">
                                             {parseFloat(producto.precio).toFixed(2)} €
                                         </p>
-                                        <p className="card-text">
-                                            Stock: {producto.stock}
+                                        <p className="card-text small mb-3">
+                                            <span className={`badge ${producto.stock > 0 ? 'bg-success' : 'bg-secondary'}`}>
+                                                Stock: {producto.stock}
+                                            </span>
                                         </p>
-                                        <div className="d-flex gap-2 mt-2">
+                                        <div className="d-flex gap-2 mt-auto">
                                             <Link to={`/producto/${producto.id}`} className="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
                                                 <i className="bi bi-eye-fill me-2"></i> Ver Detalles
                                             </Link>

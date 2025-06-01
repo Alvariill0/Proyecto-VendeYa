@@ -111,12 +111,62 @@ function PanelUsuario() {
             case 'perfil':
                 return (
                     <div className="perfil-container">
-                        <h3>Mi Perfil</h3>
-                        <div className="card">
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+                            <h3>Mi Perfil</h3>
+                        </div>
+                        <div className="card shadow-sm border-0">
                             <div className="card-body">
-                                <h5 className="card-title">{usuario.nombre}</h5>
-                                <p className="card-text"><strong>Email:</strong> {usuario.email}</p>
-                                <p className="card-text"><strong>Rol:</strong> {usuario.rol}</p>
+                                <div className="row">
+                                    <div className="col-md-4 text-center mb-4 mb-md-0">
+                                        <div className="avatar-container mb-3">
+                                            <div className="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto">
+                                                <span className="display-4">{usuario.nombre.charAt(0).toUpperCase()}</span>
+                                            </div>
+                                        </div>
+                                        <h4>{usuario.nombre}</h4>
+                                        <span className="badge bg-info">{usuario.rol}</span>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="info-section">
+                                            <h5 className="border-bottom pb-2 mb-3">Información Personal</h5>
+                                            <div className="mb-3">
+                                                <div className="d-flex">
+                                                    <div className="info-label">
+                                                        <i className="bi bi-envelope-fill text-primary me-2"></i>
+                                                        <strong>Email:</strong>
+                                                    </div>
+                                                    <div className="info-value ms-2">{usuario.email}</div>
+                                                </div>
+                                            </div>
+                                            <div className="mb-3">
+                                                <div className="d-flex">
+                                                    <div className="info-label">
+                                                        <i className="bi bi-person-badge-fill text-primary me-2"></i>
+                                                        <strong>Rol:</strong>
+                                                    </div>
+                                                    <div className="info-value ms-2">{usuario.rol}</div>
+                                                </div>
+                                            </div>
+                                            <div className="mb-3">
+                                                <div className="d-flex">
+                                                    <div className="info-label">
+                                                        <i className="bi bi-calendar-check-fill text-primary me-2"></i>
+                                                        <strong>Miembro desde:</strong>
+                                                    </div>
+                                                    <div className="info-value ms-2">Enero 2023</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-4">
+                                            <button className="btn btn-outline-primary me-2">
+                                                <i className="bi bi-pencil-fill me-2"></i>Editar Perfil
+                                            </button>
+                                            <button className="btn btn-outline-secondary">
+                                                <i className="bi bi-key-fill me-2"></i>Cambiar Contraseña
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

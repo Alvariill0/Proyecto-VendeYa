@@ -84,15 +84,15 @@ function TablaProductos({ productos, onRecargar }) {
                                 <td>${producto.precio}</td>
                                 <td>{producto.stock}</td>
                                 <td>
-                                    <div className="btn-group" role="group">
+                                    <div className="d-flex gap-2" role="group">
                                         <button 
-                                            className="btn btn-sm btn-outline-primary" 
+                                            className="btn btn-sm btn-primary" 
                                             onClick={() => handleEditar(producto.id)}
                                         >
                                             Editar
                                         </button>
                                         <button 
-                                            className="btn btn-sm btn-outline-danger" 
+                                            className="btn btn-sm btn-danger" 
                                             onClick={() => confirmarEliminar(producto)}
                                         >
                                             Eliminar
