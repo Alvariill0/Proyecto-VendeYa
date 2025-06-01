@@ -5,6 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import TablaProductos from './TablaProductos';
 import PedidosRecientes from '../pedidos/PedidosRecientes';
 import VentasRecientes from '../ventas/VentasRecientes';
+import Modal from '../../common/Modal';
+import EditarPerfil from './EditarPerfil';
+import CambiarPassword from './CambiarPassword';
 
 function PanelUsuario() {
     const { usuario } = useAutenticacion();
@@ -12,6 +15,8 @@ function PanelUsuario() {
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [seccionActiva, setSeccionActiva] = useState('productos');
+    const [modalEditarPerfil, setModalEditarPerfil] = useState(false);
+    const [modalCambiarPassword, setModalCambiarPassword] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -158,10 +163,16 @@ function PanelUsuario() {
                                             </div>
                                         </div>
                                         <div className="mt-4">
-                                            <button className="btn btn-primary me-2 shadow-sm">
+                                            <button 
+                                                className="btn btn-primary me-2 shadow-sm"
+                                                onClick={() => setModalEditarPerfil(true)}
+                                            >
                                                 <i className="bi bi-pencil-fill me-2"></i>Editar Perfil
                                             </button>
-                                            <button className="btn btn-secondary shadow-sm">
+                                            <button 
+                                                className="btn btn-secondary shadow-sm"
+                                                onClick={() => setModalCambiarPassword(true)}
+                                            >
                                                 <i className="bi bi-key-fill me-2"></i>Cambiar Contraseña
                                             </button>
                                         </div>
@@ -183,6 +194,16 @@ function PanelUsuario() {
     return (
         <div className="container mt-4">
             <h2 className="mb-4">Panel de Usuario</h2>
+            
+            {/* Modal para editar perfil */}
+            <Modal isOpen={modalEditarPerfil} onClose={() => setModalEditarPerfil(false)}>
+                <EditarPerfil onClose={() => setModalEditarPerfil(false)} />
+            </Modal>
+            
+            {/* Modal para cambiar contraseña */}
+            <Modal isOpen={modalCambiarPassword} onClose={() => setModalCambiarPassword(false)}>
+                <CambiarPassword onClose={() => setModalCambiarPassword(false)} />
+            </Modal>
             
             <div className="row">
                 <div className="col-md-3">
