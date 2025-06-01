@@ -1,0 +1,244 @@
+/* Estilos para la documentación manual de VendeYa */
+
+:root {
+    --primary-color: #007BFF;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --body-bg: #ffffff;
+    --body-color: #333333;
+    --border-color: #dee2e6;
+    --code-bg: #f4f4f4;
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --body-bg: #121212;
+        --body-color: #e0e0e0;
+        --border-color: #444;
+        --code-bg: #2d2d2d;
+        --light-color: #2c2c2c;
+        --dark-color: #e0e0e0;
+    }
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: var(--body-color);
+    background-color: var(--body-bg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Encabezado */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* Navegación */
+nav {
+    background-color: var(--light-color);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Secciones */
+section {
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: var(--body-bg);
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+section h3 {
+    color: var(--secondary-color);
+    margin-top: 25px;
+}
+
+section h4 {
+    color: var(--dark-color);
+    margin-top: 20px;
+}
+
+/* Código */
+code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    background-color: var(--code-bg);
+    padding: 15px;
+    border-radius: 5px;
+    display: block;
+    overflow-x: auto;
+    margin: 15px 0;
+    border: 1px solid var(--border-color);
+    line-height: 1.5;
+}
+
+pre {
+    margin: 0;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--light-color);
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Alertas */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+}
+
+.alert-info {
+    background-color: #d9edf7;
+    border-color: var(--info-color);
+    color: #31708f;
+}
+
+.alert-warning {
+    background-color: #fcf8e3;
+    border-color: var(--warning-color);
+    color: #8a6d3b;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    border-color: var(--success-color);
+    color: #3c763d;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: var(--danger-color);
+    color: #a94442;
+}
+
+/* Listas */
+ul, ol {
+    padding-left: 25px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Enlaces */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Subsecciones */
+.subsection {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-left: 3px solid var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Pie de página */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    background-color: var(--light-color);
+    border-top: 1px solid var(--border-color);
+    color: var(--secondary-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    nav a {
+        margin: 5px 10px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    section {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+}

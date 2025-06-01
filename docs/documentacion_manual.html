@@ -4,77 +4,489 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentación Manual del Proyecto VendeYa</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1, h2, h3 { color: #333; }
-        nav { margin-bottom: 20px; }
-        nav a { margin-right: 10px; text-decoration: none; color: #007BFF; }
-        section { margin-bottom: 40px; }
-        code { background-color: #f4f4f4; padding: 5px; border-radius: 5px; }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Documentación Manual del Proyecto VendeYa</h1>
+    <header>
+        <div class="container">
+            <h1>Documentación Manual del Proyecto VendeYa</h1>
+        </div>
+    </header>
+    
+    <div class="container">
     <nav>
         <a href="#introduccion">Introducción</a>
-        <a href="#funcionalidades">Funcionalidades</a>
-        <a href="#ejemplos">Ejemplos de Código</a>
+        <a href="#estructura">Estructura del Proyecto</a>
+        <a href="#frontend">Frontend</a>
+        <a href="#backend">Backend</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#hooks">Hooks Personalizados</a>
+        <a href="#contextos">Contextos</a>
+        <a href="#componentes">Componentes</a>
+        <a href="#api">API</a>
         <a href="#mejores-practicas">Mejores Prácticas</a>
     </nav>
 
     <section id="introduccion">
         <h2>Introducción</h2>
-        <p>Bienvenido a la documentación manual del proyecto VendeYa. Aquí encontrará información detallada sobre las funcionalidades del proyecto, ejemplos de código y mejores prácticas para el desarrollo.</p>
+        <p>Bienvenido a la documentación manual del proyecto VendeYa. Esta plataforma de marketplace online permite a los usuarios registrarse, publicar productos, realizar compras y gestionar pedidos. El proyecto está desarrollado con React en el frontend y PHP en el backend.</p>
+        
+        <div class="alert alert-info">
+            <strong>Nota:</strong> Esta documentación está dirigida a desarrolladores que necesitan entender la estructura y funcionamiento del proyecto para su mantenimiento o ampliación.
+        </div>
+        
+        <h3>Características Principales</h3>
+        <ul>
+            <li><strong>Sistema de Autenticación:</strong> Registro y login de usuarios con roles diferenciados.</li>
+            <li><strong>Gestión de Productos:</strong> Crear, editar, eliminar y listar productos con categorías.</li>
+            <li><strong>Carrito de Compras:</strong> Añadir productos, actualizar cantidades y realizar pedidos.</li>
+            <li><strong>Panel de Usuario:</strong> Personalizado según el rol del usuario.</li>
+            <li><strong>Sistema de Mensajería:</strong> Comunicación entre compradores y vendedores.</li>
+            <li><strong>Valoraciones y Comentarios:</strong> Posibilidad de valorar productos tras la compra.</li>
+            <li><strong>Estadísticas para Vendedores:</strong> Visualización de ventas, productos más vendidos y valoraciones.</li>
+            <li><strong>Buscador con Filtros:</strong> Búsqueda por categoría, precio, nombre, etc.</li>
+            <li><strong>Tema Claro/Oscuro:</strong> Interfaz adaptable con soporte para modo oscuro.</li>
+        </ul>
     </section>
 
-    <section id="funcionalidades">
-        <h2>Funcionalidades</h2>
-        <h3>Autenticación</h3>
-        <p>El sistema de autenticación permite a los usuarios registrarse e iniciar sesión de manera segura.</p>
-        <h3>Gestión de Productos</h3>
-        <p>Los usuarios pueden crear, actualizar y eliminar productos, así como listar productos disponibles.</p>
-        <h3>Carrito de Compras</h3>
-        <p>Funcionalidad para agregar productos al carrito, actualizar cantidades y realizar compras.</p>
-        <h3>Mensajería</h3>
-        <p>Los usuarios pueden enviar y recibir mensajes, iniciar conversaciones y marcar mensajes como leídos.</p>
+    <section id="estructura">
+        <h2>Estructura del Proyecto</h2>
+        <p>El proyecto sigue una estructura organizada que separa claramente el frontend del backend:</p>
+        
+        <h3>Estructura de Carpetas</h3>
+        <pre><code>
+├── api/                           # Backend en PHP
+│   ├── auth/                      # Endpoints de autenticación
+│   ├── carrito/                   # Endpoints del carrito
+│   ├── categorias/                # Endpoints de categorías
+│   ├── config/                    # Configuración de la BD
+│   ├── mensajes/                  # Sistema de mensajería
+│   ├── pedidos/                   # Gestión de pedidos
+│   ├── productos/                 # Gestión de productos
+│   ├── utils/                     # Utilidades comunes
+│   └── valoraciones/              # Sistema de valoraciones
+├── src/                           # Código fuente (React)
+│   ├── assets/                    # Recursos estáticos
+│   ├── components/                # Componentes React
+│   │   ├── common/                # Componentes genéricos
+│   │   ├── features/              # Componentes específicos
+│   │   └── layout/                # Componentes de estructura
+│   ├── context/                   # Contextos de React
+│   ├── hooks/                     # Hooks personalizados
+│   ├── pages/                     # Páginas principales
+│   └── services/                  # Servicios para API
+└── public/                        # Archivos públicos
+        </code></pre>
     </section>
 
-    <section id="ejemplos">
-        <h2>Ejemplos de Código</h2>
-        <h3>Ejemplo de Autenticación</h3>
-        <code>
-            // Ejemplo de código para iniciar sesión
-            const iniciarSesion = async (email, password) => {
-                try {
-                    const response = await servicioAutenticacion.login(email, password);
-                    // Manejo de respuesta
-                } catch (error) {
-                    console.error('Error al iniciar sesión:', error);
-                }
-            };
-        </code>
-        <h3>Ejemplo de Mensajería</h3>
-        <code>
-            // Ejemplo de código para enviar un mensaje
-            const enviarMensaje = async (mensaje, destinatario) => {
-                try {
-                    const response = await servicioMensajes.enviar(mensaje, destinatario);
-                    // Manejo de respuesta
-                } catch (error) {
-                    console.error('Error al enviar mensaje:', error);
-                }
-            };
-        </code>
+    <section id="frontend">
+        <h2>Frontend</h2>
+        <p>El frontend está desarrollado con React y utiliza varias tecnologías y patrones:</p>
+        
+        <h3>Tecnologías Principales</h3>
+        <ul>
+            <li><strong>React 19:</strong> Biblioteca para construir interfaces de usuario.</li>
+            <li><strong>React Router 7:</strong> Navegación entre páginas.</li>
+            <li><strong>Bootstrap 5:</strong> Framework CSS para diseño responsive.</li>
+            <li><strong>React Bootstrap:</strong> Componentes Bootstrap para React.</li>
+            <li><strong>React Icons:</strong> Iconos para la interfaz.</li>
+            <li><strong>React Toastify:</strong> Notificaciones toast.</li>
+            <li><strong>ApexCharts:</strong> Gráficos estadísticos.</li>
+        </ul>
+        
+        <h3>Estructura de Archivos</h3>
+        <p>Los archivos del frontend están organizados siguiendo un patrón de características (feature-based):</p>
+        <ul>
+            <li><strong>/components/common/:</strong> Componentes reutilizables como modales, estados de carga, etc.</li>
+            <li><strong>/components/features/:</strong> Componentes organizados por funcionalidad (auth, carrito, productos, etc.).</li>
+            <li><strong>/components/layout/:</strong> Componentes estructurales como Header, Footer, Navbar.</li>
+            <li><strong>/context/:</strong> Contextos de React para gestión de estado global.</li>
+            <li><strong>/hooks/:</strong> Hooks personalizados para lógica reutilizable.</li>
+            <li><strong>/pages/:</strong> Componentes de página que integran múltiples componentes.</li>
+            <li><strong>/services/:</strong> Servicios para comunicación con la API.</li>
+        </ul>
+    </section>
+
+    <section id="backend">
+        <h2>Backend</h2>
+        <p>El backend está desarrollado en PHP y sigue una estructura de API REST:</p>
+        
+        <h3>Tecnologías Principales</h3>
+        <ul>
+            <li><strong>PHP 8:</strong> Lenguaje de programación del servidor.</li>
+            <li><strong>MySQL 8:</strong> Sistema de gestión de base de datos.</li>
+            <li><strong>Sesiones PHP:</strong> Para gestión de autenticación.</li>
+        </ul>
+        
+        <h3>Estructura de la API</h3>
+        <p>La API está organizada por recursos y sigue convenciones RESTful:</p>
+        <ul>
+            <li><strong>/api/auth/:</strong> Endpoints de autenticación (login.php, registro.php, etc.).</li>
+            <li><strong>/api/productos/:</strong> Gestión de productos (listar.php, crear.php, etc.).</li>
+            <li><strong>/api/carrito/:</strong> Operaciones del carrito de compras.</li>
+            <li><strong>/api/pedidos/:</strong> Gestión de pedidos y compras.</li>
+            <li><strong>/api/mensajes/:</strong> Sistema de mensajería entre usuarios.</li>
+            <li><strong>/api/valoraciones/:</strong> Sistema de valoraciones de productos.</li>
+            <li><strong>/api/utils/:</strong> Utilidades comunes como autenticación.</li>
+        </ul>
+        
+        <h3>Seguridad</h3>
+        <p>El backend implementa varias medidas de seguridad:</p>
+        <ul>
+            <li>Autenticación basada en sesiones PHP.</li>
+            <li>Contraseñas hasheadas con password_hash() y password_verify().</li>
+            <li>Validación de datos de entrada.</li>
+            <li>Consultas preparadas para prevenir inyección SQL.</li>
+        </ul>
+    </section>
+
+    <section id="servicios">
+        <h2>Servicios</h2>
+        <p>Los servicios son módulos que encapsulan la lógica de comunicación con la API:</p>
+        
+        <h3>servicioBase.js</h3>
+        <p>Servicio base que proporciona funciones genéricas para realizar peticiones HTTP:</p>
+        <pre><code>
+/**
+ * Servicio base para realizar peticiones HTTP
+ * @module servicioBase
+ */
+
+// URL base para las peticiones a la API
+export const BASE_URL = import.meta.env.VITE_API_URL;
+
+// Funciones exportadas:
+export function get(endpoint, options = {}) { ... }
+export function post(endpoint, data = {}, options = {}) { ... }
+export function put(endpoint, data = {}, options = {}) { ... }
+export function del(endpoint, options = {}) { ... }
+        </code></pre>
+        
+        <h3>servicioProductos.jsx</h3>
+        <p>Servicio para gestionar productos:</p>
+        <pre><code>
+/**
+ * Servicio para gestionar productos
+ * @module servicioProductos
+ */
+
+// Funciones exportadas:
+export async function listarProductos(categoriaId = null, busqueda = null) { ... }
+export async function obtenerProducto(productoId) { ... }
+export async function crearProducto(formData) { ... }
+export async function actualizarProducto(productoId, formData) { ... }
+export async function eliminarProducto(productoId) { ... }
+export async function listarProductosVendedor() { ... }
+        </code></pre>
+        
+        <h3>Otros Servicios Importantes</h3>
+        <ul>
+            <li><strong>servicioAutenticacion.jsx:</strong> Gestión de login, registro y perfil de usuario.</li>
+            <li><strong>servicioCarrito.jsx:</strong> Operaciones del carrito de compras.</li>
+            <li><strong>servicioPedidos.jsx:</strong> Gestión de pedidos y compras.</li>
+            <li><strong>servicioMensajes.jsx:</strong> Sistema de mensajería entre usuarios.</li>
+            <li><strong>servicioValoraciones.jsx:</strong> Sistema de valoraciones de productos.</li>
+        </ul>
+    </section>
+
+    <section id="hooks">
+        <h2>Hooks Personalizados</h2>
+        <p>Los hooks personalizados encapsulan lógica reutilizable:</p>
+        
+        <h3>usePedidos.js</h3>
+        <p>Hook para gestionar pedidos:</p>
+        <pre><code>
+/**
+ * Hook personalizado para gestionar pedidos
+ * @param {Object} options - Opciones de configuración
+ * @param {number} options.limite - Número máximo de pedidos a mostrar
+ * @param {boolean} options.ordenarPorRecientes - Si es true, ordena los pedidos por fecha más reciente
+ * @param {boolean} options.cargarAlInicio - Si es true, carga los pedidos al montar el componente
+ * @returns {Object} Estado y funciones para gestionar pedidos
+ */
+function usePedidos(options = {}) {
+    // Estado y lógica del hook
+    // ...
+    
+    return {
+        pedidos,
+        cargando,
+        error,
+        cargarPedidos,
+        formatearFecha,
+        hayPedidos: pedidos.length > 0
+    };
+}
+        </code></pre>
+        
+        <h3>Otros Hooks Importantes</h3>
+        <ul>
+            <li><strong>usePedidosVendedor.js:</strong> Gestión de pedidos para vendedores.</li>
+            <li><strong>useMensajes.js:</strong> Gestión del sistema de mensajería.</li>
+            <li><strong>useValoraciones.js:</strong> Gestión de valoraciones de productos.</li>
+            <li><strong>useApiCall.js:</strong> Hook genérico para realizar llamadas a la API.</li>
+            <li><strong>useForm.js:</strong> Hook para gestión de formularios.</li>
+        </ul>
+    </section>
+
+    <section id="contextos">
+        <h2>Contextos</h2>
+        <p>Los contextos de React permiten compartir estado entre componentes:</p>
+        
+        <h3>ContextoCarrito.jsx</h3>
+        <p>Contexto para gestionar el carrito de compras:</p>
+        <pre><code>
+// Crear el contexto
+const ContextoCarrito = createContext();
+
+// Hook personalizado para usar el contexto
+export function useCarrito() {
+    return useContext(ContextoCarrito);
+}
+
+// Proveedor del contexto
+export function ProveedorCarrito({ children }) {
+    // Estado y lógica del contexto
+    // ...
+    
+    // Funciones expuestas:
+    // cargarCarrito, agregar, actualizar, eliminar, vaciar
+    
+    return (
+        <ContextoCarrito.Provider value={{
+            items,
+            cargando,
+            error,
+            totalItems,
+            totalPrecio,
+            agregar,
+            actualizar,
+            eliminar,
+            vaciar
+        }}>
+            {children}
+        </ContextoCarrito.Provider>
+    );
+}
+        </code></pre>
+        
+        <h3>Otros Contextos Importantes</h3>
+        <ul>
+            <li><strong>ContextoAutenticacion.jsx:</strong> Gestión del estado de autenticación.</li>
+            <li><strong>ContextoTema.jsx:</strong> Gestión del tema visual (claro/oscuro).</li>
+        </ul>
+    </section>
+
+    <section id="componentes">
+        <h2>Componentes</h2>
+        <p>Los componentes de React implementan la interfaz de usuario:</p>
+        
+        <h3>DetalleProducto.jsx</h3>
+        <p>Componente para mostrar los detalles de un producto:</p>
+        <pre><code>
+function DetalleProducto() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [producto, setProducto] = useState(null);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(null);
+    const [mensajeExito, setMensajeExito] = useState('');
+    const { agregar } = useCarrito();
+    const { usuario } = useAutenticacion();
+    
+    // Verificar si el usuario es el propietario del producto
+    const esProductoPropio = usuario && producto && usuario.id === producto.vendedor_id;
+
+    // Lógica para cargar producto, agregar al carrito, etc.
+    // ...
+
+    return (
+        // JSX del componente
+    );
+}
+        </code></pre>
+        
+        <h3>Componentes Principales</h3>
+        <ul>
+            <li><strong>Layout.jsx, Header.jsx, Footer.jsx, Navbar.jsx:</strong> Componentes estructurales.</li>
+            <li><strong>ListaProductos.jsx, ListaProductosConFiltros.jsx:</strong> Listado de productos.</li>
+            <li><strong>Carrito.jsx:</strong> Componente del carrito de compras.</li>
+            <li><strong>PanelUsuario.jsx:</strong> Panel de control del usuario.</li>
+            <li><strong>PedidosVendedor.jsx:</strong> Gestión de pedidos para vendedores.</li>
+            <li><strong>Login.jsx, Registro.jsx:</strong> Componentes de autenticación.</li>
+            <li><strong>MensajesPage.jsx:</strong> Sistema de mensajería.</li>
+        </ul>
+    </section>
+
+    <section id="api">
+        <h2>API</h2>
+        <p>La API del backend proporciona endpoints para las diferentes funcionalidades:</p>
+        
+        <h3>Endpoints de Productos</h3>
+        <table>
+            <tr>
+                <th>Endpoint</th>
+                <th>Método</th>
+                <th>Descripción</th>
+            </tr>
+            <tr>
+                <td>/api/productos/listar.php</td>
+                <td>GET</td>
+                <td>Obtiene la lista de productos, con opciones de filtrado por categoría, búsqueda, etc.</td>
+            </tr>
+            <tr>
+                <td>/api/productos/obtener.php</td>
+                <td>GET</td>
+                <td>Obtiene los detalles de un producto específico por ID.</td>
+            </tr>
+            <tr>
+                <td>/api/productos/crear.php</td>
+                <td>POST</td>
+                <td>Crea un nuevo producto con los datos proporcionados.</td>
+            </tr>
+            <tr>
+                <td>/api/productos/actualizar.php</td>
+                <td>POST</td>
+                <td>Actualiza un producto existente.</td>
+            </tr>
+            <tr>
+                <td>/api/productos/eliminar.php</td>
+                <td>DELETE</td>
+                <td>Elimina un producto por ID.</td>
+            </tr>
+        </table>
+        
+        <h3>Endpoints de Autenticación</h3>
+        <table>
+            <tr>
+                <th>Endpoint</th>
+                <th>Método</th>
+                <th>Descripción</th>
+            </tr>
+            <tr>
+                <td>/api/auth/login.php</td>
+                <td>POST</td>
+                <td>Inicia sesión con email y contraseña.</td>
+            </tr>
+            <tr>
+                <td>/api/auth/registro.php</td>
+                <td>POST</td>
+                <td>Registra un nuevo usuario.</td>
+            </tr>
+            <tr>
+                <td>/api/auth/logout.php</td>
+                <td>POST</td>
+                <td>Cierra la sesión del usuario.</td>
+            </tr>
+            <tr>
+                <td>/api/auth/actualizar_perfil.php</td>
+                <td>PUT</td>
+                <td>Actualiza la información del perfil del usuario.</td>
+            </tr>
+            <tr>
+                <td>/api/auth/cambiar_password.php</td>
+                <td>POST</td>
+                <td>Cambia la contraseña del usuario.</td>
+            </tr>
+        </table>
+        
+        <h3>Otros Endpoints Importantes</h3>
+        <ul>
+            <li><strong>/api/carrito/:</strong> Endpoints para gestionar el carrito (agregar.php, listar.php, etc.).</li>
+            <li><strong>/api/pedidos/:</strong> Endpoints para gestionar pedidos (crear.php, listar.php, etc.).</li>
+            <li><strong>/api/mensajes/:</strong> Endpoints para el sistema de mensajería.</li>
+            <li><strong>/api/valoraciones/:</strong> Endpoints para el sistema de valoraciones.</li>
+        </ul>
+        
+        <h3>Utilidades de Autenticación</h3>
+        <p>El archivo <code>api/utils/auth.php</code> proporciona funciones para la autenticación:</p>
+        <pre><code>
+/**
+ * Verifica si el usuario está autenticado
+ * 
+ * @return array|false Datos del usuario si está autenticado, false en caso contrario
+ */
+function verificarAutenticacion() {
+    // Iniciar sesión si no está iniciada
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Verificar si el usuario está autenticado
+    if (!isset($_SESSION['usuario_id'])) {
+        return false;
+    }
+    
+    // Devolver datos del usuario
+    return [
+        'id' => $_SESSION['usuario_id'],
+        'rol' => $_SESSION['rol'] ?? 'cliente' // Valor por defecto si no existe
+    ];
+}
+        </code></pre>
     </section>
 
     <section id="mejores-practicas">
         <h2>Mejores Prácticas</h2>
         <ul>
-            <li>Documenta el código mientras lo escribes para mantener la coherencia.</li>
-            <li>Utiliza funciones asíncronas para operaciones que requieren comunicación con el servidor.</li>
-            <li>Mantén la seguridad de los datos mediante la validación y sanitización de entradas.</li>
-            <li>Implementa manejo de errores robusto para mejorar la experiencia del usuario.</li>
+            <li><strong>Documentación:</strong> Documenta el código mientras lo escribes para mantener la coherencia.</li>
+            <li><strong>Operaciones Asíncronas:</strong> Utiliza funciones asíncronas para operaciones que requieren comunicación con el servidor.</li>
+            <li><strong>Seguridad:</strong> Mantén la seguridad de los datos mediante la validación y sanitización de entradas.</li>
+            <li><strong>Manejo de Errores:</strong> Implementa manejo de errores robusto para mejorar la experiencia del usuario.</li>
+            <li><strong>Componentes Reutilizables:</strong> Crea componentes pequeños y reutilizables para mantener el código DRY (Don't Repeat Yourself).</li>
+            <li><strong>Estado Global:</strong> Utiliza contextos de React para gestionar el estado global de la aplicación.</li>
+            <li><strong>Hooks Personalizados:</strong> Encapsula lógica reutilizable en hooks personalizados.</li>
+            <li><strong>Consultas Preparadas:</strong> Utiliza consultas preparadas en PHP para prevenir inyección SQL.</li>
+            <li><strong>Validación de Datos:</strong> Valida los datos tanto en el frontend como en el backend.</li>
+            <li><strong>Estructura Organizada:</strong> Mantén una estructura de carpetas y archivos organizada y coherente.</li>
         </ul>
+        
+        <h3>Ejemplos de Código</h3>
+        <h4>Ejemplo de Autenticación</h4>
+        <pre><code>
+// Ejemplo de código para iniciar sesión
+const iniciarSesion = async (email, password) => {
+    try {
+        const response = await servicioAutenticacion.login(email, password);
+        // Guardar datos del usuario en el contexto
+        setUsuario(response.usuario);
+        // Redireccionar al panel de usuario
+        navigate('/panel-usuario');
+    } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        setError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+    }
+};
+        </code></pre>
+        
+        <h4>Ejemplo de Manejo de Carrito</h4>
+        <pre><code>
+// Ejemplo de código para agregar un producto al carrito
+const handleAgregarAlCarrito = async () => {
+    try {
+        // Verificar si el producto es propio
+        if (esProductoPropio) {
+            setError('No puedes añadir tu propio producto al carrito');
+            return;
+        }
+        
+        await agregar(producto.id);
+        setMensajeExito('Producto añadido al carrito');
+        setTimeout(() => setMensajeExito(''), 3000);
+    } catch (error) {
+        setError('Error al añadir al carrito: ' + error.message);
+        setTimeout(() => setError(null), 3000);
+    }
+};
+        </code></pre>
     </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Documentación del Proyecto VendeYa &copy; 2023</p>
+            <p>Desarrollado con React y PHP</p>
+        </div>
+    </footer>
 </body>
 </html>
