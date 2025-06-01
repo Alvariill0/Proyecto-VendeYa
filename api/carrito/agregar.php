@@ -119,7 +119,7 @@ if ($resultado_verificar_carrito->num_rows > 0) {
     $sql_insertar = "INSERT INTO carrito_items (usuario_id, producto_id, cantidad) VALUES (?, ?, ?)";
     $stmt_insertar = $conexion->prepare($sql_insertar);
     $stmt_insertar->bind_param('iii', $usuario_id, $producto_id, $cantidad);
-    
+    // 
     if ($stmt_insertar->execute()) {
         $item_id = $conexion->insert_id;
         echo json_encode([

@@ -3,6 +3,7 @@ header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+// Archivo de debug para soluciones de problemas
 
 // Si es una petición OPTIONS, terminamos aquí
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

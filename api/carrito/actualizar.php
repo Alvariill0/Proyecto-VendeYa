@@ -57,14 +57,14 @@ if ($cantidad <= 0) {
 
 // Verificar que el item pertenece al usuario
 $sql_verificar = "SELECT ci.id, ci.producto_id, p.stock 
-                 FROM carrito_items ci 
-                 JOIN productos p ON ci.producto_id = p.id 
-                 WHERE ci.id = ? AND ci.usuario_id = ?";
+    FROM carrito_items ci 
+    JOIN productos p ON ci.producto_id = p.id 
+    WHERE ci.id = ? AND ci.usuario_id = ?";
 $stmt_verificar = $conexion->prepare($sql_verificar);
 $stmt_verificar->bind_param('ii', $item_id, $usuario_id);
 $stmt_verificar->execute();
 $resultado_verificar = $stmt_verificar->get_result();
-
+// si el item no existe o no pertenece al usuario
 if ($resultado_verificar->num_rows === 0) {
     http_response_code(404);
     echo json_encode(['error' => 'Item no encontrado en el carrito']);

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Obtener los datos del cuerpo de la petición
 $datos = json_decode(file_get_contents('php://input'), true);
-
+// Verificar que se hayan enviado los datos requeridoss
 if (!isset($datos['nombre']) || !isset($datos['email']) || !isset($datos['password'])) {
     http_response_code(400);
     echo json_encode(['error' => 'Faltan datos requeridos']);
