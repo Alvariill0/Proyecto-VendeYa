@@ -6,7 +6,7 @@
 
 ## 📋 Descripción
 
-VendeYa es una plataforma de marketplace online desarrollada con React y PHP que permite a los usuarios registrarse como compradores o vendedores, publicar productos, gestionar pedidos y realizar compras. La aplicación ofrece una experiencia completa de e-commerce con funcionalidades como carrito de compras, sistema de mensajería, valoraciones de productos y panel de administración.
+VendeYa es una plataforma de marketplace online desarrollada con React y PHP como proyecto final del grado de Desarrollo de Aplicaciones Web que permite a los usuarios registrarse como compradores o vendedores, publicar productos, gestionar pedidos y realizar compras. La aplicación ofrece una experiencia completa de e-commerce con funcionalidades como carrito de compras, sistema de mensajería, valoraciones de productos y panel de administración.
 
 ## ✨ Características Principales
 
@@ -168,7 +168,7 @@ Este proyecto está bajo la Licencia MIT - mira el archivo [LICENSE](LICENSE) pa
 
 ## 👥 Autores
 
-- **Tu Nombre** - *Desarrollo inicial* - [Tu Usuario de GitHub](https://github.com/tu-usuario)
+- **Álvaro Fernández Becerra**  - [Alvariill0](https://github.com/Alvariill0)
 
 ## 🙏 Agradecimientos
 
