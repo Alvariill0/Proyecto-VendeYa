@@ -6,6 +6,7 @@ import { useTheme } from '../../context/ContextoTema';
 
 export default function Navbar() {
     const [mostrarOffcanvas, setMostrarOffcanvas] = useState(false);
+    const [mostrarCategoriasPopulares, setMostrarCategoriasPopulares] = useState(false);
     const [listaCategorias, setListaCategorias] = useState([]);
     const [cargandoCategorias, setCargandoCategorias] = useState(false);
     const [errorCategorias, setErrorCategorias] = useState(null);
@@ -14,7 +15,7 @@ export default function Navbar() {
     // Cargar categorías al montar el componente
     useEffect(() => {
         const cargarCategorias = async () => {
-            if (listaCategorias.length === 0) { // Solo cargar si no se han cargado antes
+            if (listaCategorias.length === 0) {
                 try {
                     setCargandoCategorias(true);
                     setErrorCategorias(null);
@@ -43,6 +44,10 @@ export default function Navbar() {
         setMostrarOffcanvas(false);
     };
 
+    const toggleCategoriasPopulares = () => {
+        setMostrarCategoriasPopulares(!mostrarCategoriasPopulares);
+    };
+
     return (
         <nav className={`navbar border-bottom ${isDarkMode ? 'bg-dark border-secondary' : 'navbar-green'}`}>
             <div className="container-fluid">
@@ -57,32 +62,74 @@ export default function Navbar() {
                         {cargandoCategorias ? 'Cargando...' : 'Ver todas las categorías'}
                     </button>
                     
-                    <span className={`me-3 ${isDarkMode ? 'text-light' : 'text-white'}`}>Categorías Populares:</span>
-                    <div className="d-flex gap-3">
-                        {/* Cargar categorías populares dinámicamente si están disponibles */}
+                    {/* Categorías populares - Solo visible en desktop */}
+                    <div className="d-none d-md-flex align-items-center">
+                        <span className={`me-3 ${isDarkMode ? 'text-light' : 'text-white'}`}>Categorías Populares:</span>
+                        <div className="d-flex gap-3">
+                            {listaCategorias.length > 0 ? (
+                                categoriasConMasProductos.length > 0 ? (
+                                    categoriasConMasProductos.map(categoria => (
+                                        <Link 
+                                            key={categoria.id} 
+                                            to={`/principal/${categoria.id}`} 
+                                            className={`categoria-link ${isDarkMode ? 'text-light' : 'text-white'}`}
+                                        >
+                                            {categoria.nombre}
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <Link 
+                                        to="#" 
+                                        className={`categoria-link ${isDarkMode ? 'text-light' : 'text-white'}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            abrirOffcanvasCategorias();
+                                        }}
+                                    >
+                                        Cargando categorías...
+                                    </Link>
+                                )
+                            ) : (
+                                <span>Cargando categorías...</span>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Botón de categorías populares para móvil */}
+                    <button 
+                        className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-light'} d-md-none ms-auto`}
+                        onClick={toggleCategoriasPopulares}
+                    >
+                        <i className="bi bi-list me-2"></i>
+                        Categorías Populares
+                    </button>
+                </div>
+
+                {/* Menú desplegable de categorías populares para móvil */}
+                <div className={`d-md-none ${mostrarCategoriasPopulares ? 'd-block' : 'd-none'} py-2 border-top`}>
+                    <div className="d-flex flex-column gap-2">
                         {listaCategorias.length > 0 ? (
                             categoriasConMasProductos.length > 0 ? (
                                 categoriasConMasProductos.map(categoria => (
                                     <Link 
                                         key={categoria.id} 
                                         to={`/principal/${categoria.id}`} 
-                                        className={`categoria-link ${isDarkMode ? 'text-light' : 'text-white'}`}
+                                        className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-light'} w-100 text-start`}
+                                        onClick={() => setMostrarCategoriasPopulares(false)}
                                     >
                                         {categoria.nombre}
                                     </Link>
                                 ))
                             ) : (
-                                // Mostrar enlaces temporales mientras se cargan las categorías
-                                <Link 
-                                    to="#" 
-                                    className={`categoria-link ${isDarkMode ? 'text-light' : 'text-white'}`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
+                                <button 
+                                    className={`btn ${isDarkMode ? 'btn-outline-light' : 'btn-outline-light'} w-100 text-start`}
+                                    onClick={() => {
+                                        setMostrarCategoriasPopulares(false);
                                         abrirOffcanvasCategorias();
                                     }}
                                 >
                                     Cargando categorías...
-                                </Link>
+                                </button>
                             )
                         ) : (
                             <span>Cargando categorías...</span>
