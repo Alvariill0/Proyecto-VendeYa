@@ -13,7 +13,14 @@ if ($conexion->connect_error) {
 
 // Consulta para obtener todas las categorías
 // Seleccionamos parent_id también
-$sql = "SELECT c.id, c.nombre, c.descripcion, c.parent_id, COUNT(p.id) as productosCount FROM categorias c LEFT JOIN productos p ON c.id = p.categoria_id GROUP BY c.id ORDER BY c.parent_id ASC, c.nombre ASC";
+$sql = "SELECT c.id, c.nombre, c.descripcion, c.parent_id, 
+        (SELECT COUNT(*) FROM productos p WHERE p.categoria_id = c.id) + 
+        (SELECT COUNT(*) FROM productos p 
+        INNER JOIN categorias sub ON p.categoria_id = sub.id 
+        WHERE sub.parent_id = c.id) as productosCount 
+        FROM categorias c 
+        GROUP BY c.id 
+        ORDER BY c.nombre ASC";
 $resultado = $conexion->query($sql);
 
 $categorias = [];
